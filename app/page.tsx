@@ -953,11 +953,18 @@ export default function Component() {
                                     <Button
                                       size="sm"
                                       variant="destructive"
-                                      onClick={() => {
-                                        setVehicleData(vehicleData.filter((v) => v.id !== vehicle.id))
+                                      onClick={async () => {
+                                      try {
+                                        await axios.delete(`/api/vehicle/removeById`, {
+                                          params: { id: vehicle.id }
+                                        });
+                                          setVehicleData(vehicleData.filter((v) => v.id !== vehicle.id));
                                         if (selectedVehicle && selectedVehicle.id === vehicle.id) {
-                                          setVehicleMode("list")
-                                          setSelectedVehicle(null)
+                                          setVehicleMode("list");
+                                          setSelectedVehicle(null);
+                                        }
+                                        } catch (error) {
+                                          setErrors({ vehicle: "Error al eliminar vehículo" });
                                         }
                                       }}
                                     >
