@@ -129,7 +129,7 @@ export default function Component() {
       //   id: 1,
       //   marca: "Toyota",
       //   modelo: "Corolla",
-      //   año: 2018,
+      //   year: 2018,
       //   motor: "1.8L",
       //   vin: "1HGBH41JXMN109186",
       //   patente: "ABC123",
@@ -142,7 +142,7 @@ export default function Component() {
       //   id: 2,
       //   marca: "Ford",
       //   modelo: "Fiesta",
-      //   año: 2020,
+      //   year: 2020,
       //   motor: "1.6L Turbo",
       //   vin: "3FADP4EJ8KM123456",
       //   patente: "XYZ789",
@@ -155,7 +155,7 @@ export default function Component() {
       //   id: 3,
       //   marca: "Chevrolet",
       //   modelo: "Cruze",
-      //   año: 2019,
+      //   year: 2019,
       //   motor: "1.4L Turbo",
       //   vin: "1G1BC5SM5K7123456",
       //   patente: "DEF456",
@@ -904,7 +904,7 @@ export default function Component() {
                             <th className="text-left p-2">Estado</th>
                             <th className="text-left p-2">Marca</th>
                             <th className="text-left p-2">Modelo</th>
-                            <th className="text-left p-2">Año</th>
+                            <th className="text-left p-2">year</th>
                             <th className="text-left p-2">Patente</th>
                             <th className="text-left p-2">Propietario</th>
                             <th className="text-left p-2">Último Diagnóstico</th>
@@ -922,7 +922,7 @@ export default function Component() {
                                 </td>
                                 <td className="p-2 font-medium">{vehicle.marca}</td>
                                 <td className="p-2">{vehicle.modelo}</td>
-                                <td className="p-2">{vehicle.año}</td>
+                                <td className="p-2">{vehicle.year}</td>
                                 <td className="p-2 font-mono">{vehicle.patente}</td>
                                 <td className="p-2">{getUserName(vehicle.userId)}</td>
                                 <td className="p-2">{vehicle.lastDiag || "Sin diagnósticos"}</td>
@@ -1009,11 +1009,11 @@ export default function Component() {
                         if (!vehicleForm.marca || vehicleForm.marca.length < 2) newErrors.marca = "Marca requerida"
                         if (!vehicleForm.modelo) newErrors.modelo = "Modelo requerido"
                         if (
-                          !vehicleForm.año ||
-                          vehicleForm.año < 1900 ||
-                          vehicleForm.año > new Date().getFullYear() + 1
+                          !vehicleForm.year ||
+                          vehicleForm.year < 1900 ||
+                          vehicleForm.year > new Date().getFullYear() + 1
                         ) {
-                          newErrors.año = "Año inválido"
+                          newErrors.year = "year inválido"
                         }
                         if (!vehicleForm.motor) newErrors.motor = "Tipo de motor requerido"
                         if (!vehicleForm.vin || vehicleForm.vin.length !== 17)
@@ -1080,15 +1080,15 @@ export default function Component() {
                         </div>
 
                         <div>
-                          <Label htmlFor="año">Año *</Label>
+                          <Label htmlFor="year">Año *</Label>
                           <Input
-                            id="año"
+                            id="year"
                             type="number"
-                            value={vehicleForm.año || ""}
-                            onChange={(e) => setVehicleForm({ ...vehicleForm, año: Number.parseInt(e.target.value) })}
-                            className={errors.año ? "border-red-500" : ""}
+                            value={vehicleForm.year || ""}
+                            onChange={(e) => setVehicleForm({ ...vehicleForm, year: Number.parseInt(e.target.value) })}
+                            className={errors.year ? "border-red-500" : ""}
                           />
-                          {errors.año && <p className="text-red-500 text-sm">{errors.año}</p>}
+                          {errors.year && <p className="text-red-500 text-sm">{errors.year}</p>}
                         </div>
 
                         <div>
@@ -1208,7 +1208,7 @@ export default function Component() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Car className="h-6 w-6" />
-                      {selectedVehicle.marca} {selectedVehicle.modelo} ({selectedVehicle.año})
+                      {selectedVehicle.marca} {selectedVehicle.modelo} ({selectedVehicle.year})
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
