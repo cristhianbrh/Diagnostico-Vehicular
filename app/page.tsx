@@ -74,98 +74,129 @@ export default function Component() {
   // Datos hardcodeados gigantes mezclados con lógica (HORRIBLE)
   useEffect(() => {
     // Mock users con estructura inconsistente
-    const mockUsers = [
-      {
-        id: 1,
-        name: "Juan Pérez",
-        role: "tecnico",
-        email: "juan@taller.com",
-        password: "123456",
-        active: true,
-        createdAt: "2023-01-15",
-      },
-      {
-        id: 2,
-        name: "María García",
-        role: "cliente",
-        email: "maria@email.com",
-        password: "123456",
-        active: true,
-        createdAt: "2023-02-20",
-      },
-      {
-        id: 3,
-        name: "Carlos López",
-        role: "admin",
-        email: "carlos@admin.com",
-        password: "admin123",
-        active: true,
-        createdAt: "2023-01-01",
-      },
-      {
-        id: 4,
-        name: "Ana Martínez",
-        role: "tecnico",
-        email: "ana@taller.com",
-        password: "123456",
-        active: true,
-        createdAt: "2023-03-10",
-      },
-      {
-        id: 5,
-        name: "Pedro Rodríguez",
-        role: "cliente",
-        email: "pedro@email.com",
-        password: "123456",
-        active: false,
-        createdAt: "2023-04-05",
-      },
-    ]
-    setUsers(mockUsers)
+    // const mockUsers = [
+    //   {
+    //     id: 1,
+    //     name: "Juan Pérez",
+    //     role: "tecnico",
+    //     email: "juan@taller.com",
+    //     password: "123456",
+    //     active: true,
+    //     createdAt: "2023-01-15",
+    //   },
+    //   {
+    //     id: 2,
+    //     name: "María García",
+    //     role: "cliente",
+    //     email: "maria@email.com",
+    //     password: "123456",
+    //     active: true,
+    //     createdAt: "2023-02-20",
+    //   },
+    //   {
+    //     id: 3,
+    //     name: "Carlos López",
+    //     role: "admin",
+    //     email: "carlos@admin.com",
+    //     password: "admin123",
+    //     active: true,
+    //     createdAt: "2023-01-01",
+    //   },
+    //   {
+    //     id: 4,
+    //     name: "Ana Martínez",
+    //     role: "tecnico",
+    //     email: "ana@taller.com",
+    //     password: "123456",
+    //     active: true,
+    //     createdAt: "2023-03-10",
+    //   },
+    //   {
+    //     id: 5,
+    //     name: "Pedro Rodríguez",
+    //     role: "cliente",
+    //     email: "pedro@email.com",
+    //     password: "123456",
+    //     active: false,
+    //     createdAt: "2023-04-05",
+    //   },
+    // ]
+    // setUsers(mockUsers)
 
     // Datos de vehículos hardcodeados
-    const mockVehicles = [
-      {
-        id: 1,
-        marca: "Toyota",
-        modelo: "Corolla",
-        año: 2018,
-        motor: "1.8L",
-        vin: "1HGBH41JXMN109186",
-        patente: "ABC123",
-        km: 85000,
-        fechaAdq: "2018-03-15",
-        userId: 2,
-        lastDiag: "2024-01-15",
-      },
-      {
-        id: 2,
-        marca: "Ford",
-        modelo: "Fiesta",
-        año: 2020,
-        motor: "1.6L Turbo",
-        vin: "3FADP4EJ8KM123456",
-        patente: "XYZ789",
-        km: 45000,
-        fechaAdq: "2020-07-22",
-        userId: 2,
-        lastDiag: "2024-01-20",
-      },
-      {
-        id: 3,
-        marca: "Chevrolet",
-        modelo: "Cruze",
-        año: 2019,
-        motor: "1.4L Turbo",
-        vin: "1G1BC5SM5K7123456",
-        patente: "DEF456",
-        km: 62000,
-        fechaAdq: "2019-05-10",
-        userId: 4,
-        lastDiag: "2024-01-18",
-      },
-    ]
-    setVehicleData(mockVehicles)
+    // const mockVehicles = [
+      // {
+      //   id: 1,
+      //   marca: "Toyota",
+      //   modelo: "Corolla",
+      //   año: 2018,
+      //   motor: "1.8L",
+      //   vin: "1HGBH41JXMN109186",
+      //   patente: "ABC123",
+      //   km: 85000,
+      //   fechaAdq: "2018-03-15",
+      //   userId: 2,
+      //   lastDiag: "2024-01-15",
+      // },
+      // {
+      //   id: 2,
+      //   marca: "Ford",
+      //   modelo: "Fiesta",
+      //   año: 2020,
+      //   motor: "1.6L Turbo",
+      //   vin: "3FADP4EJ8KM123456",
+      //   patente: "XYZ789",
+      //   km: 45000,
+      //   fechaAdq: "2020-07-22",
+      //   userId: 2,
+      //   lastDiag: "2024-01-20",
+      // },
+      // {
+      //   id: 3,
+      //   marca: "Chevrolet",
+      //   modelo: "Cruze",
+      //   año: 2019,
+      //   motor: "1.4L Turbo",
+      //   vin: "1G1BC5SM5K7123456",
+      //   patente: "DEF456",
+      //   km: 62000,
+      //   fechaAdq: "2019-05-10",
+      //   userId: 4,
+      //   lastDiag: "2024-01-18",
+      // },
+    // ]
+    const getAllUsers = async () => {
+      try {
+        const res = await axios.get("/api/users/getUsers");
+        console.log(res)
+        setUsers(res.data);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          setErrors({ vehicle: error.response?.data?.error || error.message || "Error al obtener los usuarios" });
+        } else if (error instanceof Error) {
+          setErrors({ vehicle: error.message });
+        } else {
+          setErrors({ vehicle: "Error al obtener usuarios" });
+        }
+      }
+    }
+    getAllUsers();
+
+    const getAllVehicle = async () => {
+      try {
+        const res = await axios.get("/api/vehicle/getAll");
+        setVehicleData(res.data.vehicles);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          setErrors({ vehicle: error.response?.data?.error || error.message || "Error al obtener vehículos" });
+        } else if (error instanceof Error) {
+          setErrors({ vehicle: error.message });
+        } else {
+          setErrors({ vehicle: "Error al obtener vehículos" });
+        }
+      }
+    }
+    getAllVehicle();
 
     // Base de datos DTC hardcodeada (estructura horrible)
     const mockDtcDatabase = [
@@ -325,10 +356,25 @@ export default function Component() {
       },
     ]
     setScannerData(mockScannerData)
-
+    getUserCurrent();
     // Usuario actual simulado (horrible hardcodeo)
-    setCurrentUser(mockUsers[0]) // Juan Pérez como usuario por defecto
+    // setCurrentUser(mockUsers[0]) // Juan Pérez como usuario por defecto
   }, [])
+
+  // Obtiene el usuario actual si existe el token en localStorage
+  const getUserCurrent = async () => {
+    const token = localStorage.getItem("token")
+    if (!token) return
+    try {
+      const res = await axios.get("/api/auth/me", {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      setCurrentUser(res.data.user)
+    } catch (error) {
+      setCurrentUser(null)
+      localStorage.removeItem("token")
+    }
+  }
 
   // Función gigante para manejar autenticación (HORRIBLE)
   const handleAuth = (e) => {
@@ -866,7 +912,7 @@ export default function Component() {
                           </tr>
                         </thead>
                         <tbody>
-                          {vehicleData.map((vehicle) => {
+                          {vehicleData && vehicleData.map((vehicle) => {
                             const status = getVehicleStatus(vehicle)
                             const StatusIcon = status.icon
                             return (
@@ -955,7 +1001,7 @@ export default function Component() {
                   </CardHeader>
                   <CardContent>
                     <form
-                      onSubmit={(e) => {
+                      onSubmit={async (e) => {
                         e.preventDefault()
                         setLoading(true)
 
@@ -980,12 +1026,20 @@ export default function Component() {
 
                         if (Object.keys(newErrors).length === 0) {
                           if (vehicleMode === "add") {
-                            const newVehicle = {
-                              ...vehicleForm,
-                              id: Math.max(...vehicleData.map((v) => v.id), 0) + 1,
-                              lastDiag: null,
+                            try {
+                              const res = await axios.post("/api/vehicle/create", vehicleForm)
+                              setVehicleData([...vehicleData, res.data])
+                            } catch (error) {
+                              if (axios.isAxiosError(error)) {
+                                setErrors({ api: error.response?.data?.error || error.message || "Error al crear vehículo" })
+                              } else if (error instanceof Error) {
+                                setErrors({ api: error.message })
+                              } else {
+                                setErrors({ api: "Error al crear vehículo" })
+                              }
+                              setLoading(false)
+                              return
                             }
-                            setVehicleData([...vehicleData, newVehicle])
                           } else {
                             setVehicleData(
                               vehicleData.map((v) =>
