@@ -1048,12 +1048,29 @@ export default function Component() {
                               return
                             }
                           } else {
-                            setVehicleData(
-                              vehicleData.map((v) =>
-                                v.id === selectedVehicle.id ? { ...vehicleForm, id: selectedVehicle.id } : v,
-                              ),
-                            )
+                            try {
+                              const res = await axios.put("/api/vehicle/updateById", {
+                                ...vehicleForm,
+                                id: selectedVehicle.id,
+                              });
+                              setVehicleData(
+                                vehicleData.map((v) =>
+                                  v.id === selectedVehicle.id ? res.data : v
+                                )
+                              );
+                              } catch (error) {
+                              if (axios.isAxiosError(error)) {
+                                 setErrors({ api: error.response?.data?.error || error.message || "Error al actualizar vehículo" });
+                              } else if (error instanceof Error) {
+                                setErrors({ api: error.message });
+                              } else {
+                                setErrors({ api: "Error al actualizar vehículo" });
+                              }
+                              setLoading(false);
+                              return;
+                            }
                           }
+                          
                           setVehicleForm({})
                           setVehicleMode("list")
                           setSelectedVehicle(null)
