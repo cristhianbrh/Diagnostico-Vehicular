@@ -434,61 +434,75 @@ export default function Component() {
     setTimeout(() => setLoading(false), 500)
   }
 
-  // Función horrible para subir archivos del escáner
+  // Función para subir archivos del escáner y guardarlos en la base de datos
   const handleFileUpload = (e) => {
     const files = Array.from(e.target.files)
     setLoading(true)
 
     files.forEach((file) => {
       const reader = new FileReader()
-      reader.onload = (event) => {
+      reader.onload = async (event) => {
         try {
           let parsedData = null
           let dtcCodes = []
+          let vehicleVin = ""
 
           if (file.name.endsWith(".json")) {
             parsedData = JSON.parse(event.target.result)
             dtcCodes = parsedData.dtc_codes || parsedData.codes || []
+            vehicleVin = parsedData.vin || ""
           } else if (file.name.endsWith(".csv")) {
-            // Parsing CSV horrible
             const lines = event.target.result.split("\n")
             const headers = lines[0].split(",")
             const dtcIndex = headers.findIndex(
               (h) => h.toLowerCase().includes("dtc") || h.toLowerCase().includes("code"),
             )
+            const vinIndex = headers.findIndex(
+              (h) => h.toLowerCase().includes("vin")
+            )
             if (dtcIndex !== -1) {
               dtcCodes = lines
-                .slice(1)
-                .map((line) => line.split(",")[dtcIndex])
-                .filter((code) => code && code.trim())
+          .slice(1)
+          .map((line) => line.split(",")[dtcIndex])
+          .filter((code) => code && code.trim())
+            }
+            if (vinIndex !== -1) {
+              const vinValue = lines[1]?.split(",")[vinIndex]
+              vehicleVin = vinValue ? vinValue.trim() : ""
             }
           } else if (file.name.endsWith(".txt")) {
-            // Parsing TXT horrible
             const lines = event.target.result.split("\n")
             dtcCodes = lines
               .filter((line) => /^P[0-9A-F]{4}$/i.test(line.trim()))
               .map((line) => line.trim().toUpperCase())
+            // Opcional: buscar VIN en el txt si hay una línea tipo VIN:XXXXXXXXXXXXXXX
+            const vinLine = lines.find((line) => /^VIN[:\s]/i.test(line.trim()))
+            if (vinLine) {
+              const match = vinLine.match(/VIN[:\s]*([A-HJ-NPR-Z0-9]{17})/i)
+              if (match) vehicleVin = match[1].toUpperCase()
+            }
           }
 
           const newScanData = {
-            id: Math.max(...scannerData.map((s) => s.id), 0) + 1,
             fileName: file.name,
             uploadDate: new Date().toISOString().split("T")[0],
-            vehicleVin: parsedData?.vin || "",
+            vehicleVin: vehicleVin || parsedData?.vin || "",
             scannerType: parsedData?.scanner_type || "Desconocido",
             dtcCodes: dtcCodes,
             status: "processed",
             rawData: parsedData || { content: event.target.result },
           }
 
-          setScannerData((prev) => [...prev, newScanData])
+          // Guardar en la base de datos
+          await axios.post("/api/scanner/upload", newScanData)
+
+          setScannerData((prev) => [...prev, { id: Date.now(), ...newScanData }])
           setUploadedFiles((prev) => [...prev, file.name])
 
           // Auto-asociar con vehículo si encuentra VIN
           if (newScanData.vehicleVin) {
             const vehicle = vehicleData.find((v) => v.vin === newScanData.vehicleVin)
             if (vehicle && dtcCodes.length > 0) {
-              // Crear diagnóstico automático (lógica horrible)
               const newDiag = {
                 id: Math.max(...diagnostics.map((d) => d.id), 0) + 1,
                 vehicleId: vehicle.id,

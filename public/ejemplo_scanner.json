@@ -1,0 +1,38 @@
+[
+  {
+    "fileName": "scan_001.json",
+    "uploadDate": "2024-01-15",
+    "vehicleVin": "1HGBH41JXMN109186",
+    "scannerType": "OBD2 Pro",
+    "dtcCodes": ["P0301", "P0171"],
+    "status": "processed",
+    "rpm": 800,
+    "coolantTemp": 85,
+    "fuelTrim": -5.2,
+    "o2Sensor": 0.45
+  },
+  {
+    "fileName": "scan_002.json",
+    "uploadDate": "2023-12-10",
+    "vehicleVin": "1HGBH41JXMN109186",
+    "scannerType": "AutoScan X1",
+    "dtcCodes": ["P0420"],
+    "status": "processed",
+    "rpm": 750,
+    "coolantTemp": 90,
+    "fuelTrim": 2.1,
+    "o2Sensor": 0.52
+  },
+  {
+    "fileName": "scan_003.json",
+    "uploadDate": "2024-01-18",
+    "vehicleVin": "1G1BC5SM5K7123456",
+    "scannerType": "OBD2 Pro",
+    "dtcCodes": ["P0128", "P0442"],
+    "status": "processed",
+    "rpm": 900,
+    "coolantTemp": 95,
+    "fuelTrim": 1.8,
+    "o2Sensor": 0.48
+  }
+]
