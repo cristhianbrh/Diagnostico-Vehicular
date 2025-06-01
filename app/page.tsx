@@ -11,6 +11,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import axios from 'axios'
+
 import {
   Calendar,
   Car,
@@ -334,16 +336,25 @@ export default function Component() {
     setLoading(true)
 
     if (authMode === "login") {
-      const user = users.find((u) => u.email === authForm.email && u.password === authForm.password && u.active)
-      if (user) {
-        setCurrentUser(user)
+      axios
+      .post("/api/auth/login", {
+        email: authForm.email,
+        password: authForm.password,
+      })
+      .then((res) => {
+        // res.data.user esperado
+        setCurrentUser(res.data.user)
         setAuthForm({})
         setErrors({})
-      } else {
-        setErrors({ auth: "Credenciales inválidas o usuario inactivo" })
-      }
+        if (res.data.token) {
+        localStorage.setItem("token", res.data.token)
+        }
+      })
+      .catch((err) => {
+        setErrors({ auth: err.response?.data?.error || err.message || "Credenciales inválidas o usuario inactivo" })
+      })
     } else {
-      // Registro horrible
+      // Registro usando API con axios
       const newErrors = {}
       if (!authForm.name || authForm.name.length < 2) newErrors.name = "Nombre requerido"
       if (!authForm.email || !authForm.email.includes("@")) newErrors.email = "Email inválido"
@@ -351,19 +362,27 @@ export default function Component() {
       if (!authForm.role) newErrors.role = "Rol requerido"
 
       if (Object.keys(newErrors).length === 0) {
-        const newUser = {
-          id: Math.max(...users.map((u) => u.id), 0) + 1,
-          ...authForm,
-          active: true,
-          createdAt: new Date().toISOString().split("T")[0],
-        }
-        setUsers([...users, newUser])
-        setCurrentUser(newUser)
+        axios
+          .post("/api/auth/register", {
+             email: authForm.email, 
+             password: authForm.password, 
+             name: authForm.name, 
+             role : authForm.role
+          })
+          .then((res) => {
+        // res.data.user esperado
+        setUsers([...users, res.data.user])
+        setCurrentUser(res.data.user)
         setAuthForm({})
         setErrors({})
+          })
+          .catch((err) => {
+        setErrors({ auth: err.response?.data?.error || err.message || "Error al registrar usuario" })
+          })
       } else {
         setErrors(newErrors)
       }
+      
     }
 
     setTimeout(() => setLoading(false), 500)

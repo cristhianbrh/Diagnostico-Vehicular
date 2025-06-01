@@ -10,7 +10,7 @@ export default async function handler(
 ) {
   if (req.method !== "POST") return res.status(405).end();
 
-  const { email, password, name } = req.body;
+  const { email, password, name, role } = req.body;
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -20,7 +20,7 @@ export default async function handler(
         email,
         password: hashedPassword,
         name,
-        role: "user", // or another appropriate default role
+        role,
       },
     });
     res.status(201).json({
@@ -28,6 +28,7 @@ export default async function handler(
       user: { id: user.id, email: user.email },
     });
   } catch (error) {
+    console.log(error)
     res.status(400).json({ error: "User already exists or error" });
   }
 }
