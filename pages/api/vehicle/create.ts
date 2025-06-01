@@ -1,10 +1,13 @@
+import { PrismaClient } from "@/generated/prisma";
 import type { NextApiRequest, NextApiResponse } from "next";
+
+const prisma = new PrismaClient();
 
 type Vehicle = {
   id?: number;
   marca: string;
   modelo: string;
-  año: number;
+  year: number;
   motor: string;
   vin: string;
   patente: string;
@@ -18,7 +21,7 @@ type ErrorResponse = {
   fields?: Partial<Record<keyof Vehicle, string>>;
 };
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Vehicle | ErrorResponse>
 ) {
@@ -27,14 +30,14 @@ export default function handler(
     return;
   }
 
-  const { marca, modelo, año, motor, vin, patente, km, userId } = req.body;
+  const { marca, modelo, year, motor, vin, patente, km, userId } = req.body;
 
   const errors: Partial<Record<keyof Vehicle, string>> = {};
 
   if (!marca || marca.length < 2) errors.marca = "Marca requerida";
   if (!modelo) errors.modelo = "Modelo requerido";
-  if (!año || año < 1900 || año > new Date().getFullYear() + 1)
-    errors.año = "Año inválido";
+  if (!year || year < 1900 || year > new Date().getFullYear() + 1)
+    errors.year = "Año inválido";
   if (!motor) errors.motor = "Tipo de motor requerido";
   if (!vin || vin.length !== 17) errors.vin = "VIN debe tener 17 caracteres";
   if (!patente) errors.patente = "Patente requerida";
@@ -46,21 +49,23 @@ export default function handler(
     return;
   }
 
-  // Aquí deberías guardar el vehículo en la base de datos.
-  // Por ahora, solo devolvemos el objeto recibido con un id simulado.
-
-  const newVehicle: Vehicle = {
-    id: Math.floor(Math.random() * 1000000),
-    marca,
-    modelo,
-    año,
-    motor,
-    vin,
-    patente,
-    km,
-    userId,
-    lastDiag: null,
-  };
-
-  res.status(201).json(newVehicle);
+  try {
+    const newVehicle = await prisma.vehicle.create({
+      data: {
+        marca,
+        modelo,
+        year,
+        motor,
+        vin,
+        patente,
+        km,
+        userId,
+        fechaAdq: new Date(),
+        lastDiag: null,
+      },
+    });
+    res.status(201).json(newVehicle);
+  } catch (error: any) {
+    res.status(500).json({ error: "Error al crear vehículo" });
+  }
 }

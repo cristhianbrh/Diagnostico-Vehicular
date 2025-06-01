@@ -1,7 +1,7 @@
-import { PrismaClient } from "@/app/generated/prisma";
 import bcrypt from "bcrypt";
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt from "jsonwebtoken";
+import { PrismaClient } from "@/generated/prisma";
 
 const prisma = new PrismaClient();
 
