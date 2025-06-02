@@ -216,6 +216,8 @@ export default function Component() {
     const getAllDtc = async () => {
       try {
         const res = await axios.get("/api/dtc/getAll");
+        console.log("res.data.dtcs")
+        console.log(res.data.dtcs)
         setDtcDatabase(res.data.dtcs || []);
       } catch (error) {
         setErrors({ dtc: "Error al obtener base de datos DTC" });
@@ -1717,17 +1719,17 @@ export default function Component() {
             {/* Base de datos DTC */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {dtcDatabase
-                .filter((dtc) => {
-                  const matchesSearch =
-                    !searchTerm ||
-                    dtc.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    dtc.description.toLowerCase().includes(searchTerm.toLowerCase())
-                  const matchesSeverity =
-                    !filters.severity || filters.severity === "all" || dtc.severity === filters.severity
-                  const matchesCategory =
-                    !filters.category || filters.category === "all" || dtc.category === filters.category
-                  return matchesSearch && matchesSeverity && matchesCategory
-                })
+                // .filter((dtc) => {
+                //   const matchesSearch =
+                //     !searchTerm ||
+                //     dtc.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                //     dtc.description.toLowerCase().includes(searchTerm.toLowerCase())
+                //   const matchesSeverity =
+                //     !filters.severity || filters.severity === "all" || dtc.severity === filters.severity
+                //   const matchesCategory =
+                //     !filters.category || filters.category === "all" || dtc.category === filters.category
+                //   return matchesSearch && matchesSeverity && matchesCategory
+                // })
                 .map((dtc) => (
                   <Card key={dtc.code} className="border-l-4 border-l-blue-500">
                     <CardHeader>
@@ -1759,7 +1761,7 @@ export default function Component() {
                           {dtc.causes.map((cause, index) => (
                             <li key={index} className="flex items-start gap-2">
                               <span className="text-xs mt-1">•</span>
-                              {cause}
+                              {cause.text}
                             </li>
                           ))}
                         </ul>
@@ -1771,7 +1773,7 @@ export default function Component() {
                           {dtc.solutions.map((solution, index) => (
                             <li key={index} className="flex items-start gap-2">
                               <CheckCircle className="h-3 w-3 mt-1 text-green-500" />
-                              {solution}
+                              {solution.text}
                             </li>
                           ))}
                         </ul>

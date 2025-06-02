@@ -3,6 +3,85 @@ import { PrismaClient } from "@/generated/prisma";
 const prisma = new PrismaClient();
 // npx prisma db seed
 
+const mockDtcDatabase = [
+  {
+    code: "P0301",
+    description: "Falla de encendido en cilindro 1",
+    category: "Motor",
+    severity: "grave",
+    causes: [
+      "Bujía defectuosa",
+      "Bobina de encendido",
+      "Inyector obstruido",
+      "Compresión baja",
+    ],
+    solutions: [
+      "Reemplazar bujía",
+      "Verificar bobina",
+      "Limpiar inyector",
+      "Prueba de compresión",
+    ],
+  },
+  {
+    code: "P0171",
+    description: "Mezcla pobre en banco 1",
+    category: "Combustible",
+    severity: "moderada",
+    causes: [
+      "Filtro de aire sucio",
+      "Sensor MAF defectuoso",
+      "Fuga de vacío",
+      "Bomba de combustible",
+    ],
+    solutions: [
+      "Cambiar filtro aire",
+      "Limpiar sensor MAF",
+      "Revisar mangueras",
+      "Verificar presión combustible",
+    ],
+  },
+  {
+    code: "P0420",
+    description: "Eficiencia del catalizador por debajo del umbral",
+    category: "Emisiones",
+    severity: "moderada",
+    causes: [
+      "Catalizador deteriorado",
+      "Sensor O2 defectuoso",
+      "Fuga en escape",
+    ],
+    solutions: [
+      "Reemplazar catalizador",
+      "Cambiar sensor O2",
+      "Reparar fuga escape",
+    ],
+  },
+  {
+    code: "P0128",
+    description: "Termostato del refrigerante",
+    category: "Refrigeración",
+    severity: "leve",
+    causes: ["Termostato pegado abierto", "Sensor de temperatura defectuoso"],
+    solutions: ["Reemplazar termostato", "Verificar sensor temperatura"],
+  },
+  {
+    code: "P0442",
+    description: "Fuga pequeña en sistema EVAP",
+    category: "Emisiones",
+    severity: "leve",
+    causes: [
+      "Tapa de combustible suelta",
+      "Manguera EVAP agrietada",
+      "Válvula purga defectuosa",
+    ],
+    solutions: [
+      "Apretar tapa combustible",
+      "Revisar mangueras EVAP",
+      "Reemplazar válvula purga",
+    ],
+  },
+];
+
 const mockSymptoms = [
   {
     category: "Motor",
@@ -72,10 +151,28 @@ const mockSymptoms = [
 ];
 
 async function main() {
-  for (const symptom of mockSymptoms) {
-    await prisma.symptom.create({ data: symptom });
+    for (const symptom of mockSymptoms) {
+      await prisma.symptom.create({ data: symptom });
+    }
+
+  for (const dtc of mockDtcDatabase) {
+    await prisma.dtc.create({
+      data: {
+        code: dtc.code,
+        description: dtc.description,
+        category: dtc.category,
+        severity: dtc.severity,
+        causes: {
+          create: dtc.causes.map((text) => ({ text })),
+        },
+        solutions: {
+          create: dtc.solutions.map((text) => ({ text })),
+        },
+      },
+    });
   }
-  console.log("✔ Síntomas insertados correctamente");
+
+  console.log("✔ Todo insertado correctamente");
 }
 
 main()
