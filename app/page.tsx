@@ -517,7 +517,7 @@ export default function Component() {
                 const res = await axios.post("/api/diagnostic/create", {
                   vehicleId: vehicle.id,
                   fecha: new Date().toISOString(),
-                  // dtc: dtcCodes,
+                  dtc: dtcCodes,
                   desc: `Diagnóstico automático desde ${file.name}`,
                   tecnico: currentUser?.name || "Sistema",
                   estado: "pendiente",
@@ -1466,7 +1466,7 @@ export default function Component() {
                             }}
                           >
                             <div className="mb-2">
-                              <span className="font-semibold">DTC:</span> {diag.dtc.join(", ")}
+                              <span className="font-semibold">DTC:</span> {diag.dtcs.map(diag_dtc=> diag_dtc.dtcCode).join(", ")}
                             </div>
                             <div className="mb-2">
                               <span className="font-semibold">Descripción:</span> {diag.desc}

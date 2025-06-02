@@ -42,6 +42,28 @@ export default async function handler(
         scannerFileId,
       },
     });
+
+    // Asociar DTCs al diagnóstico
+    if (Array.isArray(dtc) && dtc.length > 0) {
+      const dtcCodes = dtc.map((code) => code.toUpperCase());
+      const validDtcs = await prisma.dtc.findMany({
+        where: { code: { in: dtcCodes } },
+        select: { code: true },
+      });
+      const validCodes = validDtcs.map((d) => d.code);
+      // Crear las relaciones en DiagnosticDtc
+      await Promise.all(
+        validCodes.map((code) =>
+          prisma.diagnosticDtc.create({
+            data: {
+              diagnosticId: diagnostic.id,
+              dtcCode: code,
+            },
+          })
+        )
+      );
+    }
+
     res.status(201).json({ diagnostic });
   } catch (error) {
     console.error("Error creating diagnostic:", error);

@@ -12,6 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       include: {
         vehicle: true,
         scannerFile: true,
+        dtcs: true
       },
       orderBy: { fecha: "desc" },
     });
