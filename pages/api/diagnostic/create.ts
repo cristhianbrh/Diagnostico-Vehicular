@@ -41,6 +41,12 @@ export default async function handler(
         duration,
         scannerFileId,
       },
+      include: {
+        vehicle: true,
+        scannerFile: true,
+        dtcs: true,
+        symptoms: true,
+      }
     });
 
     // Asociar DTCs al diagnóstico

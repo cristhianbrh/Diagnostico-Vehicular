@@ -531,7 +531,8 @@ export default function Component() {
                   cost: 0,
                   duration: 0,
                 });
-                setDiagnostics((prev) => [...prev, res.data]);
+                console.log(res.data.diagnostic)
+                setDiagnostics((prev) => [...prev, res.data.diagnostic]);
               } catch (error) {
                 setErrors({ diagnostic: "Error al crear diagnóstico automáticamente" });
               }
@@ -892,9 +893,16 @@ export default function Component() {
               <span className="text-sm text-muted-foreground">
                 {currentUser.name} ({currentUser.role})
               </span>
-              <Button variant="outline" size="sm" onClick={() => setCurrentUser(null)}>
+                <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  setCurrentUser(null);
+                }}
+                >
                 <LogOut className="h-4 w-4" />
-              </Button>
+                </Button>
             </div>
           </nav>
         </div>
@@ -1378,7 +1386,18 @@ export default function Component() {
                                 <div className="flex justify-between items-start mb-2">
                                   <div className="flex items-center gap-2">
                                     <Calendar className="h-4 w-4" />
-                                    <span className="font-medium">{diag.fecha}</span>
+                                    <span className="font-medium">
+                                      {new Date(diag.fecha).toLocaleDateString("es-CL", {
+                                        year: "numeric",
+                                        month: "short",
+                                        day: "2-digit",
+                                      })}
+                                      {" "}
+                                      {new Date(diag.fecha).toLocaleTimeString("es-CL", {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                      })}
+                                    </span>
                                     <Badge
                                       variant={
                                         diag.estado === "resuelto"
@@ -1411,12 +1430,63 @@ export default function Component() {
                                     </div>
                                   </div>
                                 )}
-                                {diag.detalles && (
-                                  <div>
-                                    <Label className="text-sm font-medium">Detalles:</Label>
-                                    <p className="text-sm text-muted-foreground mt-1">{diag.detalles}</p>
+                               <div className="mb-5">
+                                 {diag.dtcs.map((diag_dtc) => (
+                                        <Badge key={"history_" + diag.id + diag_dtc.dtcCode} variant="outline" className="font-mono text-xs">
+                                            {diag_dtc.dtcCode}
+                                          </Badge>
+                                        ))}
                                   </div>
-                                )}
+                                 <div className="flex flex-col gap-5">
+                                 
+                                  {diag.detalles && (
+                                    <div>
+                                      <Label className="text-sm font-medium">Detalles:</Label>
+                                      <p className="text-sm text-muted-foreground mt-1">{diag.detalles}</p>
+                                    </div>
+                                  )}
+                                  {diag.aditionalSymptom && (
+                                    <div>
+                                      <Label className="text-sm font-medium">Síntomas Adicionales:</Label>
+                                      <p className="text-sm text-muted-foreground mt-1">{diag.aditionalSymptom}</p>
+                                    </div>
+                                  )}
+                                  {diag.symptoms && diag.symptoms.length > 0 && (
+                                    <div className="mb-2">
+                                      <Label className="text-sm font-medium">Síntomas Asociados:</Label>
+                                      <div className="flex flex-wrap gap-2 mt-1">
+                                        {diag.symptoms.map((sym_dia) => {
+                                          const currentSympt = symptoms.find((synn) => synn.id === sym_dia.symptomId)
+                                          if (!currentSympt) return null
+                                          return (
+                                            <Badge
+                                              key={`symptom_${diag.id}_${currentSympt.id}`}
+                                              variant="outline"
+                                              className="text-xs px-2 py-1 flex flex-col items-start min-w-[120px]"
+                                            >
+                                              <span className="font-medium">{currentSympt.name}</span>
+                                              <span className="text-xs text-muted-foreground">{currentSympt.description}</span>
+                                            </Badge>
+                                          )
+                                        })}
+                                      </div>
+                                    </div>
+                                  )}
+                                  {diag.noteTecnicSym && (
+                                    <div>
+                                      <Label className="text-sm font-medium">Notas del Técnico:</Label>
+                                      <p className="text-sm text-muted-foreground mt-1">{diag.noteTecnicSym}</p>
+                                    </div>
+                                  )}
+                                  {diag.solutionText && (
+                                    <div>
+                                      <Label className="text-sm font-medium">Detalles de la solucion:</Label>
+                                      <p className="text-sm text-muted-foreground mt-1">{diag.solutionText}</p>
+                                    </div>
+                                  )}
+
+                               </div>
+                              
                               </CardContent>
                             </Card>
                           ))}
@@ -1928,7 +1998,16 @@ export default function Component() {
                               key={diag_dg.id}
                               value={diag_dg.id.toString()}
                             >
-                              {diag_dg.desc} - {diag_dg.fecha}
+                              {diag_dg.desc} - {new Date(diag_dg.fecha).toLocaleDateString("es-CL", {
+                                        year: "numeric",
+                                        month: "short",
+                                        day: "2-digit",
+                                      })}
+                                      {" "}
+                                      {new Date(diag_dg.fecha).toLocaleTimeString("es-CL", {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                      })}
                             </option>
                           ))}
                       </select>
@@ -2350,8 +2429,16 @@ export default function Component() {
                               <Button
                                 size="sm"
                                 variant={user.active ? "secondary" : "default"}
-                                onClick={() => {
-                                  setUsers(users.map((u) => (u.id === user.id ? { ...u, active: !u.active } : u)))
+                                onClick={async () => {
+                                  try {
+                                    const res = await axios.put("/api/users/updateUser", {
+                                      id: user.id,
+                                      active: !user.active,
+                                    });
+                                    setUsers(users.map((u) => (u.id === user.id ? res.data.user : u)));
+                                  } catch (error) {
+                                    setErrors({ user: "Error al actualizar usuario" });
+                                  }
                                 }}
                               >
                                 {user.active ? "Desactivar" : "Activar"}
