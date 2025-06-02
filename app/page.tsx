@@ -426,11 +426,14 @@ export default function Component() {
              role : authForm.role
           })
           .then((res) => {
-        // res.data.user esperado
-        setUsers([...users, res.data.user])
-        setCurrentUser(res.data.user)
-        setAuthForm({})
-        setErrors({})
+            // res.data.user esperado
+            setUsers([...users, res.data.user])
+            setCurrentUser(res.data.user)
+            setAuthForm({})
+            setErrors({})
+            if (res.data.token) {
+              localStorage.setItem("token", res.data.token)
+            }
           })
           .catch((err) => {
         setErrors({ auth: err.response?.data?.error || err.message || "Error al registrar usuario" })
