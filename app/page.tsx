@@ -2334,10 +2334,10 @@ export default function Component() {
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold">Gestión de Usuarios</h2>
-              <Button className="flex items-center gap-2">
+              {/* <Button className="flex items-center gap-2">
                 <UserPlus className="h-4 w-4" />
                 Nuevo Usuario
-              </Button>
+              </Button> */}
             </div>
 
             {/* Estadísticas de usuarios */}
@@ -2423,10 +2423,10 @@ export default function Component() {
                           <td className="p-2">{user.createdAt}</td>
                           <td className="p-2">
                             <div className="flex gap-1">
-                              <Button size="sm" variant="outline">
+                              {/* <Button size="sm" variant="outline">
                                 <Edit className="h-4 w-4" />
-                              </Button>
-                              <Button
+                              </Button> */}
+                            {currentUser.id !== user.id &&  <Button
                                 size="sm"
                                 variant={user.active ? "secondary" : "default"}
                                 onClick={async () => {
@@ -2442,7 +2442,7 @@ export default function Component() {
                                 }}
                               >
                                 {user.active ? "Desactivar" : "Activar"}
-                              </Button>
+                              </Button>}
                             </div>
                           </td>
                         </tr>
