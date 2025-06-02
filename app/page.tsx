@@ -70,6 +70,7 @@ export default function Component() {
   const [selectedSymptoms, setSelectedSymptoms] = useState([])
   const [manualDtc, setManualDtc] = useState("")
   const [successMsg, setSuccessMsg] = useState("")
+  const [vehicleSelectSymtoms, setVehicleSelectSymtoms] = useState<number>(-1)
   const fileInputRef = useRef(null)
   useEffect(() => {
     console.log("Current view changed:", currentView)
@@ -1818,12 +1819,15 @@ export default function Component() {
                 <CardContent className="space-y-4">
                   <div>
                     <Label htmlFor="vehicleSelect">Vehículo</Label>
-                    <Select>
+                    <Select
+                      value={vehicleSelectSymtoms !== -1 ? vehicleSelectSymtoms.toString() : ""}
+                      onValueChange={(value) => setVehicleSelectSymtoms(Number(value))}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Seleccionar vehículo" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">Todos los vehículos</SelectItem>
+                        <SelectItem value="-1">Todos los vehículos</SelectItem>
                         {vehicleData.map((vehicle) => (
                           <SelectItem key={vehicle.id} value={vehicle.id.toString()}>
                             {vehicle.marca} {vehicle.modelo} - {vehicle.patente}
@@ -1832,6 +1836,27 @@ export default function Component() {
                       </SelectContent>
                     </Select>
                   </div>
+                    <div>
+                    <Label htmlFor="diagnosticSelect">Diagnóstico</Label>
+                    <Select>
+                      <SelectTrigger>
+                      <SelectValue placeholder="Seleccionar diagnóstico" />
+                      </SelectTrigger>
+                      <SelectContent>
+                      {diagnostics
+                        .filter(
+                        (dt) =>
+                          (vehicleSelectSymtoms === -1 || dt.vehicleId === vehicleSelectSymtoms) &&
+                          dt.estado !== "resuelto"
+                        )
+                        .map((diag_dg) => (
+                        <SelectItem key={diag_dg.id} value={diag_dg.id.toString()}>
+                          {diag_dg.desc} - {diag_dg.fecha}
+                        </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    </div>
 
                   <div>
                     <Label className="text-sm font-medium">Síntomas Predefinidos</Label>
