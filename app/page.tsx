@@ -1814,94 +1814,212 @@ export default function Component() {
                     <Wrench className="h-5 w-5" />
                     Registrar Nuevos Síntomas
                   </CardTitle>
-                  <CardDescription>Complementa el diagnóstico con observaciones adicionales</CardDescription>
+                  <CardDescription>
+                    Complementa el diagnóstico con observaciones adicionales
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div>
-                    <Label htmlFor="vehicleSelect">Vehículo</Label>
-                    <Select
-                      value={vehicleSelectSymtoms !== -1 ? vehicleSelectSymtoms.toString() : ""}
-                      onValueChange={(value) => setVehicleSelectSymtoms(Number(value))}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Seleccionar vehículo" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="-1">Todos los vehículos</SelectItem>
-                        {vehicleData.map((vehicle) => (
-                          <SelectItem key={vehicle.id} value={vehicle.id.toString()}>
-                            {vehicle.marca} {vehicle.modelo} - {vehicle.patente}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                  <form
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      setLoading(true);
+                      setErrors({});
+                      setSuccessMsg("");
+                      // Obtener valores del formulario
+                      const form = e.target as HTMLFormElement;
+                      // Diagnóstico seleccionado
+                      const diagnosticSelect = form.querySelector(
+                        '[name="diagnosticSelect"]'
+                      ) as HTMLSelectElement;
+                      const diagnosticId = diagnosticSelect?.value
+                        ? Number(diagnosticSelect.value)
+                        : null;
+                      // Síntomas seleccionados
+                      const selectedSymptomIds = selectedSymptoms;
+                      // Síntomas adicionales
+                      const aditionalSymptom =
+                        (
+                          form.querySelector(
+                            "#customSymptoms"
+                          ) as HTMLTextAreaElement
+                        )?.value || "";
+                      // Notas del técnico
+                      const noteTecnic =
+                        (
+                          form.querySelector(
+                            "#techNotes"
+                          ) as HTMLTextAreaElement
+                        )?.value || "";
+
+                      if (!diagnosticId) {
+                        setErrors({ submit: "Selecciona un diagnóstico" });
+                        setLoading(false);
+                        return;
+                      }
+                      try {
+                        await axios.post("/api/symptoms/upload", {
+                          diagnosticId,
+                          symptoms: selectedSymptomIds,
+                          aditionalSymptom,
+                          noteTecnic,
+                        });
+                        setSuccessMsg("Síntomas registrados correctamente");
+                        setSelectedSymptoms([]);
+                        form.reset();
+                      } catch (error) {
+                        setErrors({ submit: "Error al registrar síntomas" });
+                      }
+                      setLoading(false);
+                    }}
+                  >
                     <div>
-                    <Label htmlFor="diagnosticSelect">Diagnóstico</Label>
-                    <Select>
-                      <SelectTrigger>
-                      <SelectValue placeholder="Seleccionar diagnóstico" />
-                      </SelectTrigger>
-                      <SelectContent>
-                      {diagnostics
-                        .filter(
-                        (dt) =>
-                          (vehicleSelectSymtoms === -1 || dt.vehicleId === vehicleSelectSymtoms) &&
-                          dt.estado !== "resuelto"
-                        )
-                        .map((diag_dg) => (
-                        <SelectItem key={diag_dg.id} value={diag_dg.id.toString()}>
-                          {diag_dg.desc} - {diag_dg.fecha}
-                        </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    </div>
-
-                  <div>
-                    <Label className="text-sm font-medium">Síntomas Predefinidos</Label>
-                    <div className="mt-2 space-y-2 max-h-64 overflow-y-auto">
-                      {symptoms.map((symptom) => (
-                        <div key={symptom.id} className="flex items-start space-x-2">
-                          <Checkbox
-                            id={`symptom-${symptom.id}`}
-                            checked={selectedSymptoms.includes(symptom.id)}
-                            onCheckedChange={(checked) => {
-                              if (checked) {
-                                setSelectedSymptoms([...selectedSymptoms, symptom.id])
-                              } else {
-                                setSelectedSymptoms(selectedSymptoms.filter((id) => id !== symptom.id))
-                              }
-                            }}
-                          />
-                          <div className="grid gap-1.5 leading-none">
-                            <label
-                              htmlFor={`symptom-${symptom.id}`}
-                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      <Label htmlFor="vehicleSelect">Vehículo</Label>
+                      <Select
+                        value={
+                          vehicleSelectSymtoms !== -1
+                            ? vehicleSelectSymtoms.toString()
+                            : ""
+                        }
+                        onValueChange={(value) =>
+                          setVehicleSelectSymtoms(Number(value))
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Seleccionar vehículo" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="-1">
+                            Todos los vehículos
+                          </SelectItem>
+                          {vehicleData.map((vehicle) => (
+                            <SelectItem
+                              key={vehicle.id}
+                              value={vehicle.id.toString()}
                             >
-                              {symptom.name}
-                            </label>
-                            <p className="text-xs text-muted-foreground">{symptom.description}</p>
-                          </div>
-                        </div>
-                      ))}
+                              {vehicle.marca} {vehicle.modelo} -{" "}
+                              {vehicle.patente}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
-                  </div>
+                    <div>
+                      <Label htmlFor="diagnosticSelect">Diagnóstico</Label>
+                      <select
+                        name="diagnosticSelect"
+                        id="diagnosticSelect"
+                        className="w-full border rounded px-2 py-2 mt-1"
+                        required
+                        value={
+                          diagnostics
+                            .filter(
+                              (dt) =>
+                                (vehicleSelectSymtoms === -1 ||
+                                  dt.vehicleId === vehicleSelectSymtoms) &&
+                                dt.estado !== "resuelto"
+                            )[0]
+                            ?.id?.toString() || ""
+                        }
+                        onChange={() => {}} // avoid react warning
+                      >
+                        <option value="">Seleccionar diagnóstico</option>
+                        {diagnostics
+                          .filter(
+                            (dt) =>
+                              (vehicleSelectSymtoms === -1 ||
+                                dt.vehicleId === vehicleSelectSymtoms) &&
+                              dt.estado !== "resuelto"
+                          )
+                          .map((diag_dg) => (
+                            <option
+                              key={diag_dg.id}
+                              value={diag_dg.id.toString()}
+                            >
+                              {diag_dg.desc} - {diag_dg.fecha}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
 
-                  <div>
-                    <Label htmlFor="customSymptoms">Síntomas Adicionales</Label>
-                    <Textarea id="customSymptoms" placeholder="Describe otros síntomas observados..." rows={4} />
-                  </div>
+                    <div>
+                      <Label className="text-sm font-medium">
+                        Síntomas Predefinidos
+                      </Label>
+                      <div className="mt-2 space-y-2 max-h-64 overflow-y-auto">
+                        {symptoms.map((symptom) => (
+                          <div
+                            key={symptom.id}
+                            className="flex items-start space-x-2"
+                          >
+                            <Checkbox
+                              id={`symptom-${symptom.id}`}
+                              checked={selectedSymptoms.includes(symptom.id)}
+                              onCheckedChange={(checked) => {
+                                if (checked) {
+                                  setSelectedSymptoms([
+                                    ...selectedSymptoms,
+                                    symptom.id,
+                                  ]);
+                                } else {
+                                  setSelectedSymptoms(
+                                    selectedSymptoms.filter(
+                                      (id) => id !== symptom.id
+                                    )
+                                  );
+                                }
+                              }}
+                            />
+                            <div className="grid gap-1.5 leading-none">
+                              <label
+                                htmlFor={`symptom-${symptom.id}`}
+                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                              >
+                                {symptom.name}
+                              </label>
+                              <p className="text-xs text-muted-foreground">
+                                {symptom.description}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
 
-                  <div>
-                    <Label htmlFor="techNotes">Notas del Técnico</Label>
-                    <Textarea id="techNotes" placeholder="Observaciones técnicas adicionales..." rows={3} />
-                  </div>
+                    <div>
+                      <Label htmlFor="customSymptoms">
+                        Síntomas Adicionales
+                      </Label>
+                      <Textarea
+                        id="customSymptoms"
+                        placeholder="Describe otros síntomas observados..."
+                        rows={4}
+                      />
+                    </div>
 
-                  <Button className="w-full">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Registrar Síntomas
-                  </Button>
+                    <div>
+                      <Label htmlFor="techNotes">Notas del Técnico</Label>
+                      <Textarea
+                        id="techNotes"
+                        placeholder="Observaciones técnicas adicionales..."
+                        rows={3}
+                      />
+                    </div>
+
+                    <Button className="w-full" type="submit" disabled={loading}>
+                      <Plus className="h-4 w-4 mr-2" />
+                      {loading ? "Registrando..." : "Registrar Síntomas"}
+                    </Button>
+                    {errors.submit && (
+                      <p className="text-red-500 text-sm mt-2">
+                        {errors.submit}
+                      </p>
+                    )}
+                    {successMsg && (
+                      <p className="text-green-600 text-sm mt-2">
+                        {successMsg}
+                      </p>
+                    )}
+                  </form>
                 </CardContent>
               </Card>
 
@@ -1909,7 +2027,9 @@ export default function Component() {
               <Card>
                 <CardHeader>
                   <CardTitle>Síntomas por Categoría</CardTitle>
-                  <CardDescription>Catálogo de síntomas organizados por sistema</CardDescription>
+                  <CardDescription>
+                    Catálogo de síntomas organizados por sistema
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Tabs defaultValue="Motor" className="w-full">
@@ -1920,37 +2040,57 @@ export default function Component() {
                       <TabsTrigger value="Otros">Otros</TabsTrigger>
                     </TabsList>
 
-                    {["Motor", "Combustible", "Eléctrico", "Otros"].map((category) => (
-                      <TabsContent key={category} value={category} className="space-y-2">
-                        {symptoms
-                          .filter(
-                            (s) =>
-                              s.category === category ||
-                              (category === "Otros" && !["Motor", "Combustible", "Eléctrico"].includes(s.category)),
-                          )
-                          .map((symptom) => (
-                            <Card key={symptom.id} className="p-3">
-                              <div className="flex items-start justify-between">
-                                <div>
-                                  <h4 className="font-medium text-sm">{symptom.name}</h4>
-                                  <p className="text-xs text-muted-foreground mt-1">{symptom.description}</p>
+                    {["Motor", "Combustible", "Eléctrico", "Otros"].map(
+                      (category) => (
+                        <TabsContent
+                          key={category}
+                          value={category}
+                          className="space-y-2"
+                        >
+                          {symptoms
+                            .filter(
+                              (s) =>
+                                s.category === category ||
+                                (category === "Otros" &&
+                                  ![
+                                    "Motor",
+                                    "Combustible",
+                                    "Eléctrico",
+                                  ].includes(s.category))
+                            )
+                            .map((symptom) => (
+                              <Card key={symptom.id} className="p-3">
+                                <div className="flex items-start justify-between">
+                                  <div>
+                                    <h4 className="font-medium text-sm">
+                                      {symptom.name}
+                                    </h4>
+                                    <p className="text-xs text-muted-foreground mt-1">
+                                      {symptom.description}
+                                    </p>
+                                  </div>
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => {
+                                      if (
+                                        !selectedSymptoms.includes(symptom.id)
+                                      ) {
+                                        setSelectedSymptoms([
+                                          ...selectedSymptoms,
+                                          symptom.id,
+                                        ]);
+                                      }
+                                    }}
+                                  >
+                                    <Plus className="h-3 w-3" />
+                                  </Button>
                                 </div>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => {
-                                    if (!selectedSymptoms.includes(symptom.id)) {
-                                      setSelectedSymptoms([...selectedSymptoms, symptom.id])
-                                    }
-                                  }}
-                                >
-                                  <Plus className="h-3 w-3" />
-                                </Button>
-                              </div>
-                            </Card>
-                          ))}
-                      </TabsContent>
-                    ))}
+                              </Card>
+                            ))}
+                        </TabsContent>
+                      )
+                    )}
                   </Tabs>
                 </CardContent>
               </Card>
