@@ -1455,12 +1455,19 @@ export default function Component() {
                               const formData = new FormData(e.target as HTMLFormElement);
                               const detalles = formData.get("detalles") as string;
                               try {
-                                // Actualiza el estado localmente (puedes llamar a la API si tienes endpoint)
-                                setDiagnostics((prev) => prev.map((d) =>
-                                  d.id === diag.id
-                                    ? { ...d, estado: "resuelto", detalles: detalles || d.detalles }
-                                    : d
-                                ));
+                                // Llama a la API para actualizar el diagnóstico
+                                const res = await axios.put("/api/diagnostic/solutionDiagnostic", {
+                                  id: diag.id,
+                                  solutionText: detalles || diag.detalles,
+                                });
+                                // Actualiza el estado localmente con la respuesta de la API
+                                setDiagnostics((prev) =>
+                                  prev.map((d) =>
+                                    d.id === diag.id
+                                      ? { ...d, ...res.data.diagnostic }
+                                      : d
+                                  )
+                                );
                                 setErrors({});
                               } catch (error) {
                                 setErrors({ solve: "Error al marcar como resuelto" });
@@ -1469,7 +1476,7 @@ export default function Component() {
                             }}
                           >
                             <div className="mb-2">
-                              <span className="font-semibold">DTC:</span> {diag.dtcs.map(diag_dtc=> diag_dtc.dtcCode).join(", ")}
+                              <span className="font-semibold">DTC:</span> {diag.dtc?.join(", ")}
                             </div>
                             <div className="mb-2">
                               <span className="font-semibold">Descripción:</span> {diag.desc}

@@ -3,7 +3,10 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method !== "PUT") {
     return res.status(405).json({ error: "Método no permitido" });
   }
@@ -15,11 +18,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const updated = await prisma.diagnostic.update({
       where: { id: Number(id) },
       data: {
-        estado: "resuelto"
-      } 
+        estado: "resuelto",
+        solutionText: solutionText,
+      },
     });
-    
-    
 
     res.status(200).json({ diagnostic: updated });
   } catch (error) {
