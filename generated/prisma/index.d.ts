@@ -54,11 +54,6 @@ export type Diagnostic = $Result.DefaultSelection<Prisma.$DiagnosticPayload>
  */
 export type DiagnosticDtc = $Result.DefaultSelection<Prisma.$DiagnosticDtcPayload>
 /**
- * Model DiagnosticDtcSolution
- * 
- */
-export type DiagnosticDtcSolution = $Result.DefaultSelection<Prisma.$DiagnosticDtcSolutionPayload>
-/**
  * Model DiagnosticSymptom
  * 
  */
@@ -278,16 +273,6 @@ export class PrismaClient<
     * ```
     */
   get diagnosticDtc(): Prisma.DiagnosticDtcDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.diagnosticDtcSolution`: Exposes CRUD operations for the **DiagnosticDtcSolution** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more DiagnosticDtcSolutions
-    * const diagnosticDtcSolutions = await prisma.diagnosticDtcSolution.findMany()
-    * ```
-    */
-  get diagnosticDtcSolution(): Prisma.DiagnosticDtcSolutionDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.diagnosticSymptom`: Exposes CRUD operations for the **DiagnosticSymptom** model.
@@ -766,7 +751,6 @@ export namespace Prisma {
     Symptom: 'Symptom',
     Diagnostic: 'Diagnostic',
     DiagnosticDtc: 'DiagnosticDtc',
-    DiagnosticDtcSolution: 'DiagnosticDtcSolution',
     DiagnosticSymptom: 'DiagnosticSymptom',
     ScannerFile: 'ScannerFile',
     Help: 'Help'
@@ -788,7 +772,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "vehicle" | "dtc" | "dtcCause" | "dtcSolution" | "symptom" | "diagnostic" | "diagnosticDtc" | "diagnosticDtcSolution" | "diagnosticSymptom" | "scannerFile" | "help"
+      modelProps: "user" | "vehicle" | "dtc" | "dtcCause" | "dtcSolution" | "symptom" | "diagnostic" | "diagnosticDtc" | "diagnosticSymptom" | "scannerFile" | "help"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1320,72 +1304,6 @@ export namespace Prisma {
           }
         }
       }
-      DiagnosticDtcSolution: {
-        payload: Prisma.$DiagnosticDtcSolutionPayload<ExtArgs>
-        fields: Prisma.DiagnosticDtcSolutionFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.DiagnosticDtcSolutionFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DiagnosticDtcSolutionPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.DiagnosticDtcSolutionFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DiagnosticDtcSolutionPayload>
-          }
-          findFirst: {
-            args: Prisma.DiagnosticDtcSolutionFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DiagnosticDtcSolutionPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.DiagnosticDtcSolutionFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DiagnosticDtcSolutionPayload>
-          }
-          findMany: {
-            args: Prisma.DiagnosticDtcSolutionFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DiagnosticDtcSolutionPayload>[]
-          }
-          create: {
-            args: Prisma.DiagnosticDtcSolutionCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DiagnosticDtcSolutionPayload>
-          }
-          createMany: {
-            args: Prisma.DiagnosticDtcSolutionCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.DiagnosticDtcSolutionDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DiagnosticDtcSolutionPayload>
-          }
-          update: {
-            args: Prisma.DiagnosticDtcSolutionUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DiagnosticDtcSolutionPayload>
-          }
-          deleteMany: {
-            args: Prisma.DiagnosticDtcSolutionDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.DiagnosticDtcSolutionUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.DiagnosticDtcSolutionUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DiagnosticDtcSolutionPayload>
-          }
-          aggregate: {
-            args: Prisma.DiagnosticDtcSolutionAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateDiagnosticDtcSolution>
-          }
-          groupBy: {
-            args: Prisma.DiagnosticDtcSolutionGroupByArgs<ExtArgs>
-            result: $Utils.Optional<DiagnosticDtcSolutionGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.DiagnosticDtcSolutionCountArgs<ExtArgs>
-            result: $Utils.Optional<DiagnosticDtcSolutionCountAggregateOutputType> | number
-          }
-        }
-      }
       DiagnosticSymptom: {
         payload: Prisma.$DiagnosticSymptomPayload<ExtArgs>
         fields: Prisma.DiagnosticSymptomFieldRefs
@@ -1676,7 +1594,6 @@ export namespace Prisma {
     symptom?: SymptomOmit
     diagnostic?: DiagnosticOmit
     diagnosticDtc?: DiagnosticDtcOmit
-    diagnosticDtcSolution?: DiagnosticDtcSolutionOmit
     diagnosticSymptom?: DiagnosticSymptomOmit
     scannerFile?: ScannerFileOmit
     help?: HelpOmit
@@ -1957,37 +1874,6 @@ export namespace Prisma {
    */
   export type DiagnosticCountOutputTypeCountSymptomsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DiagnosticSymptomWhereInput
-  }
-
-
-  /**
-   * Count Type DiagnosticDtcCountOutputType
-   */
-
-  export type DiagnosticDtcCountOutputType = {
-    diagnosticDtcSolutions: number
-  }
-
-  export type DiagnosticDtcCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    diagnosticDtcSolutions?: boolean | DiagnosticDtcCountOutputTypeCountDiagnosticDtcSolutionsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * DiagnosticDtcCountOutputType without action
-   */
-  export type DiagnosticDtcCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DiagnosticDtcCountOutputType
-     */
-    select?: DiagnosticDtcCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * DiagnosticDtcCountOutputType without action
-   */
-  export type DiagnosticDtcCountOutputTypeCountDiagnosticDtcSolutionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DiagnosticDtcSolutionWhereInput
   }
 
 
@@ -9134,16 +9020,19 @@ export namespace Prisma {
   export type DiagnosticDtcMinAggregateOutputType = {
     diagnosticId: number | null
     dtcCode: string | null
+    solutionText: string | null
   }
 
   export type DiagnosticDtcMaxAggregateOutputType = {
     diagnosticId: number | null
     dtcCode: string | null
+    solutionText: string | null
   }
 
   export type DiagnosticDtcCountAggregateOutputType = {
     diagnosticId: number
     dtcCode: number
+    solutionText: number
     _all: number
   }
 
@@ -9159,16 +9048,19 @@ export namespace Prisma {
   export type DiagnosticDtcMinAggregateInputType = {
     diagnosticId?: true
     dtcCode?: true
+    solutionText?: true
   }
 
   export type DiagnosticDtcMaxAggregateInputType = {
     diagnosticId?: true
     dtcCode?: true
+    solutionText?: true
   }
 
   export type DiagnosticDtcCountAggregateInputType = {
     diagnosticId?: true
     dtcCode?: true
+    solutionText?: true
     _all?: true
   }
 
@@ -9261,6 +9153,7 @@ export namespace Prisma {
   export type DiagnosticDtcGroupByOutputType = {
     diagnosticId: number
     dtcCode: string
+    solutionText: string | null
     _count: DiagnosticDtcCountAggregateOutputType | null
     _avg: DiagnosticDtcAvgAggregateOutputType | null
     _sum: DiagnosticDtcSumAggregateOutputType | null
@@ -9285,10 +9178,9 @@ export namespace Prisma {
   export type DiagnosticDtcSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     diagnosticId?: boolean
     dtcCode?: boolean
+    solutionText?: boolean
     diagnostic?: boolean | DiagnosticDefaultArgs<ExtArgs>
     dtc?: boolean | DtcDefaultArgs<ExtArgs>
-    diagnosticDtcSolutions?: boolean | DiagnosticDtc$diagnosticDtcSolutionsArgs<ExtArgs>
-    _count?: boolean | DiagnosticDtcCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["diagnosticDtc"]>
 
 
@@ -9296,14 +9188,13 @@ export namespace Prisma {
   export type DiagnosticDtcSelectScalar = {
     diagnosticId?: boolean
     dtcCode?: boolean
+    solutionText?: boolean
   }
 
-  export type DiagnosticDtcOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"diagnosticId" | "dtcCode", ExtArgs["result"]["diagnosticDtc"]>
+  export type DiagnosticDtcOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"diagnosticId" | "dtcCode" | "solutionText", ExtArgs["result"]["diagnosticDtc"]>
   export type DiagnosticDtcInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     diagnostic?: boolean | DiagnosticDefaultArgs<ExtArgs>
     dtc?: boolean | DtcDefaultArgs<ExtArgs>
-    diagnosticDtcSolutions?: boolean | DiagnosticDtc$diagnosticDtcSolutionsArgs<ExtArgs>
-    _count?: boolean | DiagnosticDtcCountOutputTypeDefaultArgs<ExtArgs>
   }
 
   export type $DiagnosticDtcPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9311,11 +9202,11 @@ export namespace Prisma {
     objects: {
       diagnostic: Prisma.$DiagnosticPayload<ExtArgs>
       dtc: Prisma.$DtcPayload<ExtArgs>
-      diagnosticDtcSolutions: Prisma.$DiagnosticDtcSolutionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       diagnosticId: number
       dtcCode: string
+      solutionText: string | null
     }, ExtArgs["result"]["diagnosticDtc"]>
     composites: {}
   }
@@ -9658,7 +9549,6 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     diagnostic<T extends DiagnosticDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DiagnosticDefaultArgs<ExtArgs>>): Prisma__DiagnosticClient<$Result.GetResult<Prisma.$DiagnosticPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     dtc<T extends DtcDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DtcDefaultArgs<ExtArgs>>): Prisma__DtcClient<$Result.GetResult<Prisma.$DtcPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    diagnosticDtcSolutions<T extends DiagnosticDtc$diagnosticDtcSolutionsArgs<ExtArgs> = {}>(args?: Subset<T, DiagnosticDtc$diagnosticDtcSolutionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DiagnosticDtcSolutionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9690,6 +9580,7 @@ export namespace Prisma {
   interface DiagnosticDtcFieldRefs {
     readonly diagnosticId: FieldRef<"DiagnosticDtc", 'Int'>
     readonly dtcCode: FieldRef<"DiagnosticDtc", 'String'>
+    readonly solutionText: FieldRef<"DiagnosticDtc", 'String'>
   }
     
 
@@ -10033,30 +9924,6 @@ export namespace Prisma {
   }
 
   /**
-   * DiagnosticDtc.diagnosticDtcSolutions
-   */
-  export type DiagnosticDtc$diagnosticDtcSolutionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DiagnosticDtcSolution
-     */
-    select?: DiagnosticDtcSolutionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DiagnosticDtcSolution
-     */
-    omit?: DiagnosticDtcSolutionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DiagnosticDtcSolutionInclude<ExtArgs> | null
-    where?: DiagnosticDtcSolutionWhereInput
-    orderBy?: DiagnosticDtcSolutionOrderByWithRelationInput | DiagnosticDtcSolutionOrderByWithRelationInput[]
-    cursor?: DiagnosticDtcSolutionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: DiagnosticDtcSolutionScalarFieldEnum | DiagnosticDtcSolutionScalarFieldEnum[]
-  }
-
-  /**
    * DiagnosticDtc without action
    */
   export type DiagnosticDtcDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10072,962 +9939,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: DiagnosticDtcInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model DiagnosticDtcSolution
-   */
-
-  export type AggregateDiagnosticDtcSolution = {
-    _count: DiagnosticDtcSolutionCountAggregateOutputType | null
-    _avg: DiagnosticDtcSolutionAvgAggregateOutputType | null
-    _sum: DiagnosticDtcSolutionSumAggregateOutputType | null
-    _min: DiagnosticDtcSolutionMinAggregateOutputType | null
-    _max: DiagnosticDtcSolutionMaxAggregateOutputType | null
-  }
-
-  export type DiagnosticDtcSolutionAvgAggregateOutputType = {
-    id: number | null
-    diagnosticId: number | null
-  }
-
-  export type DiagnosticDtcSolutionSumAggregateOutputType = {
-    id: number | null
-    diagnosticId: number | null
-  }
-
-  export type DiagnosticDtcSolutionMinAggregateOutputType = {
-    id: number | null
-    text: string | null
-    diagnosticId: number | null
-    dtcCode: string | null
-  }
-
-  export type DiagnosticDtcSolutionMaxAggregateOutputType = {
-    id: number | null
-    text: string | null
-    diagnosticId: number | null
-    dtcCode: string | null
-  }
-
-  export type DiagnosticDtcSolutionCountAggregateOutputType = {
-    id: number
-    text: number
-    diagnosticId: number
-    dtcCode: number
-    _all: number
-  }
-
-
-  export type DiagnosticDtcSolutionAvgAggregateInputType = {
-    id?: true
-    diagnosticId?: true
-  }
-
-  export type DiagnosticDtcSolutionSumAggregateInputType = {
-    id?: true
-    diagnosticId?: true
-  }
-
-  export type DiagnosticDtcSolutionMinAggregateInputType = {
-    id?: true
-    text?: true
-    diagnosticId?: true
-    dtcCode?: true
-  }
-
-  export type DiagnosticDtcSolutionMaxAggregateInputType = {
-    id?: true
-    text?: true
-    diagnosticId?: true
-    dtcCode?: true
-  }
-
-  export type DiagnosticDtcSolutionCountAggregateInputType = {
-    id?: true
-    text?: true
-    diagnosticId?: true
-    dtcCode?: true
-    _all?: true
-  }
-
-  export type DiagnosticDtcSolutionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which DiagnosticDtcSolution to aggregate.
-     */
-    where?: DiagnosticDtcSolutionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DiagnosticDtcSolutions to fetch.
-     */
-    orderBy?: DiagnosticDtcSolutionOrderByWithRelationInput | DiagnosticDtcSolutionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: DiagnosticDtcSolutionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DiagnosticDtcSolutions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DiagnosticDtcSolutions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned DiagnosticDtcSolutions
-    **/
-    _count?: true | DiagnosticDtcSolutionCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: DiagnosticDtcSolutionAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: DiagnosticDtcSolutionSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: DiagnosticDtcSolutionMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: DiagnosticDtcSolutionMaxAggregateInputType
-  }
-
-  export type GetDiagnosticDtcSolutionAggregateType<T extends DiagnosticDtcSolutionAggregateArgs> = {
-        [P in keyof T & keyof AggregateDiagnosticDtcSolution]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateDiagnosticDtcSolution[P]>
-      : GetScalarType<T[P], AggregateDiagnosticDtcSolution[P]>
-  }
-
-
-
-
-  export type DiagnosticDtcSolutionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DiagnosticDtcSolutionWhereInput
-    orderBy?: DiagnosticDtcSolutionOrderByWithAggregationInput | DiagnosticDtcSolutionOrderByWithAggregationInput[]
-    by: DiagnosticDtcSolutionScalarFieldEnum[] | DiagnosticDtcSolutionScalarFieldEnum
-    having?: DiagnosticDtcSolutionScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: DiagnosticDtcSolutionCountAggregateInputType | true
-    _avg?: DiagnosticDtcSolutionAvgAggregateInputType
-    _sum?: DiagnosticDtcSolutionSumAggregateInputType
-    _min?: DiagnosticDtcSolutionMinAggregateInputType
-    _max?: DiagnosticDtcSolutionMaxAggregateInputType
-  }
-
-  export type DiagnosticDtcSolutionGroupByOutputType = {
-    id: number
-    text: string
-    diagnosticId: number
-    dtcCode: string
-    _count: DiagnosticDtcSolutionCountAggregateOutputType | null
-    _avg: DiagnosticDtcSolutionAvgAggregateOutputType | null
-    _sum: DiagnosticDtcSolutionSumAggregateOutputType | null
-    _min: DiagnosticDtcSolutionMinAggregateOutputType | null
-    _max: DiagnosticDtcSolutionMaxAggregateOutputType | null
-  }
-
-  type GetDiagnosticDtcSolutionGroupByPayload<T extends DiagnosticDtcSolutionGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<DiagnosticDtcSolutionGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof DiagnosticDtcSolutionGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], DiagnosticDtcSolutionGroupByOutputType[P]>
-            : GetScalarType<T[P], DiagnosticDtcSolutionGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type DiagnosticDtcSolutionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    text?: boolean
-    diagnosticId?: boolean
-    dtcCode?: boolean
-    diagnosticDtc?: boolean | DiagnosticDtcDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["diagnosticDtcSolution"]>
-
-
-
-  export type DiagnosticDtcSolutionSelectScalar = {
-    id?: boolean
-    text?: boolean
-    diagnosticId?: boolean
-    dtcCode?: boolean
-  }
-
-  export type DiagnosticDtcSolutionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "text" | "diagnosticId" | "dtcCode", ExtArgs["result"]["diagnosticDtcSolution"]>
-  export type DiagnosticDtcSolutionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    diagnosticDtc?: boolean | DiagnosticDtcDefaultArgs<ExtArgs>
-  }
-
-  export type $DiagnosticDtcSolutionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "DiagnosticDtcSolution"
-    objects: {
-      diagnosticDtc: Prisma.$DiagnosticDtcPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: number
-      text: string
-      diagnosticId: number
-      dtcCode: string
-    }, ExtArgs["result"]["diagnosticDtcSolution"]>
-    composites: {}
-  }
-
-  type DiagnosticDtcSolutionGetPayload<S extends boolean | null | undefined | DiagnosticDtcSolutionDefaultArgs> = $Result.GetResult<Prisma.$DiagnosticDtcSolutionPayload, S>
-
-  type DiagnosticDtcSolutionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<DiagnosticDtcSolutionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: DiagnosticDtcSolutionCountAggregateInputType | true
-    }
-
-  export interface DiagnosticDtcSolutionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DiagnosticDtcSolution'], meta: { name: 'DiagnosticDtcSolution' } }
-    /**
-     * Find zero or one DiagnosticDtcSolution that matches the filter.
-     * @param {DiagnosticDtcSolutionFindUniqueArgs} args - Arguments to find a DiagnosticDtcSolution
-     * @example
-     * // Get one DiagnosticDtcSolution
-     * const diagnosticDtcSolution = await prisma.diagnosticDtcSolution.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends DiagnosticDtcSolutionFindUniqueArgs>(args: SelectSubset<T, DiagnosticDtcSolutionFindUniqueArgs<ExtArgs>>): Prisma__DiagnosticDtcSolutionClient<$Result.GetResult<Prisma.$DiagnosticDtcSolutionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one DiagnosticDtcSolution that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {DiagnosticDtcSolutionFindUniqueOrThrowArgs} args - Arguments to find a DiagnosticDtcSolution
-     * @example
-     * // Get one DiagnosticDtcSolution
-     * const diagnosticDtcSolution = await prisma.diagnosticDtcSolution.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends DiagnosticDtcSolutionFindUniqueOrThrowArgs>(args: SelectSubset<T, DiagnosticDtcSolutionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DiagnosticDtcSolutionClient<$Result.GetResult<Prisma.$DiagnosticDtcSolutionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first DiagnosticDtcSolution that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DiagnosticDtcSolutionFindFirstArgs} args - Arguments to find a DiagnosticDtcSolution
-     * @example
-     * // Get one DiagnosticDtcSolution
-     * const diagnosticDtcSolution = await prisma.diagnosticDtcSolution.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends DiagnosticDtcSolutionFindFirstArgs>(args?: SelectSubset<T, DiagnosticDtcSolutionFindFirstArgs<ExtArgs>>): Prisma__DiagnosticDtcSolutionClient<$Result.GetResult<Prisma.$DiagnosticDtcSolutionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first DiagnosticDtcSolution that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DiagnosticDtcSolutionFindFirstOrThrowArgs} args - Arguments to find a DiagnosticDtcSolution
-     * @example
-     * // Get one DiagnosticDtcSolution
-     * const diagnosticDtcSolution = await prisma.diagnosticDtcSolution.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends DiagnosticDtcSolutionFindFirstOrThrowArgs>(args?: SelectSubset<T, DiagnosticDtcSolutionFindFirstOrThrowArgs<ExtArgs>>): Prisma__DiagnosticDtcSolutionClient<$Result.GetResult<Prisma.$DiagnosticDtcSolutionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more DiagnosticDtcSolutions that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DiagnosticDtcSolutionFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all DiagnosticDtcSolutions
-     * const diagnosticDtcSolutions = await prisma.diagnosticDtcSolution.findMany()
-     * 
-     * // Get first 10 DiagnosticDtcSolutions
-     * const diagnosticDtcSolutions = await prisma.diagnosticDtcSolution.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const diagnosticDtcSolutionWithIdOnly = await prisma.diagnosticDtcSolution.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends DiagnosticDtcSolutionFindManyArgs>(args?: SelectSubset<T, DiagnosticDtcSolutionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DiagnosticDtcSolutionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a DiagnosticDtcSolution.
-     * @param {DiagnosticDtcSolutionCreateArgs} args - Arguments to create a DiagnosticDtcSolution.
-     * @example
-     * // Create one DiagnosticDtcSolution
-     * const DiagnosticDtcSolution = await prisma.diagnosticDtcSolution.create({
-     *   data: {
-     *     // ... data to create a DiagnosticDtcSolution
-     *   }
-     * })
-     * 
-     */
-    create<T extends DiagnosticDtcSolutionCreateArgs>(args: SelectSubset<T, DiagnosticDtcSolutionCreateArgs<ExtArgs>>): Prisma__DiagnosticDtcSolutionClient<$Result.GetResult<Prisma.$DiagnosticDtcSolutionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many DiagnosticDtcSolutions.
-     * @param {DiagnosticDtcSolutionCreateManyArgs} args - Arguments to create many DiagnosticDtcSolutions.
-     * @example
-     * // Create many DiagnosticDtcSolutions
-     * const diagnosticDtcSolution = await prisma.diagnosticDtcSolution.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends DiagnosticDtcSolutionCreateManyArgs>(args?: SelectSubset<T, DiagnosticDtcSolutionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a DiagnosticDtcSolution.
-     * @param {DiagnosticDtcSolutionDeleteArgs} args - Arguments to delete one DiagnosticDtcSolution.
-     * @example
-     * // Delete one DiagnosticDtcSolution
-     * const DiagnosticDtcSolution = await prisma.diagnosticDtcSolution.delete({
-     *   where: {
-     *     // ... filter to delete one DiagnosticDtcSolution
-     *   }
-     * })
-     * 
-     */
-    delete<T extends DiagnosticDtcSolutionDeleteArgs>(args: SelectSubset<T, DiagnosticDtcSolutionDeleteArgs<ExtArgs>>): Prisma__DiagnosticDtcSolutionClient<$Result.GetResult<Prisma.$DiagnosticDtcSolutionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one DiagnosticDtcSolution.
-     * @param {DiagnosticDtcSolutionUpdateArgs} args - Arguments to update one DiagnosticDtcSolution.
-     * @example
-     * // Update one DiagnosticDtcSolution
-     * const diagnosticDtcSolution = await prisma.diagnosticDtcSolution.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends DiagnosticDtcSolutionUpdateArgs>(args: SelectSubset<T, DiagnosticDtcSolutionUpdateArgs<ExtArgs>>): Prisma__DiagnosticDtcSolutionClient<$Result.GetResult<Prisma.$DiagnosticDtcSolutionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more DiagnosticDtcSolutions.
-     * @param {DiagnosticDtcSolutionDeleteManyArgs} args - Arguments to filter DiagnosticDtcSolutions to delete.
-     * @example
-     * // Delete a few DiagnosticDtcSolutions
-     * const { count } = await prisma.diagnosticDtcSolution.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends DiagnosticDtcSolutionDeleteManyArgs>(args?: SelectSubset<T, DiagnosticDtcSolutionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more DiagnosticDtcSolutions.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DiagnosticDtcSolutionUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many DiagnosticDtcSolutions
-     * const diagnosticDtcSolution = await prisma.diagnosticDtcSolution.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends DiagnosticDtcSolutionUpdateManyArgs>(args: SelectSubset<T, DiagnosticDtcSolutionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one DiagnosticDtcSolution.
-     * @param {DiagnosticDtcSolutionUpsertArgs} args - Arguments to update or create a DiagnosticDtcSolution.
-     * @example
-     * // Update or create a DiagnosticDtcSolution
-     * const diagnosticDtcSolution = await prisma.diagnosticDtcSolution.upsert({
-     *   create: {
-     *     // ... data to create a DiagnosticDtcSolution
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the DiagnosticDtcSolution we want to update
-     *   }
-     * })
-     */
-    upsert<T extends DiagnosticDtcSolutionUpsertArgs>(args: SelectSubset<T, DiagnosticDtcSolutionUpsertArgs<ExtArgs>>): Prisma__DiagnosticDtcSolutionClient<$Result.GetResult<Prisma.$DiagnosticDtcSolutionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of DiagnosticDtcSolutions.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DiagnosticDtcSolutionCountArgs} args - Arguments to filter DiagnosticDtcSolutions to count.
-     * @example
-     * // Count the number of DiagnosticDtcSolutions
-     * const count = await prisma.diagnosticDtcSolution.count({
-     *   where: {
-     *     // ... the filter for the DiagnosticDtcSolutions we want to count
-     *   }
-     * })
-    **/
-    count<T extends DiagnosticDtcSolutionCountArgs>(
-      args?: Subset<T, DiagnosticDtcSolutionCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], DiagnosticDtcSolutionCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a DiagnosticDtcSolution.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DiagnosticDtcSolutionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends DiagnosticDtcSolutionAggregateArgs>(args: Subset<T, DiagnosticDtcSolutionAggregateArgs>): Prisma.PrismaPromise<GetDiagnosticDtcSolutionAggregateType<T>>
-
-    /**
-     * Group by DiagnosticDtcSolution.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DiagnosticDtcSolutionGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends DiagnosticDtcSolutionGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: DiagnosticDtcSolutionGroupByArgs['orderBy'] }
-        : { orderBy?: DiagnosticDtcSolutionGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, DiagnosticDtcSolutionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDiagnosticDtcSolutionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the DiagnosticDtcSolution model
-   */
-  readonly fields: DiagnosticDtcSolutionFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for DiagnosticDtcSolution.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__DiagnosticDtcSolutionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    diagnosticDtc<T extends DiagnosticDtcDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DiagnosticDtcDefaultArgs<ExtArgs>>): Prisma__DiagnosticDtcClient<$Result.GetResult<Prisma.$DiagnosticDtcPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the DiagnosticDtcSolution model
-   */
-  interface DiagnosticDtcSolutionFieldRefs {
-    readonly id: FieldRef<"DiagnosticDtcSolution", 'Int'>
-    readonly text: FieldRef<"DiagnosticDtcSolution", 'String'>
-    readonly diagnosticId: FieldRef<"DiagnosticDtcSolution", 'Int'>
-    readonly dtcCode: FieldRef<"DiagnosticDtcSolution", 'String'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * DiagnosticDtcSolution findUnique
-   */
-  export type DiagnosticDtcSolutionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DiagnosticDtcSolution
-     */
-    select?: DiagnosticDtcSolutionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DiagnosticDtcSolution
-     */
-    omit?: DiagnosticDtcSolutionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DiagnosticDtcSolutionInclude<ExtArgs> | null
-    /**
-     * Filter, which DiagnosticDtcSolution to fetch.
-     */
-    where: DiagnosticDtcSolutionWhereUniqueInput
-  }
-
-  /**
-   * DiagnosticDtcSolution findUniqueOrThrow
-   */
-  export type DiagnosticDtcSolutionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DiagnosticDtcSolution
-     */
-    select?: DiagnosticDtcSolutionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DiagnosticDtcSolution
-     */
-    omit?: DiagnosticDtcSolutionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DiagnosticDtcSolutionInclude<ExtArgs> | null
-    /**
-     * Filter, which DiagnosticDtcSolution to fetch.
-     */
-    where: DiagnosticDtcSolutionWhereUniqueInput
-  }
-
-  /**
-   * DiagnosticDtcSolution findFirst
-   */
-  export type DiagnosticDtcSolutionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DiagnosticDtcSolution
-     */
-    select?: DiagnosticDtcSolutionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DiagnosticDtcSolution
-     */
-    omit?: DiagnosticDtcSolutionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DiagnosticDtcSolutionInclude<ExtArgs> | null
-    /**
-     * Filter, which DiagnosticDtcSolution to fetch.
-     */
-    where?: DiagnosticDtcSolutionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DiagnosticDtcSolutions to fetch.
-     */
-    orderBy?: DiagnosticDtcSolutionOrderByWithRelationInput | DiagnosticDtcSolutionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for DiagnosticDtcSolutions.
-     */
-    cursor?: DiagnosticDtcSolutionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DiagnosticDtcSolutions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DiagnosticDtcSolutions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of DiagnosticDtcSolutions.
-     */
-    distinct?: DiagnosticDtcSolutionScalarFieldEnum | DiagnosticDtcSolutionScalarFieldEnum[]
-  }
-
-  /**
-   * DiagnosticDtcSolution findFirstOrThrow
-   */
-  export type DiagnosticDtcSolutionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DiagnosticDtcSolution
-     */
-    select?: DiagnosticDtcSolutionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DiagnosticDtcSolution
-     */
-    omit?: DiagnosticDtcSolutionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DiagnosticDtcSolutionInclude<ExtArgs> | null
-    /**
-     * Filter, which DiagnosticDtcSolution to fetch.
-     */
-    where?: DiagnosticDtcSolutionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DiagnosticDtcSolutions to fetch.
-     */
-    orderBy?: DiagnosticDtcSolutionOrderByWithRelationInput | DiagnosticDtcSolutionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for DiagnosticDtcSolutions.
-     */
-    cursor?: DiagnosticDtcSolutionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DiagnosticDtcSolutions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DiagnosticDtcSolutions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of DiagnosticDtcSolutions.
-     */
-    distinct?: DiagnosticDtcSolutionScalarFieldEnum | DiagnosticDtcSolutionScalarFieldEnum[]
-  }
-
-  /**
-   * DiagnosticDtcSolution findMany
-   */
-  export type DiagnosticDtcSolutionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DiagnosticDtcSolution
-     */
-    select?: DiagnosticDtcSolutionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DiagnosticDtcSolution
-     */
-    omit?: DiagnosticDtcSolutionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DiagnosticDtcSolutionInclude<ExtArgs> | null
-    /**
-     * Filter, which DiagnosticDtcSolutions to fetch.
-     */
-    where?: DiagnosticDtcSolutionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DiagnosticDtcSolutions to fetch.
-     */
-    orderBy?: DiagnosticDtcSolutionOrderByWithRelationInput | DiagnosticDtcSolutionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing DiagnosticDtcSolutions.
-     */
-    cursor?: DiagnosticDtcSolutionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DiagnosticDtcSolutions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DiagnosticDtcSolutions.
-     */
-    skip?: number
-    distinct?: DiagnosticDtcSolutionScalarFieldEnum | DiagnosticDtcSolutionScalarFieldEnum[]
-  }
-
-  /**
-   * DiagnosticDtcSolution create
-   */
-  export type DiagnosticDtcSolutionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DiagnosticDtcSolution
-     */
-    select?: DiagnosticDtcSolutionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DiagnosticDtcSolution
-     */
-    omit?: DiagnosticDtcSolutionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DiagnosticDtcSolutionInclude<ExtArgs> | null
-    /**
-     * The data needed to create a DiagnosticDtcSolution.
-     */
-    data: XOR<DiagnosticDtcSolutionCreateInput, DiagnosticDtcSolutionUncheckedCreateInput>
-  }
-
-  /**
-   * DiagnosticDtcSolution createMany
-   */
-  export type DiagnosticDtcSolutionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many DiagnosticDtcSolutions.
-     */
-    data: DiagnosticDtcSolutionCreateManyInput | DiagnosticDtcSolutionCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * DiagnosticDtcSolution update
-   */
-  export type DiagnosticDtcSolutionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DiagnosticDtcSolution
-     */
-    select?: DiagnosticDtcSolutionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DiagnosticDtcSolution
-     */
-    omit?: DiagnosticDtcSolutionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DiagnosticDtcSolutionInclude<ExtArgs> | null
-    /**
-     * The data needed to update a DiagnosticDtcSolution.
-     */
-    data: XOR<DiagnosticDtcSolutionUpdateInput, DiagnosticDtcSolutionUncheckedUpdateInput>
-    /**
-     * Choose, which DiagnosticDtcSolution to update.
-     */
-    where: DiagnosticDtcSolutionWhereUniqueInput
-  }
-
-  /**
-   * DiagnosticDtcSolution updateMany
-   */
-  export type DiagnosticDtcSolutionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update DiagnosticDtcSolutions.
-     */
-    data: XOR<DiagnosticDtcSolutionUpdateManyMutationInput, DiagnosticDtcSolutionUncheckedUpdateManyInput>
-    /**
-     * Filter which DiagnosticDtcSolutions to update
-     */
-    where?: DiagnosticDtcSolutionWhereInput
-    /**
-     * Limit how many DiagnosticDtcSolutions to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * DiagnosticDtcSolution upsert
-   */
-  export type DiagnosticDtcSolutionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DiagnosticDtcSolution
-     */
-    select?: DiagnosticDtcSolutionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DiagnosticDtcSolution
-     */
-    omit?: DiagnosticDtcSolutionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DiagnosticDtcSolutionInclude<ExtArgs> | null
-    /**
-     * The filter to search for the DiagnosticDtcSolution to update in case it exists.
-     */
-    where: DiagnosticDtcSolutionWhereUniqueInput
-    /**
-     * In case the DiagnosticDtcSolution found by the `where` argument doesn't exist, create a new DiagnosticDtcSolution with this data.
-     */
-    create: XOR<DiagnosticDtcSolutionCreateInput, DiagnosticDtcSolutionUncheckedCreateInput>
-    /**
-     * In case the DiagnosticDtcSolution was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<DiagnosticDtcSolutionUpdateInput, DiagnosticDtcSolutionUncheckedUpdateInput>
-  }
-
-  /**
-   * DiagnosticDtcSolution delete
-   */
-  export type DiagnosticDtcSolutionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DiagnosticDtcSolution
-     */
-    select?: DiagnosticDtcSolutionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DiagnosticDtcSolution
-     */
-    omit?: DiagnosticDtcSolutionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DiagnosticDtcSolutionInclude<ExtArgs> | null
-    /**
-     * Filter which DiagnosticDtcSolution to delete.
-     */
-    where: DiagnosticDtcSolutionWhereUniqueInput
-  }
-
-  /**
-   * DiagnosticDtcSolution deleteMany
-   */
-  export type DiagnosticDtcSolutionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which DiagnosticDtcSolutions to delete
-     */
-    where?: DiagnosticDtcSolutionWhereInput
-    /**
-     * Limit how many DiagnosticDtcSolutions to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * DiagnosticDtcSolution without action
-   */
-  export type DiagnosticDtcSolutionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DiagnosticDtcSolution
-     */
-    select?: DiagnosticDtcSolutionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DiagnosticDtcSolution
-     */
-    omit?: DiagnosticDtcSolutionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DiagnosticDtcSolutionInclude<ExtArgs> | null
   }
 
 
@@ -14004,20 +12915,11 @@ export namespace Prisma {
 
   export const DiagnosticDtcScalarFieldEnum: {
     diagnosticId: 'diagnosticId',
-    dtcCode: 'dtcCode'
+    dtcCode: 'dtcCode',
+    solutionText: 'solutionText'
   };
 
   export type DiagnosticDtcScalarFieldEnum = (typeof DiagnosticDtcScalarFieldEnum)[keyof typeof DiagnosticDtcScalarFieldEnum]
-
-
-  export const DiagnosticDtcSolutionScalarFieldEnum: {
-    id: 'id',
-    text: 'text',
-    diagnosticId: 'diagnosticId',
-    dtcCode: 'dtcCode'
-  };
-
-  export type DiagnosticDtcSolutionScalarFieldEnum = (typeof DiagnosticDtcSolutionScalarFieldEnum)[keyof typeof DiagnosticDtcSolutionScalarFieldEnum]
 
 
   export const DiagnosticSymptomScalarFieldEnum: {
@@ -14141,18 +13043,11 @@ export namespace Prisma {
 
 
   export const DiagnosticDtcOrderByRelevanceFieldEnum: {
-    dtcCode: 'dtcCode'
+    dtcCode: 'dtcCode',
+    solutionText: 'solutionText'
   };
 
   export type DiagnosticDtcOrderByRelevanceFieldEnum = (typeof DiagnosticDtcOrderByRelevanceFieldEnum)[keyof typeof DiagnosticDtcOrderByRelevanceFieldEnum]
-
-
-  export const DiagnosticDtcSolutionOrderByRelevanceFieldEnum: {
-    text: 'text',
-    dtcCode: 'dtcCode'
-  };
-
-  export type DiagnosticDtcSolutionOrderByRelevanceFieldEnum = (typeof DiagnosticDtcSolutionOrderByRelevanceFieldEnum)[keyof typeof DiagnosticDtcSolutionOrderByRelevanceFieldEnum]
 
 
   export const JsonNullValueFilter: {
@@ -14714,17 +13609,17 @@ export namespace Prisma {
     NOT?: DiagnosticDtcWhereInput | DiagnosticDtcWhereInput[]
     diagnosticId?: IntFilter<"DiagnosticDtc"> | number
     dtcCode?: StringFilter<"DiagnosticDtc"> | string
+    solutionText?: StringNullableFilter<"DiagnosticDtc"> | string | null
     diagnostic?: XOR<DiagnosticScalarRelationFilter, DiagnosticWhereInput>
     dtc?: XOR<DtcScalarRelationFilter, DtcWhereInput>
-    diagnosticDtcSolutions?: DiagnosticDtcSolutionListRelationFilter
   }
 
   export type DiagnosticDtcOrderByWithRelationInput = {
     diagnosticId?: SortOrder
     dtcCode?: SortOrder
+    solutionText?: SortOrderInput | SortOrder
     diagnostic?: DiagnosticOrderByWithRelationInput
     dtc?: DtcOrderByWithRelationInput
-    diagnosticDtcSolutions?: DiagnosticDtcSolutionOrderByRelationAggregateInput
     _relevance?: DiagnosticDtcOrderByRelevanceInput
   }
 
@@ -14735,14 +13630,15 @@ export namespace Prisma {
     NOT?: DiagnosticDtcWhereInput | DiagnosticDtcWhereInput[]
     diagnosticId?: IntFilter<"DiagnosticDtc"> | number
     dtcCode?: StringFilter<"DiagnosticDtc"> | string
+    solutionText?: StringNullableFilter<"DiagnosticDtc"> | string | null
     diagnostic?: XOR<DiagnosticScalarRelationFilter, DiagnosticWhereInput>
     dtc?: XOR<DtcScalarRelationFilter, DtcWhereInput>
-    diagnosticDtcSolutions?: DiagnosticDtcSolutionListRelationFilter
   }, "diagnosticId_dtcCode">
 
   export type DiagnosticDtcOrderByWithAggregationInput = {
     diagnosticId?: SortOrder
     dtcCode?: SortOrder
+    solutionText?: SortOrderInput | SortOrder
     _count?: DiagnosticDtcCountOrderByAggregateInput
     _avg?: DiagnosticDtcAvgOrderByAggregateInput
     _max?: DiagnosticDtcMaxOrderByAggregateInput
@@ -14756,59 +13652,7 @@ export namespace Prisma {
     NOT?: DiagnosticDtcScalarWhereWithAggregatesInput | DiagnosticDtcScalarWhereWithAggregatesInput[]
     diagnosticId?: IntWithAggregatesFilter<"DiagnosticDtc"> | number
     dtcCode?: StringWithAggregatesFilter<"DiagnosticDtc"> | string
-  }
-
-  export type DiagnosticDtcSolutionWhereInput = {
-    AND?: DiagnosticDtcSolutionWhereInput | DiagnosticDtcSolutionWhereInput[]
-    OR?: DiagnosticDtcSolutionWhereInput[]
-    NOT?: DiagnosticDtcSolutionWhereInput | DiagnosticDtcSolutionWhereInput[]
-    id?: IntFilter<"DiagnosticDtcSolution"> | number
-    text?: StringFilter<"DiagnosticDtcSolution"> | string
-    diagnosticId?: IntFilter<"DiagnosticDtcSolution"> | number
-    dtcCode?: StringFilter<"DiagnosticDtcSolution"> | string
-    diagnosticDtc?: XOR<DiagnosticDtcScalarRelationFilter, DiagnosticDtcWhereInput>
-  }
-
-  export type DiagnosticDtcSolutionOrderByWithRelationInput = {
-    id?: SortOrder
-    text?: SortOrder
-    diagnosticId?: SortOrder
-    dtcCode?: SortOrder
-    diagnosticDtc?: DiagnosticDtcOrderByWithRelationInput
-    _relevance?: DiagnosticDtcSolutionOrderByRelevanceInput
-  }
-
-  export type DiagnosticDtcSolutionWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    AND?: DiagnosticDtcSolutionWhereInput | DiagnosticDtcSolutionWhereInput[]
-    OR?: DiagnosticDtcSolutionWhereInput[]
-    NOT?: DiagnosticDtcSolutionWhereInput | DiagnosticDtcSolutionWhereInput[]
-    text?: StringFilter<"DiagnosticDtcSolution"> | string
-    diagnosticId?: IntFilter<"DiagnosticDtcSolution"> | number
-    dtcCode?: StringFilter<"DiagnosticDtcSolution"> | string
-    diagnosticDtc?: XOR<DiagnosticDtcScalarRelationFilter, DiagnosticDtcWhereInput>
-  }, "id">
-
-  export type DiagnosticDtcSolutionOrderByWithAggregationInput = {
-    id?: SortOrder
-    text?: SortOrder
-    diagnosticId?: SortOrder
-    dtcCode?: SortOrder
-    _count?: DiagnosticDtcSolutionCountOrderByAggregateInput
-    _avg?: DiagnosticDtcSolutionAvgOrderByAggregateInput
-    _max?: DiagnosticDtcSolutionMaxOrderByAggregateInput
-    _min?: DiagnosticDtcSolutionMinOrderByAggregateInput
-    _sum?: DiagnosticDtcSolutionSumOrderByAggregateInput
-  }
-
-  export type DiagnosticDtcSolutionScalarWhereWithAggregatesInput = {
-    AND?: DiagnosticDtcSolutionScalarWhereWithAggregatesInput | DiagnosticDtcSolutionScalarWhereWithAggregatesInput[]
-    OR?: DiagnosticDtcSolutionScalarWhereWithAggregatesInput[]
-    NOT?: DiagnosticDtcSolutionScalarWhereWithAggregatesInput | DiagnosticDtcSolutionScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"DiagnosticDtcSolution"> | number
-    text?: StringWithAggregatesFilter<"DiagnosticDtcSolution"> | string
-    diagnosticId?: IntWithAggregatesFilter<"DiagnosticDtcSolution"> | number
-    dtcCode?: StringWithAggregatesFilter<"DiagnosticDtcSolution"> | string
+    solutionText?: StringNullableWithAggregatesFilter<"DiagnosticDtc"> | string | null
   }
 
   export type DiagnosticSymptomWhereInput = {
@@ -15433,83 +14277,43 @@ export namespace Prisma {
   }
 
   export type DiagnosticDtcCreateInput = {
+    solutionText?: string | null
     diagnostic: DiagnosticCreateNestedOneWithoutDtcsInput
     dtc: DtcCreateNestedOneWithoutDiagnosticsInput
-    diagnosticDtcSolutions?: DiagnosticDtcSolutionCreateNestedManyWithoutDiagnosticDtcInput
   }
 
   export type DiagnosticDtcUncheckedCreateInput = {
     diagnosticId: number
     dtcCode: string
-    diagnosticDtcSolutions?: DiagnosticDtcSolutionUncheckedCreateNestedManyWithoutDiagnosticDtcInput
+    solutionText?: string | null
   }
 
   export type DiagnosticDtcUpdateInput = {
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
     diagnostic?: DiagnosticUpdateOneRequiredWithoutDtcsNestedInput
     dtc?: DtcUpdateOneRequiredWithoutDiagnosticsNestedInput
-    diagnosticDtcSolutions?: DiagnosticDtcSolutionUpdateManyWithoutDiagnosticDtcNestedInput
   }
 
   export type DiagnosticDtcUncheckedUpdateInput = {
     diagnosticId?: IntFieldUpdateOperationsInput | number
     dtcCode?: StringFieldUpdateOperationsInput | string
-    diagnosticDtcSolutions?: DiagnosticDtcSolutionUncheckedUpdateManyWithoutDiagnosticDtcNestedInput
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticDtcCreateManyInput = {
     diagnosticId: number
     dtcCode: string
+    solutionText?: string | null
   }
 
   export type DiagnosticDtcUpdateManyMutationInput = {
-
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticDtcUncheckedUpdateManyInput = {
     diagnosticId?: IntFieldUpdateOperationsInput | number
     dtcCode?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type DiagnosticDtcSolutionCreateInput = {
-    text: string
-    diagnosticDtc: DiagnosticDtcCreateNestedOneWithoutDiagnosticDtcSolutionsInput
-  }
-
-  export type DiagnosticDtcSolutionUncheckedCreateInput = {
-    id?: number
-    text: string
-    diagnosticId: number
-    dtcCode: string
-  }
-
-  export type DiagnosticDtcSolutionUpdateInput = {
-    text?: StringFieldUpdateOperationsInput | string
-    diagnosticDtc?: DiagnosticDtcUpdateOneRequiredWithoutDiagnosticDtcSolutionsNestedInput
-  }
-
-  export type DiagnosticDtcSolutionUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    text?: StringFieldUpdateOperationsInput | string
-    diagnosticId?: IntFieldUpdateOperationsInput | number
-    dtcCode?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type DiagnosticDtcSolutionCreateManyInput = {
-    id?: number
-    text: string
-    diagnosticId: number
-    dtcCode: string
-  }
-
-  export type DiagnosticDtcSolutionUpdateManyMutationInput = {
-    text?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type DiagnosticDtcSolutionUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    text?: StringFieldUpdateOperationsInput | string
-    diagnosticId?: IntFieldUpdateOperationsInput | number
-    dtcCode?: StringFieldUpdateOperationsInput | string
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticSymptomCreateInput = {
@@ -16227,19 +15031,24 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type DiagnosticScalarRelationFilter = {
     is?: DiagnosticWhereInput
     isNot?: DiagnosticWhereInput
-  }
-
-  export type DiagnosticDtcSolutionListRelationFilter = {
-    every?: DiagnosticDtcSolutionWhereInput
-    some?: DiagnosticDtcSolutionWhereInput
-    none?: DiagnosticDtcSolutionWhereInput
-  }
-
-  export type DiagnosticDtcSolutionOrderByRelationAggregateInput = {
-    _count?: SortOrder
   }
 
   export type DiagnosticDtcOrderByRelevanceInput = {
@@ -16256,6 +15065,7 @@ export namespace Prisma {
   export type DiagnosticDtcCountOrderByAggregateInput = {
     diagnosticId?: SortOrder
     dtcCode?: SortOrder
+    solutionText?: SortOrder
   }
 
   export type DiagnosticDtcAvgOrderByAggregateInput = {
@@ -16265,57 +15075,35 @@ export namespace Prisma {
   export type DiagnosticDtcMaxOrderByAggregateInput = {
     diagnosticId?: SortOrder
     dtcCode?: SortOrder
+    solutionText?: SortOrder
   }
 
   export type DiagnosticDtcMinOrderByAggregateInput = {
     diagnosticId?: SortOrder
     dtcCode?: SortOrder
+    solutionText?: SortOrder
   }
 
   export type DiagnosticDtcSumOrderByAggregateInput = {
     diagnosticId?: SortOrder
   }
 
-  export type DiagnosticDtcScalarRelationFilter = {
-    is?: DiagnosticDtcWhereInput
-    isNot?: DiagnosticDtcWhereInput
-  }
-
-  export type DiagnosticDtcSolutionOrderByRelevanceInput = {
-    fields: DiagnosticDtcSolutionOrderByRelevanceFieldEnum | DiagnosticDtcSolutionOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type DiagnosticDtcSolutionCountOrderByAggregateInput = {
-    id?: SortOrder
-    text?: SortOrder
-    diagnosticId?: SortOrder
-    dtcCode?: SortOrder
-  }
-
-  export type DiagnosticDtcSolutionAvgOrderByAggregateInput = {
-    id?: SortOrder
-    diagnosticId?: SortOrder
-  }
-
-  export type DiagnosticDtcSolutionMaxOrderByAggregateInput = {
-    id?: SortOrder
-    text?: SortOrder
-    diagnosticId?: SortOrder
-    dtcCode?: SortOrder
-  }
-
-  export type DiagnosticDtcSolutionMinOrderByAggregateInput = {
-    id?: SortOrder
-    text?: SortOrder
-    diagnosticId?: SortOrder
-    dtcCode?: SortOrder
-  }
-
-  export type DiagnosticDtcSolutionSumOrderByAggregateInput = {
-    id?: SortOrder
-    diagnosticId?: SortOrder
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type SymptomScalarRelationFilter = {
@@ -16986,18 +15774,8 @@ export namespace Prisma {
     connect?: DtcWhereUniqueInput
   }
 
-  export type DiagnosticDtcSolutionCreateNestedManyWithoutDiagnosticDtcInput = {
-    create?: XOR<DiagnosticDtcSolutionCreateWithoutDiagnosticDtcInput, DiagnosticDtcSolutionUncheckedCreateWithoutDiagnosticDtcInput> | DiagnosticDtcSolutionCreateWithoutDiagnosticDtcInput[] | DiagnosticDtcSolutionUncheckedCreateWithoutDiagnosticDtcInput[]
-    connectOrCreate?: DiagnosticDtcSolutionCreateOrConnectWithoutDiagnosticDtcInput | DiagnosticDtcSolutionCreateOrConnectWithoutDiagnosticDtcInput[]
-    createMany?: DiagnosticDtcSolutionCreateManyDiagnosticDtcInputEnvelope
-    connect?: DiagnosticDtcSolutionWhereUniqueInput | DiagnosticDtcSolutionWhereUniqueInput[]
-  }
-
-  export type DiagnosticDtcSolutionUncheckedCreateNestedManyWithoutDiagnosticDtcInput = {
-    create?: XOR<DiagnosticDtcSolutionCreateWithoutDiagnosticDtcInput, DiagnosticDtcSolutionUncheckedCreateWithoutDiagnosticDtcInput> | DiagnosticDtcSolutionCreateWithoutDiagnosticDtcInput[] | DiagnosticDtcSolutionUncheckedCreateWithoutDiagnosticDtcInput[]
-    connectOrCreate?: DiagnosticDtcSolutionCreateOrConnectWithoutDiagnosticDtcInput | DiagnosticDtcSolutionCreateOrConnectWithoutDiagnosticDtcInput[]
-    createMany?: DiagnosticDtcSolutionCreateManyDiagnosticDtcInputEnvelope
-    connect?: DiagnosticDtcSolutionWhereUniqueInput | DiagnosticDtcSolutionWhereUniqueInput[]
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type DiagnosticUpdateOneRequiredWithoutDtcsNestedInput = {
@@ -17014,48 +15792,6 @@ export namespace Prisma {
     upsert?: DtcUpsertWithoutDiagnosticsInput
     connect?: DtcWhereUniqueInput
     update?: XOR<XOR<DtcUpdateToOneWithWhereWithoutDiagnosticsInput, DtcUpdateWithoutDiagnosticsInput>, DtcUncheckedUpdateWithoutDiagnosticsInput>
-  }
-
-  export type DiagnosticDtcSolutionUpdateManyWithoutDiagnosticDtcNestedInput = {
-    create?: XOR<DiagnosticDtcSolutionCreateWithoutDiagnosticDtcInput, DiagnosticDtcSolutionUncheckedCreateWithoutDiagnosticDtcInput> | DiagnosticDtcSolutionCreateWithoutDiagnosticDtcInput[] | DiagnosticDtcSolutionUncheckedCreateWithoutDiagnosticDtcInput[]
-    connectOrCreate?: DiagnosticDtcSolutionCreateOrConnectWithoutDiagnosticDtcInput | DiagnosticDtcSolutionCreateOrConnectWithoutDiagnosticDtcInput[]
-    upsert?: DiagnosticDtcSolutionUpsertWithWhereUniqueWithoutDiagnosticDtcInput | DiagnosticDtcSolutionUpsertWithWhereUniqueWithoutDiagnosticDtcInput[]
-    createMany?: DiagnosticDtcSolutionCreateManyDiagnosticDtcInputEnvelope
-    set?: DiagnosticDtcSolutionWhereUniqueInput | DiagnosticDtcSolutionWhereUniqueInput[]
-    disconnect?: DiagnosticDtcSolutionWhereUniqueInput | DiagnosticDtcSolutionWhereUniqueInput[]
-    delete?: DiagnosticDtcSolutionWhereUniqueInput | DiagnosticDtcSolutionWhereUniqueInput[]
-    connect?: DiagnosticDtcSolutionWhereUniqueInput | DiagnosticDtcSolutionWhereUniqueInput[]
-    update?: DiagnosticDtcSolutionUpdateWithWhereUniqueWithoutDiagnosticDtcInput | DiagnosticDtcSolutionUpdateWithWhereUniqueWithoutDiagnosticDtcInput[]
-    updateMany?: DiagnosticDtcSolutionUpdateManyWithWhereWithoutDiagnosticDtcInput | DiagnosticDtcSolutionUpdateManyWithWhereWithoutDiagnosticDtcInput[]
-    deleteMany?: DiagnosticDtcSolutionScalarWhereInput | DiagnosticDtcSolutionScalarWhereInput[]
-  }
-
-  export type DiagnosticDtcSolutionUncheckedUpdateManyWithoutDiagnosticDtcNestedInput = {
-    create?: XOR<DiagnosticDtcSolutionCreateWithoutDiagnosticDtcInput, DiagnosticDtcSolutionUncheckedCreateWithoutDiagnosticDtcInput> | DiagnosticDtcSolutionCreateWithoutDiagnosticDtcInput[] | DiagnosticDtcSolutionUncheckedCreateWithoutDiagnosticDtcInput[]
-    connectOrCreate?: DiagnosticDtcSolutionCreateOrConnectWithoutDiagnosticDtcInput | DiagnosticDtcSolutionCreateOrConnectWithoutDiagnosticDtcInput[]
-    upsert?: DiagnosticDtcSolutionUpsertWithWhereUniqueWithoutDiagnosticDtcInput | DiagnosticDtcSolutionUpsertWithWhereUniqueWithoutDiagnosticDtcInput[]
-    createMany?: DiagnosticDtcSolutionCreateManyDiagnosticDtcInputEnvelope
-    set?: DiagnosticDtcSolutionWhereUniqueInput | DiagnosticDtcSolutionWhereUniqueInput[]
-    disconnect?: DiagnosticDtcSolutionWhereUniqueInput | DiagnosticDtcSolutionWhereUniqueInput[]
-    delete?: DiagnosticDtcSolutionWhereUniqueInput | DiagnosticDtcSolutionWhereUniqueInput[]
-    connect?: DiagnosticDtcSolutionWhereUniqueInput | DiagnosticDtcSolutionWhereUniqueInput[]
-    update?: DiagnosticDtcSolutionUpdateWithWhereUniqueWithoutDiagnosticDtcInput | DiagnosticDtcSolutionUpdateWithWhereUniqueWithoutDiagnosticDtcInput[]
-    updateMany?: DiagnosticDtcSolutionUpdateManyWithWhereWithoutDiagnosticDtcInput | DiagnosticDtcSolutionUpdateManyWithWhereWithoutDiagnosticDtcInput[]
-    deleteMany?: DiagnosticDtcSolutionScalarWhereInput | DiagnosticDtcSolutionScalarWhereInput[]
-  }
-
-  export type DiagnosticDtcCreateNestedOneWithoutDiagnosticDtcSolutionsInput = {
-    create?: XOR<DiagnosticDtcCreateWithoutDiagnosticDtcSolutionsInput, DiagnosticDtcUncheckedCreateWithoutDiagnosticDtcSolutionsInput>
-    connectOrCreate?: DiagnosticDtcCreateOrConnectWithoutDiagnosticDtcSolutionsInput
-    connect?: DiagnosticDtcWhereUniqueInput
-  }
-
-  export type DiagnosticDtcUpdateOneRequiredWithoutDiagnosticDtcSolutionsNestedInput = {
-    create?: XOR<DiagnosticDtcCreateWithoutDiagnosticDtcSolutionsInput, DiagnosticDtcUncheckedCreateWithoutDiagnosticDtcSolutionsInput>
-    connectOrCreate?: DiagnosticDtcCreateOrConnectWithoutDiagnosticDtcSolutionsInput
-    upsert?: DiagnosticDtcUpsertWithoutDiagnosticDtcSolutionsInput
-    connect?: DiagnosticDtcWhereUniqueInput
-    update?: XOR<XOR<DiagnosticDtcUpdateToOneWithWhereWithoutDiagnosticDtcSolutionsInput, DiagnosticDtcUpdateWithoutDiagnosticDtcSolutionsInput>, DiagnosticDtcUncheckedUpdateWithoutDiagnosticDtcSolutionsInput>
   }
 
   export type DiagnosticCreateNestedOneWithoutSymptomsInput = {
@@ -17330,6 +16066,39 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
   export type NestedJsonFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -17647,13 +16416,13 @@ export namespace Prisma {
   }
 
   export type DiagnosticDtcCreateWithoutDtcInput = {
+    solutionText?: string | null
     diagnostic: DiagnosticCreateNestedOneWithoutDtcsInput
-    diagnosticDtcSolutions?: DiagnosticDtcSolutionCreateNestedManyWithoutDiagnosticDtcInput
   }
 
   export type DiagnosticDtcUncheckedCreateWithoutDtcInput = {
     diagnosticId: number
-    diagnosticDtcSolutions?: DiagnosticDtcSolutionUncheckedCreateNestedManyWithoutDiagnosticDtcInput
+    solutionText?: string | null
   }
 
   export type DiagnosticDtcCreateOrConnectWithoutDtcInput = {
@@ -17738,6 +16507,7 @@ export namespace Prisma {
     NOT?: DiagnosticDtcScalarWhereInput | DiagnosticDtcScalarWhereInput[]
     diagnosticId?: IntFilter<"DiagnosticDtc"> | number
     dtcCode?: StringFilter<"DiagnosticDtc"> | string
+    solutionText?: StringNullableFilter<"DiagnosticDtc"> | string | null
   }
 
   export type DtcCreateWithoutCausesInput = {
@@ -17945,13 +16715,13 @@ export namespace Prisma {
   }
 
   export type DiagnosticDtcCreateWithoutDiagnosticInput = {
+    solutionText?: string | null
     dtc: DtcCreateNestedOneWithoutDiagnosticsInput
-    diagnosticDtcSolutions?: DiagnosticDtcSolutionCreateNestedManyWithoutDiagnosticDtcInput
   }
 
   export type DiagnosticDtcUncheckedCreateWithoutDiagnosticInput = {
     dtcCode: string
-    diagnosticDtcSolutions?: DiagnosticDtcSolutionUncheckedCreateNestedManyWithoutDiagnosticDtcInput
+    solutionText?: string | null
   }
 
   export type DiagnosticDtcCreateOrConnectWithoutDiagnosticInput = {
@@ -18139,25 +16909,6 @@ export namespace Prisma {
     create: XOR<DtcCreateWithoutDiagnosticsInput, DtcUncheckedCreateWithoutDiagnosticsInput>
   }
 
-  export type DiagnosticDtcSolutionCreateWithoutDiagnosticDtcInput = {
-    text: string
-  }
-
-  export type DiagnosticDtcSolutionUncheckedCreateWithoutDiagnosticDtcInput = {
-    id?: number
-    text: string
-  }
-
-  export type DiagnosticDtcSolutionCreateOrConnectWithoutDiagnosticDtcInput = {
-    where: DiagnosticDtcSolutionWhereUniqueInput
-    create: XOR<DiagnosticDtcSolutionCreateWithoutDiagnosticDtcInput, DiagnosticDtcSolutionUncheckedCreateWithoutDiagnosticDtcInput>
-  }
-
-  export type DiagnosticDtcSolutionCreateManyDiagnosticDtcInputEnvelope = {
-    data: DiagnosticDtcSolutionCreateManyDiagnosticDtcInput | DiagnosticDtcSolutionCreateManyDiagnosticDtcInput[]
-    skipDuplicates?: boolean
-  }
-
   export type DiagnosticUpsertWithoutDtcsInput = {
     update: XOR<DiagnosticUpdateWithoutDtcsInput, DiagnosticUncheckedUpdateWithoutDtcsInput>
     create: XOR<DiagnosticCreateWithoutDtcsInput, DiagnosticUncheckedCreateWithoutDtcsInput>
@@ -18223,68 +16974,6 @@ export namespace Prisma {
     severity?: StringFieldUpdateOperationsInput | string
     causes?: DtcCauseUncheckedUpdateManyWithoutDtcNestedInput
     solutions?: DtcSolutionUncheckedUpdateManyWithoutDtcNestedInput
-  }
-
-  export type DiagnosticDtcSolutionUpsertWithWhereUniqueWithoutDiagnosticDtcInput = {
-    where: DiagnosticDtcSolutionWhereUniqueInput
-    update: XOR<DiagnosticDtcSolutionUpdateWithoutDiagnosticDtcInput, DiagnosticDtcSolutionUncheckedUpdateWithoutDiagnosticDtcInput>
-    create: XOR<DiagnosticDtcSolutionCreateWithoutDiagnosticDtcInput, DiagnosticDtcSolutionUncheckedCreateWithoutDiagnosticDtcInput>
-  }
-
-  export type DiagnosticDtcSolutionUpdateWithWhereUniqueWithoutDiagnosticDtcInput = {
-    where: DiagnosticDtcSolutionWhereUniqueInput
-    data: XOR<DiagnosticDtcSolutionUpdateWithoutDiagnosticDtcInput, DiagnosticDtcSolutionUncheckedUpdateWithoutDiagnosticDtcInput>
-  }
-
-  export type DiagnosticDtcSolutionUpdateManyWithWhereWithoutDiagnosticDtcInput = {
-    where: DiagnosticDtcSolutionScalarWhereInput
-    data: XOR<DiagnosticDtcSolutionUpdateManyMutationInput, DiagnosticDtcSolutionUncheckedUpdateManyWithoutDiagnosticDtcInput>
-  }
-
-  export type DiagnosticDtcSolutionScalarWhereInput = {
-    AND?: DiagnosticDtcSolutionScalarWhereInput | DiagnosticDtcSolutionScalarWhereInput[]
-    OR?: DiagnosticDtcSolutionScalarWhereInput[]
-    NOT?: DiagnosticDtcSolutionScalarWhereInput | DiagnosticDtcSolutionScalarWhereInput[]
-    id?: IntFilter<"DiagnosticDtcSolution"> | number
-    text?: StringFilter<"DiagnosticDtcSolution"> | string
-    diagnosticId?: IntFilter<"DiagnosticDtcSolution"> | number
-    dtcCode?: StringFilter<"DiagnosticDtcSolution"> | string
-  }
-
-  export type DiagnosticDtcCreateWithoutDiagnosticDtcSolutionsInput = {
-    diagnostic: DiagnosticCreateNestedOneWithoutDtcsInput
-    dtc: DtcCreateNestedOneWithoutDiagnosticsInput
-  }
-
-  export type DiagnosticDtcUncheckedCreateWithoutDiagnosticDtcSolutionsInput = {
-    diagnosticId: number
-    dtcCode: string
-  }
-
-  export type DiagnosticDtcCreateOrConnectWithoutDiagnosticDtcSolutionsInput = {
-    where: DiagnosticDtcWhereUniqueInput
-    create: XOR<DiagnosticDtcCreateWithoutDiagnosticDtcSolutionsInput, DiagnosticDtcUncheckedCreateWithoutDiagnosticDtcSolutionsInput>
-  }
-
-  export type DiagnosticDtcUpsertWithoutDiagnosticDtcSolutionsInput = {
-    update: XOR<DiagnosticDtcUpdateWithoutDiagnosticDtcSolutionsInput, DiagnosticDtcUncheckedUpdateWithoutDiagnosticDtcSolutionsInput>
-    create: XOR<DiagnosticDtcCreateWithoutDiagnosticDtcSolutionsInput, DiagnosticDtcUncheckedCreateWithoutDiagnosticDtcSolutionsInput>
-    where?: DiagnosticDtcWhereInput
-  }
-
-  export type DiagnosticDtcUpdateToOneWithWhereWithoutDiagnosticDtcSolutionsInput = {
-    where?: DiagnosticDtcWhereInput
-    data: XOR<DiagnosticDtcUpdateWithoutDiagnosticDtcSolutionsInput, DiagnosticDtcUncheckedUpdateWithoutDiagnosticDtcSolutionsInput>
-  }
-
-  export type DiagnosticDtcUpdateWithoutDiagnosticDtcSolutionsInput = {
-    diagnostic?: DiagnosticUpdateOneRequiredWithoutDtcsNestedInput
-    dtc?: DtcUpdateOneRequiredWithoutDiagnosticsNestedInput
-  }
-
-  export type DiagnosticDtcUncheckedUpdateWithoutDiagnosticDtcSolutionsInput = {
-    diagnosticId?: IntFieldUpdateOperationsInput | number
-    dtcCode?: StringFieldUpdateOperationsInput | string
   }
 
   export type DiagnosticCreateWithoutSymptomsInput = {
@@ -18681,6 +17370,7 @@ export namespace Prisma {
 
   export type DiagnosticDtcCreateManyDtcInput = {
     diagnosticId: number
+    solutionText?: string | null
   }
 
   export type DtcCauseUpdateWithoutDtcInput = {
@@ -18712,17 +17402,18 @@ export namespace Prisma {
   }
 
   export type DiagnosticDtcUpdateWithoutDtcInput = {
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
     diagnostic?: DiagnosticUpdateOneRequiredWithoutDtcsNestedInput
-    diagnosticDtcSolutions?: DiagnosticDtcSolutionUpdateManyWithoutDiagnosticDtcNestedInput
   }
 
   export type DiagnosticDtcUncheckedUpdateWithoutDtcInput = {
     diagnosticId?: IntFieldUpdateOperationsInput | number
-    diagnosticDtcSolutions?: DiagnosticDtcSolutionUncheckedUpdateManyWithoutDiagnosticDtcNestedInput
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticDtcUncheckedUpdateManyWithoutDtcInput = {
     diagnosticId?: IntFieldUpdateOperationsInput | number
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticSymptomCreateManySymptomInput = {
@@ -18743,6 +17434,7 @@ export namespace Prisma {
 
   export type DiagnosticDtcCreateManyDiagnosticInput = {
     dtcCode: string
+    solutionText?: string | null
   }
 
   export type DiagnosticSymptomCreateManyDiagnosticInput = {
@@ -18750,17 +17442,18 @@ export namespace Prisma {
   }
 
   export type DiagnosticDtcUpdateWithoutDiagnosticInput = {
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
     dtc?: DtcUpdateOneRequiredWithoutDiagnosticsNestedInput
-    diagnosticDtcSolutions?: DiagnosticDtcSolutionUpdateManyWithoutDiagnosticDtcNestedInput
   }
 
   export type DiagnosticDtcUncheckedUpdateWithoutDiagnosticInput = {
     dtcCode?: StringFieldUpdateOperationsInput | string
-    diagnosticDtcSolutions?: DiagnosticDtcSolutionUncheckedUpdateManyWithoutDiagnosticDtcNestedInput
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticDtcUncheckedUpdateManyWithoutDiagnosticInput = {
     dtcCode?: StringFieldUpdateOperationsInput | string
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticSymptomUpdateWithoutDiagnosticInput = {
@@ -18773,25 +17466,6 @@ export namespace Prisma {
 
   export type DiagnosticSymptomUncheckedUpdateManyWithoutDiagnosticInput = {
     symptomId?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type DiagnosticDtcSolutionCreateManyDiagnosticDtcInput = {
-    id?: number
-    text: string
-  }
-
-  export type DiagnosticDtcSolutionUpdateWithoutDiagnosticDtcInput = {
-    text?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type DiagnosticDtcSolutionUncheckedUpdateWithoutDiagnosticDtcInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    text?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type DiagnosticDtcSolutionUncheckedUpdateManyWithoutDiagnosticDtcInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    text?: StringFieldUpdateOperationsInput | string
   }
 
   export type DiagnosticCreateManyScannerFileInput = {

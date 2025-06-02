@@ -92,21 +92,13 @@ model Diagnostic {
 }
 
 model DiagnosticDtc {
-  diagnosticId           Int
-  dtcCode                String
-  diagnostic             Diagnostic              @relation(fields: [diagnosticId], references: [id])
-  dtc                    Dtc                     @relation(fields: [dtcCode], references: [code])
-  diagnosticDtcSolutions DiagnosticDtcSolution[]
+  diagnosticId Int
+  dtcCode      String
+  diagnostic   Diagnostic @relation(fields: [diagnosticId], references: [id])
+  dtc          Dtc        @relation(fields: [dtcCode], references: [code])
+  solutionText String?
 
   @@id([diagnosticId, dtcCode])
-}
-
-model DiagnosticDtcSolution {
-  id            Int           @id @default(autoincrement())
-  text          String
-  diagnosticId  Int
-  dtcCode       String
-  diagnosticDtc DiagnosticDtc @relation(fields: [diagnosticId, dtcCode], references: [diagnosticId, dtcCode])
 }
 
 model DiagnosticSymptom {

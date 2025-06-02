@@ -96,7 +96,7 @@ model DiagnosticDtc {
   dtcCode      String
   diagnostic   Diagnostic @relation(fields: [diagnosticId], references: [id])
   dtc          Dtc        @relation(fields: [dtcCode], references: [code])
-  solutionText String
+  solutionText String?
   @@id([diagnosticId, dtcCode])
 }
 
