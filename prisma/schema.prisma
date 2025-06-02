@@ -96,7 +96,16 @@ model DiagnosticDtc {
   dtcCode      String
   diagnostic   Diagnostic @relation(fields: [diagnosticId], references: [id])
   dtc          Dtc        @relation(fields: [dtcCode], references: [code])
+  diagnosticDtcSolutions DiagnosticDtcSolution[]
   @@id([diagnosticId, dtcCode])
+}
+
+model DiagnosticDtcSolution {
+  id     Int    @id @default(autoincrement())
+  text   String
+  diagnosticId Int
+  dtcCode String
+  diagnosticDtc    DiagnosticDtc    @relation(fields: [diagnosticId, dtcCode], references: [diagnosticId, dtcCode])
 }
 
 model DiagnosticSymptom {
