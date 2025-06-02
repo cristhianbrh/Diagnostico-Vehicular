@@ -80,6 +80,15 @@ export default function Component() {
     setDiagnosticSelectSolutions(-1)
   }, [vehicleSelectSymtoms])
   // Datos hardcodeados gigantes mezclados con lógica (HORRIBLE)
+
+  const getAllDiagnostics = async () => {
+      try {
+      const res = await axios.get("/api/diagnostic/getAll");
+      setDiagnostics(res.data.diagnostics || []);
+      } catch (error) {
+      setErrors({ dtc: "Error al obtener base de datos de diagnostico" });
+      }
+    };
   useEffect(() => {
     // Mock users con estructura inconsistente
     // const mockUsers = [
@@ -208,14 +217,7 @@ export default function Component() {
 
     // Base de datos DTC hardcodeada (estructura horrible)
     // Obtener base de datos DTC desde la API de diagnostics
-    const getAllDiagnostics = async () => {
-      try {
-      const res = await axios.get("/api/diagnostic/getAll");
-      setDiagnostics(res.data.diagnostics || []);
-      } catch (error) {
-      setErrors({ dtc: "Error al obtener base de datos de diagnostico" });
-      }
-    };
+    
     getAllDiagnostics();
     
     const getAllDtc = async () => {
@@ -1931,6 +1933,7 @@ export default function Component() {
                           noteTecnic,
                         });
                         setSuccessMsg("Síntomas registrados correctamente");
+                        getAllDiagnostics();
                         setSelectedSymptoms([]);
                         form.reset();
                       } catch (error) {
@@ -2274,12 +2277,29 @@ export default function Component() {
                   <div>
                     <Label>Síntomas Reportados</Label>
                     <div className="mt-2 space-y-2">
-                      {["Ralentí irregular", "Pérdida de potencia", "Humo negro"].map((symptom) => (
-                        <div key={symptom} className="flex items-center gap-2">
-                          <AlertCircle className="h-4 w-4 text-orange-500" />
-                          <span className="text-sm">{symptom}</span>
-                        </div>
-                      ))}
+                       {(() => {
+                        const selectedDiagnostic = diagnostics.findLast(
+                          (d_find) => d_find.id === diagnosticSelectSolutions
+                        );
+
+                        if (selectedDiagnostic && Array.isArray(selectedDiagnostic.symptoms)) {
+                          return selectedDiagnostic.symptoms.map((diagn_current, idx) => {
+                            const symptom = symptoms.findLast(
+                              (sy_find) => sy_find.id === diagn_current.symptomId
+                            );
+
+                            return (
+                              <div key={diagn_current.symptomId + "-" + idx} className="flex items-center gap-2">
+                                <AlertCircle className="h-4 w-4 text-orange-500" />
+                                <span className="text-sm">{symptom?.name ?? "Síntoma no encontrado"}</span>
+                              </div>
+                            );
+                          });
+                        }
+
+                        return null;
+                      })()}
+                     
                     </div>
                   </div>
 
@@ -2287,83 +2307,71 @@ export default function Component() {
                   <div className="border-t pt-4">
                     <Label className="text-base font-semibold">Recomendaciones Priorizadas</Label>
                     <div className="mt-3 space-y-3">
-                      {[
-                        {
-                          priority: "Alta",
-                          action: "Reemplazar bujía del cilindro 1",
-                          time: "30 min",
-                          cost: "$25.000",
-                          difficulty: "Fácil",
-                          description: "La bujía defectuosa es la causa más probable del código P0301",
-                        },
-                        {
-                          priority: "Alta",
-                          action: "Limpiar sensor MAF",
-                          time: "20 min",
-                          cost: "$15.000",
-                          difficulty: "Fácil",
-                          description: "Sensor MAF sucio puede causar mezcla pobre (P0171)",
-                        },
-                        {
-                          priority: "Media",
-                          action: "Verificar bobina de encendido",
-                          time: "45 min",
-                          cost: "$80.000",
-                          difficulty: "Medio",
-                          description: "Si el problema persiste después de cambiar bujía",
-                        },
-                        {
-                          priority: "Baja",
-                          action: "Evaluar catalizador",
-                          time: "2 horas",
-                          cost: "$800.000",
-                          difficulty: "Difícil",
-                          description: "Reemplazo costoso, verificar otras causas primero",
-                        },
-                      ].map((rec, index) => (
-                        <Card
-                          key={index}
-                          className={`border-l-4 ${
-                            rec.priority === "Alta"
-                              ? "border-l-red-500"
-                              : rec.priority === "Media"
-                                ? "border-l-yellow-500"
-                                : "border-l-green-500"
-                          }`}
-                        >
-                          <CardContent className="p-4">
-                            <div className="flex items-start justify-between mb-2">
-                              <h4 className="font-medium">{rec.action}</h4>
-                              <Badge
-                                variant={
-                                  rec.priority === "Alta"
-                                    ? "destructive"
-                                    : rec.priority === "Media"
-                                      ? "secondary"
-                                      : "outline"
-                                }
+                      {(() => {
+                        const selectedDiagnostic = diagnostics.findLast(
+                          (d_find) => d_find.id === diagnosticSelectSolutions
+                        );
+
+                        if (selectedDiagnostic && Array.isArray(selectedDiagnostic.dtcs)) {
+                          return selectedDiagnostic.dtcs.flatMap((diagn_current, idx) => {
+                            const dtcInfo = dtcDatabase.find(
+                              (dtc_find) => dtc_find.code === diagn_current.dtcCode
+                            );
+
+                            if (!dtcInfo || !Array.isArray(dtcInfo.solutions)) return [];
+
+                            return dtcInfo.solutions.map((dcInfoSolution, solIdx) => (
+                              <Card
+                                key={`${dtcInfo.code}-${dcInfoSolution.id}-${idx}-${solIdx}`}
+                                className={`border-l-4 ${
+                                  dtcInfo.severity === "grave"
+                                    ? "border-l-red-500"
+                                    : dtcInfo.severity === "media"
+                                    ? "border-l-yellow-500"
+                                    : "border-l-green-500"
+                                }`}
                               >
-                                {rec.priority}
-                              </Badge>
-                            </div>
-                            <p className="text-sm text-muted-foreground mb-3">{rec.description}</p>
-                            <div className="flex gap-4 text-xs">
-                              <div className="flex items-center gap-1">
-                                <Clock className="h-3 w-3" />
-                                {rec.time}
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <span className="text-green-600">$</span>
-                                {rec.cost}
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <Gauge className="h-3 w-3" />
-                                {rec.difficulty}
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
+                                <CardContent className="p-4">
+                                  <div className="flex items-start justify-between mb-2">
+                                    <h4 className="font-medium">
+                                      <strong>{dtcInfo.code}</strong> - {dcInfoSolution.text}
+                                    </h4>
+                                    <Badge
+                                      variant={
+                                        dtcInfo.priority === "Alta"
+                                          ? "destructive"
+                                          : dtcInfo.priority === "Media"
+                                          ? "secondary"
+                                          : "outline"
+                                      }
+                                    >
+                                      {dtcInfo.severity}
+                                    </Badge>
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            ));
+                          });
+                        }
+                    
+                        {/* <p className="text-sm text-muted-foreground mb-3">{rec.description}</p> */}
+                                    {/* <div className="flex gap-4 text-xs">
+                                      <div className="flex items-center gap-1">
+                                        <Clock className="h-3 w-3" />
+                                        {rec.time}
+                                      </div>
+                                      <div className="flex items-center gap-1">
+                                        <span className="text-green-600">$</span>
+                                        {rec.cost}
+                                      </div>
+                                      <div className="flex items-center gap-1">
+                                        <Gauge className="h-3 w-3" />
+                                        {rec.difficulty}
+                                      </div>
+                                    </div> */}
+                        return null;
+                      })()}
+                     
                     </div>
                   </div>
                 </CardContent>
