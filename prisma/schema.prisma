@@ -104,6 +104,8 @@ model DiagnosticDtc {
 model DiagnosticSymptom {
   diagnosticId Int
   symptomId    Int
+  noteTecnic String?
+  AditionalSymptom String?
   diagnostic   Diagnostic @relation(fields: [diagnosticId], references: [id])
   symptom      Symptom    @relation(fields: [symptomId], references: [id])
   @@id([diagnosticId, symptomId])

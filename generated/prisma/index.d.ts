@@ -9967,16 +9967,22 @@ export namespace Prisma {
   export type DiagnosticSymptomMinAggregateOutputType = {
     diagnosticId: number | null
     symptomId: number | null
+    noteTecnic: string | null
+    AditionalSymptom: string | null
   }
 
   export type DiagnosticSymptomMaxAggregateOutputType = {
     diagnosticId: number | null
     symptomId: number | null
+    noteTecnic: string | null
+    AditionalSymptom: string | null
   }
 
   export type DiagnosticSymptomCountAggregateOutputType = {
     diagnosticId: number
     symptomId: number
+    noteTecnic: number
+    AditionalSymptom: number
     _all: number
   }
 
@@ -9994,16 +10000,22 @@ export namespace Prisma {
   export type DiagnosticSymptomMinAggregateInputType = {
     diagnosticId?: true
     symptomId?: true
+    noteTecnic?: true
+    AditionalSymptom?: true
   }
 
   export type DiagnosticSymptomMaxAggregateInputType = {
     diagnosticId?: true
     symptomId?: true
+    noteTecnic?: true
+    AditionalSymptom?: true
   }
 
   export type DiagnosticSymptomCountAggregateInputType = {
     diagnosticId?: true
     symptomId?: true
+    noteTecnic?: true
+    AditionalSymptom?: true
     _all?: true
   }
 
@@ -10096,6 +10108,8 @@ export namespace Prisma {
   export type DiagnosticSymptomGroupByOutputType = {
     diagnosticId: number
     symptomId: number
+    noteTecnic: string | null
+    AditionalSymptom: string | null
     _count: DiagnosticSymptomCountAggregateOutputType | null
     _avg: DiagnosticSymptomAvgAggregateOutputType | null
     _sum: DiagnosticSymptomSumAggregateOutputType | null
@@ -10120,6 +10134,8 @@ export namespace Prisma {
   export type DiagnosticSymptomSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     diagnosticId?: boolean
     symptomId?: boolean
+    noteTecnic?: boolean
+    AditionalSymptom?: boolean
     diagnostic?: boolean | DiagnosticDefaultArgs<ExtArgs>
     symptom?: boolean | SymptomDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["diagnosticSymptom"]>
@@ -10129,9 +10145,11 @@ export namespace Prisma {
   export type DiagnosticSymptomSelectScalar = {
     diagnosticId?: boolean
     symptomId?: boolean
+    noteTecnic?: boolean
+    AditionalSymptom?: boolean
   }
 
-  export type DiagnosticSymptomOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"diagnosticId" | "symptomId", ExtArgs["result"]["diagnosticSymptom"]>
+  export type DiagnosticSymptomOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"diagnosticId" | "symptomId" | "noteTecnic" | "AditionalSymptom", ExtArgs["result"]["diagnosticSymptom"]>
   export type DiagnosticSymptomInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     diagnostic?: boolean | DiagnosticDefaultArgs<ExtArgs>
     symptom?: boolean | SymptomDefaultArgs<ExtArgs>
@@ -10146,6 +10164,8 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       diagnosticId: number
       symptomId: number
+      noteTecnic: string | null
+      AditionalSymptom: string | null
     }, ExtArgs["result"]["diagnosticSymptom"]>
     composites: {}
   }
@@ -10519,6 +10539,8 @@ export namespace Prisma {
   interface DiagnosticSymptomFieldRefs {
     readonly diagnosticId: FieldRef<"DiagnosticSymptom", 'Int'>
     readonly symptomId: FieldRef<"DiagnosticSymptom", 'Int'>
+    readonly noteTecnic: FieldRef<"DiagnosticSymptom", 'String'>
+    readonly AditionalSymptom: FieldRef<"DiagnosticSymptom", 'String'>
   }
     
 
@@ -12924,7 +12946,9 @@ export namespace Prisma {
 
   export const DiagnosticSymptomScalarFieldEnum: {
     diagnosticId: 'diagnosticId',
-    symptomId: 'symptomId'
+    symptomId: 'symptomId',
+    noteTecnic: 'noteTecnic',
+    AditionalSymptom: 'AditionalSymptom'
   };
 
   export type DiagnosticSymptomScalarFieldEnum = (typeof DiagnosticSymptomScalarFieldEnum)[keyof typeof DiagnosticSymptomScalarFieldEnum]
@@ -13048,6 +13072,14 @@ export namespace Prisma {
   };
 
   export type DiagnosticDtcOrderByRelevanceFieldEnum = (typeof DiagnosticDtcOrderByRelevanceFieldEnum)[keyof typeof DiagnosticDtcOrderByRelevanceFieldEnum]
+
+
+  export const DiagnosticSymptomOrderByRelevanceFieldEnum: {
+    noteTecnic: 'noteTecnic',
+    AditionalSymptom: 'AditionalSymptom'
+  };
+
+  export type DiagnosticSymptomOrderByRelevanceFieldEnum = (typeof DiagnosticSymptomOrderByRelevanceFieldEnum)[keyof typeof DiagnosticSymptomOrderByRelevanceFieldEnum]
 
 
   export const JsonNullValueFilter: {
@@ -13661,6 +13693,8 @@ export namespace Prisma {
     NOT?: DiagnosticSymptomWhereInput | DiagnosticSymptomWhereInput[]
     diagnosticId?: IntFilter<"DiagnosticSymptom"> | number
     symptomId?: IntFilter<"DiagnosticSymptom"> | number
+    noteTecnic?: StringNullableFilter<"DiagnosticSymptom"> | string | null
+    AditionalSymptom?: StringNullableFilter<"DiagnosticSymptom"> | string | null
     diagnostic?: XOR<DiagnosticScalarRelationFilter, DiagnosticWhereInput>
     symptom?: XOR<SymptomScalarRelationFilter, SymptomWhereInput>
   }
@@ -13668,8 +13702,11 @@ export namespace Prisma {
   export type DiagnosticSymptomOrderByWithRelationInput = {
     diagnosticId?: SortOrder
     symptomId?: SortOrder
+    noteTecnic?: SortOrderInput | SortOrder
+    AditionalSymptom?: SortOrderInput | SortOrder
     diagnostic?: DiagnosticOrderByWithRelationInput
     symptom?: SymptomOrderByWithRelationInput
+    _relevance?: DiagnosticSymptomOrderByRelevanceInput
   }
 
   export type DiagnosticSymptomWhereUniqueInput = Prisma.AtLeast<{
@@ -13679,6 +13716,8 @@ export namespace Prisma {
     NOT?: DiagnosticSymptomWhereInput | DiagnosticSymptomWhereInput[]
     diagnosticId?: IntFilter<"DiagnosticSymptom"> | number
     symptomId?: IntFilter<"DiagnosticSymptom"> | number
+    noteTecnic?: StringNullableFilter<"DiagnosticSymptom"> | string | null
+    AditionalSymptom?: StringNullableFilter<"DiagnosticSymptom"> | string | null
     diagnostic?: XOR<DiagnosticScalarRelationFilter, DiagnosticWhereInput>
     symptom?: XOR<SymptomScalarRelationFilter, SymptomWhereInput>
   }, "diagnosticId_symptomId">
@@ -13686,6 +13725,8 @@ export namespace Prisma {
   export type DiagnosticSymptomOrderByWithAggregationInput = {
     diagnosticId?: SortOrder
     symptomId?: SortOrder
+    noteTecnic?: SortOrderInput | SortOrder
+    AditionalSymptom?: SortOrderInput | SortOrder
     _count?: DiagnosticSymptomCountOrderByAggregateInput
     _avg?: DiagnosticSymptomAvgOrderByAggregateInput
     _max?: DiagnosticSymptomMaxOrderByAggregateInput
@@ -13699,6 +13740,8 @@ export namespace Prisma {
     NOT?: DiagnosticSymptomScalarWhereWithAggregatesInput | DiagnosticSymptomScalarWhereWithAggregatesInput[]
     diagnosticId?: IntWithAggregatesFilter<"DiagnosticSymptom"> | number
     symptomId?: IntWithAggregatesFilter<"DiagnosticSymptom"> | number
+    noteTecnic?: StringNullableWithAggregatesFilter<"DiagnosticSymptom"> | string | null
+    AditionalSymptom?: StringNullableWithAggregatesFilter<"DiagnosticSymptom"> | string | null
   }
 
   export type ScannerFileWhereInput = {
@@ -14318,6 +14361,8 @@ export namespace Prisma {
   }
 
   export type DiagnosticSymptomCreateInput = {
+    noteTecnic?: string | null
+    AditionalSymptom?: string | null
     diagnostic: DiagnosticCreateNestedOneWithoutSymptomsInput
     symptom: SymptomCreateNestedOneWithoutDiagnosticsInput
   }
@@ -14325,9 +14370,13 @@ export namespace Prisma {
   export type DiagnosticSymptomUncheckedCreateInput = {
     diagnosticId: number
     symptomId: number
+    noteTecnic?: string | null
+    AditionalSymptom?: string | null
   }
 
   export type DiagnosticSymptomUpdateInput = {
+    noteTecnic?: NullableStringFieldUpdateOperationsInput | string | null
+    AditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
     diagnostic?: DiagnosticUpdateOneRequiredWithoutSymptomsNestedInput
     symptom?: SymptomUpdateOneRequiredWithoutDiagnosticsNestedInput
   }
@@ -14335,20 +14384,27 @@ export namespace Prisma {
   export type DiagnosticSymptomUncheckedUpdateInput = {
     diagnosticId?: IntFieldUpdateOperationsInput | number
     symptomId?: IntFieldUpdateOperationsInput | number
+    noteTecnic?: NullableStringFieldUpdateOperationsInput | string | null
+    AditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticSymptomCreateManyInput = {
     diagnosticId: number
     symptomId: number
+    noteTecnic?: string | null
+    AditionalSymptom?: string | null
   }
 
   export type DiagnosticSymptomUpdateManyMutationInput = {
-
+    noteTecnic?: NullableStringFieldUpdateOperationsInput | string | null
+    AditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticSymptomUncheckedUpdateManyInput = {
     diagnosticId?: IntFieldUpdateOperationsInput | number
     symptomId?: IntFieldUpdateOperationsInput | number
+    noteTecnic?: NullableStringFieldUpdateOperationsInput | string | null
+    AditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ScannerFileCreateInput = {
@@ -15112,6 +15168,12 @@ export namespace Prisma {
     isNot?: SymptomWhereInput
   }
 
+  export type DiagnosticSymptomOrderByRelevanceInput = {
+    fields: DiagnosticSymptomOrderByRelevanceFieldEnum | DiagnosticSymptomOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
   export type DiagnosticSymptomDiagnosticIdSymptomIdCompoundUniqueInput = {
     diagnosticId: number
     symptomId: number
@@ -15120,6 +15182,8 @@ export namespace Prisma {
   export type DiagnosticSymptomCountOrderByAggregateInput = {
     diagnosticId?: SortOrder
     symptomId?: SortOrder
+    noteTecnic?: SortOrder
+    AditionalSymptom?: SortOrder
   }
 
   export type DiagnosticSymptomAvgOrderByAggregateInput = {
@@ -15130,11 +15194,15 @@ export namespace Prisma {
   export type DiagnosticSymptomMaxOrderByAggregateInput = {
     diagnosticId?: SortOrder
     symptomId?: SortOrder
+    noteTecnic?: SortOrder
+    AditionalSymptom?: SortOrder
   }
 
   export type DiagnosticSymptomMinOrderByAggregateInput = {
     diagnosticId?: SortOrder
     symptomId?: SortOrder
+    noteTecnic?: SortOrder
+    AditionalSymptom?: SortOrder
   }
 
   export type DiagnosticSymptomSumOrderByAggregateInput = {
@@ -16616,11 +16684,15 @@ export namespace Prisma {
   }
 
   export type DiagnosticSymptomCreateWithoutSymptomInput = {
+    noteTecnic?: string | null
+    AditionalSymptom?: string | null
     diagnostic: DiagnosticCreateNestedOneWithoutSymptomsInput
   }
 
   export type DiagnosticSymptomUncheckedCreateWithoutSymptomInput = {
     diagnosticId: number
+    noteTecnic?: string | null
+    AditionalSymptom?: string | null
   }
 
   export type DiagnosticSymptomCreateOrConnectWithoutSymptomInput = {
@@ -16655,6 +16727,8 @@ export namespace Prisma {
     NOT?: DiagnosticSymptomScalarWhereInput | DiagnosticSymptomScalarWhereInput[]
     diagnosticId?: IntFilter<"DiagnosticSymptom"> | number
     symptomId?: IntFilter<"DiagnosticSymptom"> | number
+    noteTecnic?: StringNullableFilter<"DiagnosticSymptom"> | string | null
+    AditionalSymptom?: StringNullableFilter<"DiagnosticSymptom"> | string | null
   }
 
   export type VehicleCreateWithoutDiagnosticsInput = {
@@ -16734,11 +16808,15 @@ export namespace Prisma {
   }
 
   export type DiagnosticSymptomCreateWithoutDiagnosticInput = {
+    noteTecnic?: string | null
+    AditionalSymptom?: string | null
     symptom: SymptomCreateNestedOneWithoutDiagnosticsInput
   }
 
   export type DiagnosticSymptomUncheckedCreateWithoutDiagnosticInput = {
     symptomId: number
+    noteTecnic?: string | null
+    AditionalSymptom?: string | null
   }
 
   export type DiagnosticSymptomCreateOrConnectWithoutDiagnosticInput = {
@@ -17427,18 +17505,26 @@ export namespace Prisma {
 
   export type DiagnosticSymptomCreateManySymptomInput = {
     diagnosticId: number
+    noteTecnic?: string | null
+    AditionalSymptom?: string | null
   }
 
   export type DiagnosticSymptomUpdateWithoutSymptomInput = {
+    noteTecnic?: NullableStringFieldUpdateOperationsInput | string | null
+    AditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
     diagnostic?: DiagnosticUpdateOneRequiredWithoutSymptomsNestedInput
   }
 
   export type DiagnosticSymptomUncheckedUpdateWithoutSymptomInput = {
     diagnosticId?: IntFieldUpdateOperationsInput | number
+    noteTecnic?: NullableStringFieldUpdateOperationsInput | string | null
+    AditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticSymptomUncheckedUpdateManyWithoutSymptomInput = {
     diagnosticId?: IntFieldUpdateOperationsInput | number
+    noteTecnic?: NullableStringFieldUpdateOperationsInput | string | null
+    AditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticDtcCreateManyDiagnosticInput = {
@@ -17447,6 +17533,8 @@ export namespace Prisma {
 
   export type DiagnosticSymptomCreateManyDiagnosticInput = {
     symptomId: number
+    noteTecnic?: string | null
+    AditionalSymptom?: string | null
   }
 
   export type DiagnosticDtcUpdateWithoutDiagnosticInput = {
@@ -17462,15 +17550,21 @@ export namespace Prisma {
   }
 
   export type DiagnosticSymptomUpdateWithoutDiagnosticInput = {
+    noteTecnic?: NullableStringFieldUpdateOperationsInput | string | null
+    AditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
     symptom?: SymptomUpdateOneRequiredWithoutDiagnosticsNestedInput
   }
 
   export type DiagnosticSymptomUncheckedUpdateWithoutDiagnosticInput = {
     symptomId?: IntFieldUpdateOperationsInput | number
+    noteTecnic?: NullableStringFieldUpdateOperationsInput | string | null
+    AditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticSymptomUncheckedUpdateManyWithoutDiagnosticInput = {
     symptomId?: IntFieldUpdateOperationsInput | number
+    noteTecnic?: NullableStringFieldUpdateOperationsInput | string | null
+    AditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticCreateManyScannerFileInput = {

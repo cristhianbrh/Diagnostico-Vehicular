@@ -191,7 +191,9 @@ exports.Prisma.DiagnosticDtcScalarFieldEnum = {
 
 exports.Prisma.DiagnosticSymptomScalarFieldEnum = {
   diagnosticId: 'diagnosticId',
-  symptomId: 'symptomId'
+  symptomId: 'symptomId',
+  noteTecnic: 'noteTecnic',
+  AditionalSymptom: 'AditionalSymptom'
 };
 
 exports.Prisma.ScannerFileScalarFieldEnum = {
@@ -273,6 +275,11 @@ exports.Prisma.DiagnosticOrderByRelevanceFieldEnum = {
 
 exports.Prisma.DiagnosticDtcOrderByRelevanceFieldEnum = {
   dtcCode: 'dtcCode'
+};
+
+exports.Prisma.DiagnosticSymptomOrderByRelevanceFieldEnum = {
+  noteTecnic: 'noteTecnic',
+  AditionalSymptom: 'AditionalSymptom'
 };
 
 exports.Prisma.JsonNullValueFilter = {
