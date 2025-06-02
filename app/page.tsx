@@ -69,8 +69,11 @@ export default function Component() {
   const [helpSearchTerm, setHelpSearchTerm] = useState("")
   const [selectedSymptoms, setSelectedSymptoms] = useState([])
   const [manualDtc, setManualDtc] = useState("")
+  const [successMsg, setSuccessMsg] = useState("")
   const fileInputRef = useRef(null)
-
+  useEffect(() => {
+    console.log("Current view changed:", currentView)
+  }, [currentView])
   // Datos hardcodeados gigantes mezclados con lógica (HORRIBLE)
   useEffect(() => {
     // Mock users con estructura inconsistente
@@ -199,49 +202,16 @@ export default function Component() {
     getAllVehicle();
 
     // Base de datos DTC hardcodeada (estructura horrible)
-    const mockDtcDatabase = [
-      {
-        code: "P0301",
-        description: "Falla de encendido en cilindro 1",
-        category: "Motor",
-        severity: "grave",
-        causes: ["Bujía defectuosa", "Bobina de encendido", "Inyector obstruido", "Compresión baja"],
-        solutions: ["Reemplazar bujía", "Verificar bobina", "Limpiar inyector", "Prueba de compresión"],
-      },
-      {
-        code: "P0171",
-        description: "Mezcla pobre en banco 1",
-        category: "Combustible",
-        severity: "moderada",
-        causes: ["Filtro de aire sucio", "Sensor MAF defectuoso", "Fuga de vacío", "Bomba de combustible"],
-        solutions: ["Cambiar filtro aire", "Limpiar sensor MAF", "Revisar mangueras", "Verificar presión combustible"],
-      },
-      {
-        code: "P0420",
-        description: "Eficiencia del catalizador por debajo del umbral",
-        category: "Emisiones",
-        severity: "moderada",
-        causes: ["Catalizador deteriorado", "Sensor O2 defectuoso", "Fuga en escape"],
-        solutions: ["Reemplazar catalizador", "Cambiar sensor O2", "Reparar fuga escape"],
-      },
-      {
-        code: "P0128",
-        description: "Termostato del refrigerante",
-        category: "Refrigeración",
-        severity: "leve",
-        causes: ["Termostato pegado abierto", "Sensor de temperatura defectuoso"],
-        solutions: ["Reemplazar termostato", "Verificar sensor temperatura"],
-      },
-      {
-        code: "P0442",
-        description: "Fuga pequeña en sistema EVAP",
-        category: "Emisiones",
-        severity: "leve",
-        causes: ["Tapa de combustible suelta", "Manguera EVAP agrietada", "Válvula purga defectuosa"],
-        solutions: ["Apretar tapa combustible", "Revisar mangueras EVAP", "Reemplazar válvula purga"],
-      },
-    ]
-    setDtcDatabase(mockDtcDatabase)
+    // Obtener base de datos DTC desde la API de diagnostics
+    const getAllDiagnostics = async () => {
+      try {
+      const res = await axios.get("/api/diagnostic/getAll");
+      setDtcDatabase(res.data.diagnostics || []);
+      } catch (error) {
+      setErrors({ dtc: "Error al obtener base de datos DTC" });
+      }
+    };
+    getAllDiagnostics();
 
     // Diagnósticos hardcodeados con más datos
     const mockDiagnostics = [
@@ -333,29 +303,30 @@ export default function Component() {
     setSymptoms(mockSymptoms)
 
     // Datos de escáner simulados
-    const mockScannerData = [
-      {
-        id: 1,
-        fileName: "scan_001.json",
-        uploadDate: "2024-01-15",
-        vehicleVin: "1HGBH41JXMN109186",
-        scannerType: "OBD2 Pro",
-        dtcCodes: ["P0301", "P0171"],
-        status: "processed",
-        rawData: { rpm: 800, coolantTemp: 85, fuelTrim: -5.2, o2Sensor: 0.45 },
-      },
-      {
-        id: 2,
-        fileName: "scan_002.csv",
-        uploadDate: "2023-12-10",
-        vehicleVin: "1HGBH41JXMN109186",
-        scannerType: "AutoScan X1",
-        dtcCodes: ["P0420"],
-        status: "processed",
-        rawData: { rpm: 750, coolantTemp: 90, fuelTrim: 2.1, o2Sensor: 0.52 },
-      },
-    ]
-    setScannerData(mockScannerData)
+    // const mockScannerData = [
+    //   {
+    //     id: 1,
+    //     fileName: "scan_001.json",
+    //     uploadDate: "2024-01-15",
+    //     vehicleVin: "1HGBH41JXMN109186",
+    //     scannerType: "OBD2 Pro",
+    //     dtcCodes: ["P0301", "P0171"],
+    //     status: "processed",
+    //     rawData: { rpm: 800, coolantTemp: 85, fuelTrim: -5.2, o2Sensor: 0.45 },
+    //   },
+    //   {
+    //     id: 2,
+    //     fileName: "scan_002.csv",
+    //     uploadDate: "2023-12-10",
+    //     vehicleVin: "1HGBH41JXMN109186",
+    //     scannerType: "AutoScan X1",
+    //     dtcCodes: ["P0420"],
+    //     status: "processed",
+    //     rawData: { rpm: 750, coolantTemp: 90, fuelTrim: 2.1, o2Sensor: 0.52 },
+    //   },
+    // ]
+    // setScannerData(mockScannerData)
+    getAllScannerFiles()
     getUserCurrent();
     // Usuario actual simulado (horrible hardcodeo)
     // setCurrentUser(mockUsers[0]) // Juan Pérez como usuario por defecto
@@ -373,6 +344,50 @@ export default function Component() {
     } catch (error) {
       setCurrentUser(null)
       localStorage.removeItem("token")
+    }
+  }
+  const getAllScannerFiles = async () => {
+    try {
+      const res = await axios.get("/api/scanner/getAll");
+      // res.data.scannerFiles debe ser un array con la estructura indicada
+      setScannerData(
+        res.data.scannerFiles.map((file) => {
+          let dtcCodes: string[] = [];
+          // Si rawData tiene 'dtc_codes' o 'codes', úsalo
+          if (file.rawData?.dtc_codes) {
+        dtcCodes = file.rawData.dtc_codes;
+          } else if (file.rawData?.codes) {
+        dtcCodes = file.rawData.codes;
+          } else if (file.rawData?.content && typeof file.rawData.content === "string") {
+        // Extraer DTCs de un CSV en 'content'
+        const lines = file.rawData.content.split("\n").filter(Boolean);
+        if (lines.length > 1) {
+          const headers = lines[0].split(",");
+          // Encuentra los índices de las columnas que contienen "dtc"
+          const dtcIndexes = headers
+            .map((h, idx) => (h.toLowerCase().includes("dtc") ? idx : -1))
+            .filter((idx) => idx !== -1);
+          // Extrae los códigos de cada fila
+          for (let i = 1; i < lines.length; i++) {
+            const cols = lines[i].split(",");
+            dtcIndexes.forEach((idx) => {
+          const code = cols[idx]?.trim();
+          if (code && /^P[0-9A-F]{4}$/i.test(code)) {
+            dtcCodes.push(code.toUpperCase());
+          }
+            });
+          }
+        }
+          }
+          return {
+        ...file,
+        uploadDate: typeof file.uploadDate === "string" ? file.uploadDate.split("T")[0] : file.uploadDate,
+        dtcCodes,
+          };
+        })
+      );
+    } catch (error) {
+      setErrors({ scanner: "Error al obtener archivos del escáner" });
     }
   }
 
@@ -665,9 +680,14 @@ export default function Component() {
 
   // Función para obtener estado del vehículo (lógica compleja innecesaria)
   const getVehicleStatus = (vehicle) => {
+    console.log("Vehicle")
+    console.log(vehicle)
     const diags = diagnostics
-      .filter((d) => d.vehicleId === vehicle.id)
-      .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
+    .filter((d) => d.vehicleId === vehicle.id)
+    .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
+
+    console.log("diags")
+    console.log(diags)
     if (diags.length === 0) return { status: "sin-diagnosticos", color: "gray", icon: Clock }
 
     const lastDiag = diags[0]
@@ -863,6 +883,14 @@ export default function Component() {
             >
               <HelpCircle className="h-4 w-4" />
               Ayuda
+            </Button>
+            <Button
+              variant={currentView === "diagnostic" ? "default" : "ghost"}
+              onClick={() => setCurrentView("diagnostic")}
+              className="flex items-center gap-2"
+            >
+              <Wrench className="h-4 w-4" />
+              Diagnóstico
             </Button>
 
             <div className="flex items-center gap-2 ml-4 border-l pl-4">
@@ -1402,6 +1430,69 @@ export default function Component() {
                     })()}
                   </CardContent>
                 </Card>
+
+                {/* Sección para que el mecánico marque un diagnóstico como resuelto */}
+                {currentView === "vehicles" && vehicleMode === "view" && selectedVehicle && (
+                  <Card className="my-6">
+                    <CardHeader>
+                      <CardTitle>Resolver Problema del Vehículo</CardTitle>
+                      <CardDescription>
+                        Selecciona un diagnóstico pendiente para marcarlo como resuelto y agregar detalles de la solución.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      {diagnostics.filter((d) => d.vehicleId === selectedVehicle.id && d.estado !== "resuelto").length === 0 ? (
+                        <p className="text-muted-foreground">No hay diagnósticos pendientes o graves para este vehículo.</p>
+                      ) : (
+                        diagnostics.filter((d) => d.vehicleId === selectedVehicle.id && d.estado !== "resuelto").map((diag) => (
+                          <form
+                            key={diag.id}
+                            className="mb-4 border rounded p-4"
+                            onSubmit={async (e) => {
+                              e.preventDefault();
+                              setLoading(true);
+                              const formData = new FormData(e.target as HTMLFormElement);
+                              const detalles = formData.get("detalles") as string;
+                              try {
+                                // Actualiza el estado localmente (puedes llamar a la API si tienes endpoint)
+                                setDiagnostics((prev) => prev.map((d) =>
+                                  d.id === diag.id
+                                    ? { ...d, estado: "resuelto", detalles: detalles || d.detalles }
+                                    : d
+                                ));
+                                setErrors({});
+                              } catch (error) {
+                                setErrors({ solve: "Error al marcar como resuelto" });
+                              }
+                              setLoading(false);
+                            }}
+                          >
+                            <div className="mb-2">
+                              <span className="font-semibold">DTC:</span> {diag.dtc.join(", ")}
+                            </div>
+                            <div className="mb-2">
+                              <span className="font-semibold">Descripción:</span> {diag.desc}
+                            </div>
+                            <div className="mb-2">
+                              <Label htmlFor={`detalles-${diag.id}`}>Detalles de la solución</Label>
+                              <Input
+                                id={`detalles-${diag.id}`}
+                                name="detalles"
+                                defaultValue={diag.detalles || ""}
+                                placeholder="Describe la solución aplicada"
+                                className="mt-1"
+                              />
+                            </div>
+                            <Button type="submit" disabled={loading} className="mt-2">
+                              Marcar como resuelto
+                            </Button>
+                            {errors.solve && <p className="text-red-500 text-sm mt-2">{errors.solve}</p>}
+                          </form>
+                        ))
+                      )}
+                    </CardContent>
+                  </Card>
+                )}
               </div>
             )}
           </div>
@@ -2482,6 +2573,157 @@ export default function Component() {
                     </div>
                   </div>
                 </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* RF09 - Registro de diagnóstico */}
+        {currentView === "diagnostic" && (
+          <div className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold">Registrar Diagnóstico</h2>
+            </div>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Wrench className="h-5 w-5" />
+                  Nuevo Diagnóstico
+                </CardTitle>
+                <CardDescription>Asocia un diagnóstico a un vehículo, selecciona DTCs y síntomas, y agrega detalles técnicos.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <form
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    setLoading(true);
+                    setErrors({});
+                    const formData = new FormData(e.target as HTMLFormElement);
+                    const vehicleId = formData.get("vehicleId");
+                    const desc = formData.get("desc");
+                    const dtcCodes = Array.from(formData.getAll("dtcCodes"));
+                    const symptomIds = Array.from(formData.getAll("symptomIds"));
+                    const tecnicoId = formData.get("tecnicoId");
+                    const estado = formData.get("estado");
+                    if (!vehicleId) {
+                      setErrors({ vehicleId: "Selecciona un vehículo" });
+                      setLoading(false);
+                      return;
+                    }
+                    if (!desc || desc.length < 5) {
+                      setErrors({ desc: "Descripción requerida" });
+                      setLoading(false);
+                      return;
+                    }
+                    try {
+                      const res = await fetch("/api/diagnostic/create", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          vehicleId: Number(vehicleId),
+                          desc,
+                          dtcCodes,
+                          symptomIds: symptomIds.map(Number),
+                          tecnicoId: tecnicoId ? Number(tecnicoId) : null,
+                          estado,
+                        }),
+                      });
+                      if (!res.ok) throw new Error("Error al registrar diagnóstico");
+                      // Opcional: refrescar lista de diagnósticos
+                      setSuccessMsg("Diagnóstico registrado correctamente");
+                      e.target.reset();
+                    } catch (err) {
+                      setErrors({ submit: "Error al registrar diagnóstico" });
+                    }
+                    setLoading(false);
+                  }}
+                  className="space-y-4"
+                >
+                  <div>
+                    <Label htmlFor="vehicleId">Vehículo *</Label>
+                    <Select name="vehicleId" id="vehicleId" required>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccionar vehículo" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {vehicleData.map((vehicle) => (
+                          <SelectItem key={vehicle.id} value={vehicle.id.toString()}>
+                            {vehicle.marca} {vehicle.modelo} - {vehicle.patente}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {errors?.vehicleId && <p className="text-red-500 text-sm">{errors.vehicleId}</p>}
+                  </div>
+                  <div>
+                    <Label htmlFor="desc">Descripción *</Label>
+                    <Textarea name="desc" id="desc" required placeholder="Describe el diagnóstico..." rows={3} />
+                    {errors?.desc && <p className="text-red-500 text-sm">{errors.desc}</p>}
+                  </div>
+                  <div>
+                    <Label htmlFor="dtcCodes">Códigos DTC</Label>
+                    <Select name="dtcCodes" id="dtcCodes" multiple>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccionar DTCs" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {dtcDatabase.map((dtc) => (
+                          <SelectItem key={dtc.code} value={dtc.code}>
+                            {dtc.code} - {dtc.description}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="symptomIds">Síntomas</Label>
+                    <Select name="symptomIds" id="symptomIds" multiple>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccionar síntomas" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {symptoms.map((symptom) => (
+                          <SelectItem key={symptom.id} value={symptom.id.toString()}>
+                            {symptom.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="tecnicoId">Técnico</Label>
+                    <Select name="tecnicoId" id="tecnicoId">
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccionar técnico" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {users.filter((u) => u.role === "tecnico").map((user) => (
+                          <SelectItem key={user.id} value={user.id.toString()}>
+                            {user.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="estado">Estado</Label>
+                    <Select name="estado" id="estado" defaultValue="pendiente">
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccionar estado" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="pendiente">Pendiente</SelectItem>
+                        <SelectItem value="en_proceso">En Proceso</SelectItem>
+                        <SelectItem value="resuelto">Resuelto</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <Button type="submit" className="w-full" disabled={loading}>
+                    {loading ? "Registrando..." : "Registrar Diagnóstico"}
+                  </Button>
+                  {errors?.submit && <p className="text-red-500 text-sm">{errors.submit}</p>}
+                  {successMsg && <p className="text-green-600 text-sm">{successMsg}</p>}
+                </form>
               </CardContent>
             </Card>
           </div>
