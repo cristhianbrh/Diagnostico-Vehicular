@@ -85,6 +85,7 @@ model Diagnostic {
   scannerFileId Int?
   cost          Int
   duration      Float
+  solutionText  String?
   vehicle       Vehicle             @relation(fields: [vehicleId], references: [id])
   scannerFile   ScannerFile?        @relation(fields: [scannerFileId], references: [id])
   dtcs          DiagnosticDtc[]
@@ -96,7 +97,6 @@ model DiagnosticDtc {
   dtcCode      String
   diagnostic   Diagnostic @relation(fields: [diagnosticId], references: [id])
   dtc          Dtc        @relation(fields: [dtcCode], references: [code])
-  solutionText String?
 
   @@id([diagnosticId, dtcCode])
 }

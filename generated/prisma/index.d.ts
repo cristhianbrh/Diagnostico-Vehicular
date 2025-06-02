@@ -7921,6 +7921,7 @@ export namespace Prisma {
     scannerFileId: number | null
     cost: number | null
     duration: number | null
+    solutionText: string | null
   }
 
   export type DiagnosticMaxAggregateOutputType = {
@@ -7934,6 +7935,7 @@ export namespace Prisma {
     scannerFileId: number | null
     cost: number | null
     duration: number | null
+    solutionText: string | null
   }
 
   export type DiagnosticCountAggregateOutputType = {
@@ -7947,6 +7949,7 @@ export namespace Prisma {
     scannerFileId: number
     cost: number
     duration: number
+    solutionText: number
     _all: number
   }
 
@@ -7978,6 +7981,7 @@ export namespace Prisma {
     scannerFileId?: true
     cost?: true
     duration?: true
+    solutionText?: true
   }
 
   export type DiagnosticMaxAggregateInputType = {
@@ -7991,6 +7995,7 @@ export namespace Prisma {
     scannerFileId?: true
     cost?: true
     duration?: true
+    solutionText?: true
   }
 
   export type DiagnosticCountAggregateInputType = {
@@ -8004,6 +8009,7 @@ export namespace Prisma {
     scannerFileId?: true
     cost?: true
     duration?: true
+    solutionText?: true
     _all?: true
   }
 
@@ -8104,6 +8110,7 @@ export namespace Prisma {
     scannerFileId: number | null
     cost: number
     duration: number
+    solutionText: string | null
     _count: DiagnosticCountAggregateOutputType | null
     _avg: DiagnosticAvgAggregateOutputType | null
     _sum: DiagnosticSumAggregateOutputType | null
@@ -8136,6 +8143,7 @@ export namespace Prisma {
     scannerFileId?: boolean
     cost?: boolean
     duration?: boolean
+    solutionText?: boolean
     vehicle?: boolean | VehicleDefaultArgs<ExtArgs>
     scannerFile?: boolean | Diagnostic$scannerFileArgs<ExtArgs>
     dtcs?: boolean | Diagnostic$dtcsArgs<ExtArgs>
@@ -8156,9 +8164,10 @@ export namespace Prisma {
     scannerFileId?: boolean
     cost?: boolean
     duration?: boolean
+    solutionText?: boolean
   }
 
-  export type DiagnosticOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "vehicleId" | "fecha" | "desc" | "tecnico" | "estado" | "detalles" | "scannerFileId" | "cost" | "duration", ExtArgs["result"]["diagnostic"]>
+  export type DiagnosticOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "vehicleId" | "fecha" | "desc" | "tecnico" | "estado" | "detalles" | "scannerFileId" | "cost" | "duration" | "solutionText", ExtArgs["result"]["diagnostic"]>
   export type DiagnosticInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     vehicle?: boolean | VehicleDefaultArgs<ExtArgs>
     scannerFile?: boolean | Diagnostic$scannerFileArgs<ExtArgs>
@@ -8186,6 +8195,7 @@ export namespace Prisma {
       scannerFileId: number | null
       cost: number
       duration: number
+      solutionText: string | null
     }, ExtArgs["result"]["diagnostic"]>
     composites: {}
   }
@@ -8569,6 +8579,7 @@ export namespace Prisma {
     readonly scannerFileId: FieldRef<"Diagnostic", 'Int'>
     readonly cost: FieldRef<"Diagnostic", 'Int'>
     readonly duration: FieldRef<"Diagnostic", 'Float'>
+    readonly solutionText: FieldRef<"Diagnostic", 'String'>
   }
     
 
@@ -9020,19 +9031,16 @@ export namespace Prisma {
   export type DiagnosticDtcMinAggregateOutputType = {
     diagnosticId: number | null
     dtcCode: string | null
-    solutionText: string | null
   }
 
   export type DiagnosticDtcMaxAggregateOutputType = {
     diagnosticId: number | null
     dtcCode: string | null
-    solutionText: string | null
   }
 
   export type DiagnosticDtcCountAggregateOutputType = {
     diagnosticId: number
     dtcCode: number
-    solutionText: number
     _all: number
   }
 
@@ -9048,19 +9056,16 @@ export namespace Prisma {
   export type DiagnosticDtcMinAggregateInputType = {
     diagnosticId?: true
     dtcCode?: true
-    solutionText?: true
   }
 
   export type DiagnosticDtcMaxAggregateInputType = {
     diagnosticId?: true
     dtcCode?: true
-    solutionText?: true
   }
 
   export type DiagnosticDtcCountAggregateInputType = {
     diagnosticId?: true
     dtcCode?: true
-    solutionText?: true
     _all?: true
   }
 
@@ -9153,7 +9158,6 @@ export namespace Prisma {
   export type DiagnosticDtcGroupByOutputType = {
     diagnosticId: number
     dtcCode: string
-    solutionText: string | null
     _count: DiagnosticDtcCountAggregateOutputType | null
     _avg: DiagnosticDtcAvgAggregateOutputType | null
     _sum: DiagnosticDtcSumAggregateOutputType | null
@@ -9178,7 +9182,6 @@ export namespace Prisma {
   export type DiagnosticDtcSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     diagnosticId?: boolean
     dtcCode?: boolean
-    solutionText?: boolean
     diagnostic?: boolean | DiagnosticDefaultArgs<ExtArgs>
     dtc?: boolean | DtcDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["diagnosticDtc"]>
@@ -9188,10 +9191,9 @@ export namespace Prisma {
   export type DiagnosticDtcSelectScalar = {
     diagnosticId?: boolean
     dtcCode?: boolean
-    solutionText?: boolean
   }
 
-  export type DiagnosticDtcOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"diagnosticId" | "dtcCode" | "solutionText", ExtArgs["result"]["diagnosticDtc"]>
+  export type DiagnosticDtcOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"diagnosticId" | "dtcCode", ExtArgs["result"]["diagnosticDtc"]>
   export type DiagnosticDtcInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     diagnostic?: boolean | DiagnosticDefaultArgs<ExtArgs>
     dtc?: boolean | DtcDefaultArgs<ExtArgs>
@@ -9206,7 +9208,6 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       diagnosticId: number
       dtcCode: string
-      solutionText: string | null
     }, ExtArgs["result"]["diagnosticDtc"]>
     composites: {}
   }
@@ -9580,7 +9581,6 @@ export namespace Prisma {
   interface DiagnosticDtcFieldRefs {
     readonly diagnosticId: FieldRef<"DiagnosticDtc", 'Int'>
     readonly dtcCode: FieldRef<"DiagnosticDtc", 'String'>
-    readonly solutionText: FieldRef<"DiagnosticDtc", 'String'>
   }
     
 
@@ -12907,7 +12907,8 @@ export namespace Prisma {
     detalles: 'detalles',
     scannerFileId: 'scannerFileId',
     cost: 'cost',
-    duration: 'duration'
+    duration: 'duration',
+    solutionText: 'solutionText'
   };
 
   export type DiagnosticScalarFieldEnum = (typeof DiagnosticScalarFieldEnum)[keyof typeof DiagnosticScalarFieldEnum]
@@ -12915,8 +12916,7 @@ export namespace Prisma {
 
   export const DiagnosticDtcScalarFieldEnum: {
     diagnosticId: 'diagnosticId',
-    dtcCode: 'dtcCode',
-    solutionText: 'solutionText'
+    dtcCode: 'dtcCode'
   };
 
   export type DiagnosticDtcScalarFieldEnum = (typeof DiagnosticDtcScalarFieldEnum)[keyof typeof DiagnosticDtcScalarFieldEnum]
@@ -13036,15 +13036,15 @@ export namespace Prisma {
     desc: 'desc',
     tecnico: 'tecnico',
     estado: 'estado',
-    detalles: 'detalles'
+    detalles: 'detalles',
+    solutionText: 'solutionText'
   };
 
   export type DiagnosticOrderByRelevanceFieldEnum = (typeof DiagnosticOrderByRelevanceFieldEnum)[keyof typeof DiagnosticOrderByRelevanceFieldEnum]
 
 
   export const DiagnosticDtcOrderByRelevanceFieldEnum: {
-    dtcCode: 'dtcCode',
-    solutionText: 'solutionText'
+    dtcCode: 'dtcCode'
   };
 
   export type DiagnosticDtcOrderByRelevanceFieldEnum = (typeof DiagnosticDtcOrderByRelevanceFieldEnum)[keyof typeof DiagnosticDtcOrderByRelevanceFieldEnum]
@@ -13525,6 +13525,7 @@ export namespace Prisma {
     scannerFileId?: IntNullableFilter<"Diagnostic"> | number | null
     cost?: IntFilter<"Diagnostic"> | number
     duration?: FloatFilter<"Diagnostic"> | number
+    solutionText?: StringNullableFilter<"Diagnostic"> | string | null
     vehicle?: XOR<VehicleScalarRelationFilter, VehicleWhereInput>
     scannerFile?: XOR<ScannerFileNullableScalarRelationFilter, ScannerFileWhereInput> | null
     dtcs?: DiagnosticDtcListRelationFilter
@@ -13542,6 +13543,7 @@ export namespace Prisma {
     scannerFileId?: SortOrderInput | SortOrder
     cost?: SortOrder
     duration?: SortOrder
+    solutionText?: SortOrderInput | SortOrder
     vehicle?: VehicleOrderByWithRelationInput
     scannerFile?: ScannerFileOrderByWithRelationInput
     dtcs?: DiagnosticDtcOrderByRelationAggregateInput
@@ -13563,6 +13565,7 @@ export namespace Prisma {
     scannerFileId?: IntNullableFilter<"Diagnostic"> | number | null
     cost?: IntFilter<"Diagnostic"> | number
     duration?: FloatFilter<"Diagnostic"> | number
+    solutionText?: StringNullableFilter<"Diagnostic"> | string | null
     vehicle?: XOR<VehicleScalarRelationFilter, VehicleWhereInput>
     scannerFile?: XOR<ScannerFileNullableScalarRelationFilter, ScannerFileWhereInput> | null
     dtcs?: DiagnosticDtcListRelationFilter
@@ -13580,6 +13583,7 @@ export namespace Prisma {
     scannerFileId?: SortOrderInput | SortOrder
     cost?: SortOrder
     duration?: SortOrder
+    solutionText?: SortOrderInput | SortOrder
     _count?: DiagnosticCountOrderByAggregateInput
     _avg?: DiagnosticAvgOrderByAggregateInput
     _max?: DiagnosticMaxOrderByAggregateInput
@@ -13601,6 +13605,7 @@ export namespace Prisma {
     scannerFileId?: IntNullableWithAggregatesFilter<"Diagnostic"> | number | null
     cost?: IntWithAggregatesFilter<"Diagnostic"> | number
     duration?: FloatWithAggregatesFilter<"Diagnostic"> | number
+    solutionText?: StringNullableWithAggregatesFilter<"Diagnostic"> | string | null
   }
 
   export type DiagnosticDtcWhereInput = {
@@ -13609,7 +13614,6 @@ export namespace Prisma {
     NOT?: DiagnosticDtcWhereInput | DiagnosticDtcWhereInput[]
     diagnosticId?: IntFilter<"DiagnosticDtc"> | number
     dtcCode?: StringFilter<"DiagnosticDtc"> | string
-    solutionText?: StringNullableFilter<"DiagnosticDtc"> | string | null
     diagnostic?: XOR<DiagnosticScalarRelationFilter, DiagnosticWhereInput>
     dtc?: XOR<DtcScalarRelationFilter, DtcWhereInput>
   }
@@ -13617,7 +13621,6 @@ export namespace Prisma {
   export type DiagnosticDtcOrderByWithRelationInput = {
     diagnosticId?: SortOrder
     dtcCode?: SortOrder
-    solutionText?: SortOrderInput | SortOrder
     diagnostic?: DiagnosticOrderByWithRelationInput
     dtc?: DtcOrderByWithRelationInput
     _relevance?: DiagnosticDtcOrderByRelevanceInput
@@ -13630,7 +13633,6 @@ export namespace Prisma {
     NOT?: DiagnosticDtcWhereInput | DiagnosticDtcWhereInput[]
     diagnosticId?: IntFilter<"DiagnosticDtc"> | number
     dtcCode?: StringFilter<"DiagnosticDtc"> | string
-    solutionText?: StringNullableFilter<"DiagnosticDtc"> | string | null
     diagnostic?: XOR<DiagnosticScalarRelationFilter, DiagnosticWhereInput>
     dtc?: XOR<DtcScalarRelationFilter, DtcWhereInput>
   }, "diagnosticId_dtcCode">
@@ -13638,7 +13640,6 @@ export namespace Prisma {
   export type DiagnosticDtcOrderByWithAggregationInput = {
     diagnosticId?: SortOrder
     dtcCode?: SortOrder
-    solutionText?: SortOrderInput | SortOrder
     _count?: DiagnosticDtcCountOrderByAggregateInput
     _avg?: DiagnosticDtcAvgOrderByAggregateInput
     _max?: DiagnosticDtcMaxOrderByAggregateInput
@@ -13652,7 +13653,6 @@ export namespace Prisma {
     NOT?: DiagnosticDtcScalarWhereWithAggregatesInput | DiagnosticDtcScalarWhereWithAggregatesInput[]
     diagnosticId?: IntWithAggregatesFilter<"DiagnosticDtc"> | number
     dtcCode?: StringWithAggregatesFilter<"DiagnosticDtc"> | string
-    solutionText?: StringNullableWithAggregatesFilter<"DiagnosticDtc"> | string | null
   }
 
   export type DiagnosticSymptomWhereInput = {
@@ -14190,6 +14190,7 @@ export namespace Prisma {
     detalles: string
     cost: number
     duration: number
+    solutionText?: string | null
     vehicle: VehicleCreateNestedOneWithoutDiagnosticsInput
     scannerFile?: ScannerFileCreateNestedOneWithoutDiagnosticsInput
     dtcs?: DiagnosticDtcCreateNestedManyWithoutDiagnosticInput
@@ -14207,6 +14208,7 @@ export namespace Prisma {
     scannerFileId?: number | null
     cost: number
     duration: number
+    solutionText?: string | null
     dtcs?: DiagnosticDtcUncheckedCreateNestedManyWithoutDiagnosticInput
     symptoms?: DiagnosticSymptomUncheckedCreateNestedManyWithoutDiagnosticInput
   }
@@ -14219,6 +14221,7 @@ export namespace Prisma {
     detalles?: StringFieldUpdateOperationsInput | string
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
     vehicle?: VehicleUpdateOneRequiredWithoutDiagnosticsNestedInput
     scannerFile?: ScannerFileUpdateOneWithoutDiagnosticsNestedInput
     dtcs?: DiagnosticDtcUpdateManyWithoutDiagnosticNestedInput
@@ -14236,6 +14239,7 @@ export namespace Prisma {
     scannerFileId?: NullableIntFieldUpdateOperationsInput | number | null
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
     dtcs?: DiagnosticDtcUncheckedUpdateManyWithoutDiagnosticNestedInput
     symptoms?: DiagnosticSymptomUncheckedUpdateManyWithoutDiagnosticNestedInput
   }
@@ -14251,6 +14255,7 @@ export namespace Prisma {
     scannerFileId?: number | null
     cost: number
     duration: number
+    solutionText?: string | null
   }
 
   export type DiagnosticUpdateManyMutationInput = {
@@ -14261,6 +14266,7 @@ export namespace Prisma {
     detalles?: StringFieldUpdateOperationsInput | string
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticUncheckedUpdateManyInput = {
@@ -14274,10 +14280,10 @@ export namespace Prisma {
     scannerFileId?: NullableIntFieldUpdateOperationsInput | number | null
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticDtcCreateInput = {
-    solutionText?: string | null
     diagnostic: DiagnosticCreateNestedOneWithoutDtcsInput
     dtc: DtcCreateNestedOneWithoutDiagnosticsInput
   }
@@ -14285,11 +14291,9 @@ export namespace Prisma {
   export type DiagnosticDtcUncheckedCreateInput = {
     diagnosticId: number
     dtcCode: string
-    solutionText?: string | null
   }
 
   export type DiagnosticDtcUpdateInput = {
-    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
     diagnostic?: DiagnosticUpdateOneRequiredWithoutDtcsNestedInput
     dtc?: DtcUpdateOneRequiredWithoutDiagnosticsNestedInput
   }
@@ -14297,23 +14301,20 @@ export namespace Prisma {
   export type DiagnosticDtcUncheckedUpdateInput = {
     diagnosticId?: IntFieldUpdateOperationsInput | number
     dtcCode?: StringFieldUpdateOperationsInput | string
-    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticDtcCreateManyInput = {
     diagnosticId: number
     dtcCode: string
-    solutionText?: string | null
   }
 
   export type DiagnosticDtcUpdateManyMutationInput = {
-    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
+
   }
 
   export type DiagnosticDtcUncheckedUpdateManyInput = {
     diagnosticId?: IntFieldUpdateOperationsInput | number
     dtcCode?: StringFieldUpdateOperationsInput | string
-    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticSymptomCreateInput = {
@@ -14928,6 +14929,21 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type VehicleScalarRelationFilter = {
     is?: VehicleWhereInput
     isNot?: VehicleWhereInput
@@ -14955,6 +14971,7 @@ export namespace Prisma {
     scannerFileId?: SortOrder
     cost?: SortOrder
     duration?: SortOrder
+    solutionText?: SortOrder
   }
 
   export type DiagnosticAvgOrderByAggregateInput = {
@@ -14976,6 +14993,7 @@ export namespace Prisma {
     scannerFileId?: SortOrder
     cost?: SortOrder
     duration?: SortOrder
+    solutionText?: SortOrder
   }
 
   export type DiagnosticMinOrderByAggregateInput = {
@@ -14989,6 +15007,7 @@ export namespace Prisma {
     scannerFileId?: SortOrder
     cost?: SortOrder
     duration?: SortOrder
+    solutionText?: SortOrder
   }
 
   export type DiagnosticSumOrderByAggregateInput = {
@@ -15031,7 +15050,7 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
-  export type StringNullableFilter<$PrismaModel = never> = {
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
     notIn?: string[] | null
@@ -15043,7 +15062,10 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     search?: string
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type DiagnosticScalarRelationFilter = {
@@ -15065,7 +15087,6 @@ export namespace Prisma {
   export type DiagnosticDtcCountOrderByAggregateInput = {
     diagnosticId?: SortOrder
     dtcCode?: SortOrder
-    solutionText?: SortOrder
   }
 
   export type DiagnosticDtcAvgOrderByAggregateInput = {
@@ -15075,35 +15096,15 @@ export namespace Prisma {
   export type DiagnosticDtcMaxOrderByAggregateInput = {
     diagnosticId?: SortOrder
     dtcCode?: SortOrder
-    solutionText?: SortOrder
   }
 
   export type DiagnosticDtcMinOrderByAggregateInput = {
     diagnosticId?: SortOrder
     dtcCode?: SortOrder
-    solutionText?: SortOrder
   }
 
   export type DiagnosticDtcSumOrderByAggregateInput = {
     diagnosticId?: SortOrder
-  }
-
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type SymptomScalarRelationFilter = {
@@ -15680,6 +15681,10 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
   export type VehicleUpdateOneRequiredWithoutDiagnosticsNestedInput = {
     create?: XOR<VehicleCreateWithoutDiagnosticsInput, VehicleUncheckedCreateWithoutDiagnosticsInput>
     connectOrCreate?: VehicleCreateOrConnectWithoutDiagnosticsInput
@@ -15772,10 +15777,6 @@ export namespace Prisma {
     create?: XOR<DtcCreateWithoutDiagnosticsInput, DtcUncheckedCreateWithoutDiagnosticsInput>
     connectOrCreate?: DtcCreateOrConnectWithoutDiagnosticsInput
     connect?: DtcWhereUniqueInput
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
   }
 
   export type DiagnosticUpdateOneRequiredWithoutDtcsNestedInput = {
@@ -16025,6 +16026,21 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | null
@@ -16066,21 +16082,6 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
-  }
-
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -16228,6 +16229,7 @@ export namespace Prisma {
     detalles: string
     cost: number
     duration: number
+    solutionText?: string | null
     scannerFile?: ScannerFileCreateNestedOneWithoutDiagnosticsInput
     dtcs?: DiagnosticDtcCreateNestedManyWithoutDiagnosticInput
     symptoms?: DiagnosticSymptomCreateNestedManyWithoutDiagnosticInput
@@ -16243,6 +16245,7 @@ export namespace Prisma {
     scannerFileId?: number | null
     cost: number
     duration: number
+    solutionText?: string | null
     dtcs?: DiagnosticDtcUncheckedCreateNestedManyWithoutDiagnosticInput
     symptoms?: DiagnosticSymptomUncheckedCreateNestedManyWithoutDiagnosticInput
   }
@@ -16346,6 +16349,7 @@ export namespace Prisma {
     scannerFileId?: IntNullableFilter<"Diagnostic"> | number | null
     cost?: IntFilter<"Diagnostic"> | number
     duration?: FloatFilter<"Diagnostic"> | number
+    solutionText?: StringNullableFilter<"Diagnostic"> | string | null
   }
 
   export type ScannerFileUpsertWithWhereUniqueWithoutVehicleInput = {
@@ -16416,13 +16420,11 @@ export namespace Prisma {
   }
 
   export type DiagnosticDtcCreateWithoutDtcInput = {
-    solutionText?: string | null
     diagnostic: DiagnosticCreateNestedOneWithoutDtcsInput
   }
 
   export type DiagnosticDtcUncheckedCreateWithoutDtcInput = {
     diagnosticId: number
-    solutionText?: string | null
   }
 
   export type DiagnosticDtcCreateOrConnectWithoutDtcInput = {
@@ -16507,7 +16509,6 @@ export namespace Prisma {
     NOT?: DiagnosticDtcScalarWhereInput | DiagnosticDtcScalarWhereInput[]
     diagnosticId?: IntFilter<"DiagnosticDtc"> | number
     dtcCode?: StringFilter<"DiagnosticDtc"> | string
-    solutionText?: StringNullableFilter<"DiagnosticDtc"> | string | null
   }
 
   export type DtcCreateWithoutCausesInput = {
@@ -16715,13 +16716,11 @@ export namespace Prisma {
   }
 
   export type DiagnosticDtcCreateWithoutDiagnosticInput = {
-    solutionText?: string | null
     dtc: DtcCreateNestedOneWithoutDiagnosticsInput
   }
 
   export type DiagnosticDtcUncheckedCreateWithoutDiagnosticInput = {
     dtcCode: string
-    solutionText?: string | null
   }
 
   export type DiagnosticDtcCreateOrConnectWithoutDiagnosticInput = {
@@ -16862,6 +16861,7 @@ export namespace Prisma {
     detalles: string
     cost: number
     duration: number
+    solutionText?: string | null
     vehicle: VehicleCreateNestedOneWithoutDiagnosticsInput
     scannerFile?: ScannerFileCreateNestedOneWithoutDiagnosticsInput
     symptoms?: DiagnosticSymptomCreateNestedManyWithoutDiagnosticInput
@@ -16878,6 +16878,7 @@ export namespace Prisma {
     scannerFileId?: number | null
     cost: number
     duration: number
+    solutionText?: string | null
     symptoms?: DiagnosticSymptomUncheckedCreateNestedManyWithoutDiagnosticInput
   }
 
@@ -16928,6 +16929,7 @@ export namespace Prisma {
     detalles?: StringFieldUpdateOperationsInput | string
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
     vehicle?: VehicleUpdateOneRequiredWithoutDiagnosticsNestedInput
     scannerFile?: ScannerFileUpdateOneWithoutDiagnosticsNestedInput
     symptoms?: DiagnosticSymptomUpdateManyWithoutDiagnosticNestedInput
@@ -16944,6 +16946,7 @@ export namespace Prisma {
     scannerFileId?: NullableIntFieldUpdateOperationsInput | number | null
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
     symptoms?: DiagnosticSymptomUncheckedUpdateManyWithoutDiagnosticNestedInput
   }
 
@@ -16984,6 +16987,7 @@ export namespace Prisma {
     detalles: string
     cost: number
     duration: number
+    solutionText?: string | null
     vehicle: VehicleCreateNestedOneWithoutDiagnosticsInput
     scannerFile?: ScannerFileCreateNestedOneWithoutDiagnosticsInput
     dtcs?: DiagnosticDtcCreateNestedManyWithoutDiagnosticInput
@@ -17000,6 +17004,7 @@ export namespace Prisma {
     scannerFileId?: number | null
     cost: number
     duration: number
+    solutionText?: string | null
     dtcs?: DiagnosticDtcUncheckedCreateNestedManyWithoutDiagnosticInput
   }
 
@@ -17045,6 +17050,7 @@ export namespace Prisma {
     detalles?: StringFieldUpdateOperationsInput | string
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
     vehicle?: VehicleUpdateOneRequiredWithoutDiagnosticsNestedInput
     scannerFile?: ScannerFileUpdateOneWithoutDiagnosticsNestedInput
     dtcs?: DiagnosticDtcUpdateManyWithoutDiagnosticNestedInput
@@ -17061,6 +17067,7 @@ export namespace Prisma {
     scannerFileId?: NullableIntFieldUpdateOperationsInput | number | null
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
     dtcs?: DiagnosticDtcUncheckedUpdateManyWithoutDiagnosticNestedInput
   }
 
@@ -17130,6 +17137,7 @@ export namespace Prisma {
     detalles: string
     cost: number
     duration: number
+    solutionText?: string | null
     vehicle: VehicleCreateNestedOneWithoutDiagnosticsInput
     dtcs?: DiagnosticDtcCreateNestedManyWithoutDiagnosticInput
     symptoms?: DiagnosticSymptomCreateNestedManyWithoutDiagnosticInput
@@ -17145,6 +17153,7 @@ export namespace Prisma {
     detalles: string
     cost: number
     duration: number
+    solutionText?: string | null
     dtcs?: DiagnosticDtcUncheckedCreateNestedManyWithoutDiagnosticInput
     symptoms?: DiagnosticSymptomUncheckedCreateNestedManyWithoutDiagnosticInput
   }
@@ -17280,6 +17289,7 @@ export namespace Prisma {
     scannerFileId?: number | null
     cost: number
     duration: number
+    solutionText?: string | null
   }
 
   export type ScannerFileCreateManyVehicleInput = {
@@ -17299,6 +17309,7 @@ export namespace Prisma {
     detalles?: StringFieldUpdateOperationsInput | string
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
     scannerFile?: ScannerFileUpdateOneWithoutDiagnosticsNestedInput
     dtcs?: DiagnosticDtcUpdateManyWithoutDiagnosticNestedInput
     symptoms?: DiagnosticSymptomUpdateManyWithoutDiagnosticNestedInput
@@ -17314,6 +17325,7 @@ export namespace Prisma {
     scannerFileId?: NullableIntFieldUpdateOperationsInput | number | null
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
     dtcs?: DiagnosticDtcUncheckedUpdateManyWithoutDiagnosticNestedInput
     symptoms?: DiagnosticSymptomUncheckedUpdateManyWithoutDiagnosticNestedInput
   }
@@ -17328,6 +17340,7 @@ export namespace Prisma {
     scannerFileId?: NullableIntFieldUpdateOperationsInput | number | null
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ScannerFileUpdateWithoutVehicleInput = {
@@ -17370,7 +17383,6 @@ export namespace Prisma {
 
   export type DiagnosticDtcCreateManyDtcInput = {
     diagnosticId: number
-    solutionText?: string | null
   }
 
   export type DtcCauseUpdateWithoutDtcInput = {
@@ -17402,18 +17414,15 @@ export namespace Prisma {
   }
 
   export type DiagnosticDtcUpdateWithoutDtcInput = {
-    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
     diagnostic?: DiagnosticUpdateOneRequiredWithoutDtcsNestedInput
   }
 
   export type DiagnosticDtcUncheckedUpdateWithoutDtcInput = {
     diagnosticId?: IntFieldUpdateOperationsInput | number
-    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticDtcUncheckedUpdateManyWithoutDtcInput = {
     diagnosticId?: IntFieldUpdateOperationsInput | number
-    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticSymptomCreateManySymptomInput = {
@@ -17434,7 +17443,6 @@ export namespace Prisma {
 
   export type DiagnosticDtcCreateManyDiagnosticInput = {
     dtcCode: string
-    solutionText?: string | null
   }
 
   export type DiagnosticSymptomCreateManyDiagnosticInput = {
@@ -17442,18 +17450,15 @@ export namespace Prisma {
   }
 
   export type DiagnosticDtcUpdateWithoutDiagnosticInput = {
-    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
     dtc?: DtcUpdateOneRequiredWithoutDiagnosticsNestedInput
   }
 
   export type DiagnosticDtcUncheckedUpdateWithoutDiagnosticInput = {
     dtcCode?: StringFieldUpdateOperationsInput | string
-    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticDtcUncheckedUpdateManyWithoutDiagnosticInput = {
     dtcCode?: StringFieldUpdateOperationsInput | string
-    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticSymptomUpdateWithoutDiagnosticInput = {
@@ -17478,6 +17483,7 @@ export namespace Prisma {
     detalles: string
     cost: number
     duration: number
+    solutionText?: string | null
   }
 
   export type DiagnosticUpdateWithoutScannerFileInput = {
@@ -17488,6 +17494,7 @@ export namespace Prisma {
     detalles?: StringFieldUpdateOperationsInput | string
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
     vehicle?: VehicleUpdateOneRequiredWithoutDiagnosticsNestedInput
     dtcs?: DiagnosticDtcUpdateManyWithoutDiagnosticNestedInput
     symptoms?: DiagnosticSymptomUpdateManyWithoutDiagnosticNestedInput
@@ -17503,6 +17510,7 @@ export namespace Prisma {
     detalles?: StringFieldUpdateOperationsInput | string
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
     dtcs?: DiagnosticDtcUncheckedUpdateManyWithoutDiagnosticNestedInput
     symptoms?: DiagnosticSymptomUncheckedUpdateManyWithoutDiagnosticNestedInput
   }
@@ -17517,6 +17525,7 @@ export namespace Prisma {
     detalles?: StringFieldUpdateOperationsInput | string
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
+    solutionText?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 
