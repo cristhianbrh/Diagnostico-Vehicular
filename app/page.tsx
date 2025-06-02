@@ -206,12 +206,22 @@ export default function Component() {
     const getAllDiagnostics = async () => {
       try {
       const res = await axios.get("/api/diagnostic/getAll");
-      setDtcDatabase(res.data.diagnostics || []);
+      setDiagnostics(res.data.diagnostics || []);
       } catch (error) {
-      setErrors({ dtc: "Error al obtener base de datos DTC" });
+      setErrors({ dtc: "Error al obtener base de datos de diagnostico" });
       }
     };
     getAllDiagnostics();
+    
+    const getAllDtc = async () => {
+      try {
+        const res = await axios.get("/api/dtc/getAll");
+        setDtcDatabase(res.data.dtcs || []);
+      } catch (error) {
+        setErrors({ dtc: "Error al obtener base de datos DTC" });
+      }
+    };
+    getAllDtc();
 
     // Diagnósticos hardcodeados con más datos
     const mockDiagnostics = [
@@ -274,33 +284,16 @@ export default function Component() {
     ]
     setDiagnostics(mockDiagnostics)
 
-    // Síntomas predefinidos (estructura horrible)
-    const mockSymptoms = [
-      {
-        id: 1,
-        category: "Motor",
-        name: "Ralentí irregular",
-        description: "El motor no mantiene RPM estables en ralentí",
-      },
-      { id: 2, category: "Motor", name: "Pérdida de potencia", description: "El vehículo no acelera como antes" },
-      { id: 3, category: "Motor", name: "Ruido metálico", description: "Sonidos extraños del motor" },
-      { id: 4, category: "Motor", name: "Sobrecalentamiento", description: "Temperatura del motor muy alta" },
-      { id: 5, category: "Combustible", name: "Mayor consumo", description: "Gasta más combustible de lo normal" },
-      { id: 6, category: "Combustible", name: "Olor a combustible", description: "Se percibe olor a gasolina" },
-      { id: 7, category: "Escape", name: "Humo negro", description: "Emisión de humo oscuro por el escape" },
-      { id: 8, category: "Escape", name: "Humo blanco", description: "Emisión de humo blanco por el escape" },
-      { id: 9, category: "Eléctrico", name: "Luces intermitentes", description: "Luces que parpadean sin razón" },
-      { id: 10, category: "Eléctrico", name: "Batería se descarga", description: "La batería no mantiene carga" },
-      {
-        id: 11,
-        category: "Transmisión",
-        name: "Cambios bruscos",
-        description: "La transmisión cambia de forma abrupta",
-      },
-      { id: 12, category: "Frenos", name: "Ruido al frenar", description: "Chirridos o ruidos al aplicar frenos" },
-      { id: 13, category: "Suspensión", name: "Vibraciones", description: "Vibraciones excesivas al conducir" },
-    ]
-    setSymptoms(mockSymptoms)
+    // Obtener síntomas predefinidos desde la API
+    const getAllSymptoms = async () => {
+      try {
+      const res = await axios.get("/api/symptoms/getAll");
+      setSymptoms(res.data.symptoms || []);
+      } catch (error) {
+      setErrors({ symptoms: "Error al obtener síntomas" });
+      }
+    };
+    getAllSymptoms();
 
     // Datos de escáner simulados
     // const mockScannerData = [
