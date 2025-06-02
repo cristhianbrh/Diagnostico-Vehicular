@@ -43,6 +43,11 @@ import {
   LogOut,
   Gauge,
 } from "lucide-react"
+import AuthLayout from "@/components/auth/auth-layout"
+import AuthForm from "@/components/auth/auth-form"
+import { UserAuthContext } from "@/contexts/user-auth-context"
+import { User as PrismaUser } from "@/generated/prisma"
+import { LoadingContext } from "@/contexts/loading-context"
 
 export default function Component() {
   // Estados horriblemente organizados y con nombres confusos
@@ -51,15 +56,13 @@ export default function Component() {
   const [vehicleForm, setVehicleForm] = useState({})
   const [vehicleMode, setVehicleMode] = useState("list") // list, add, edit, view
   const [selectedVehicle, setSelectedVehicle] = useState(null)
-  const [users, setUsers] = useState([])
+  const [users, setUsers] = useState<PrismaUser[]>([])
   const [diagnostics, setDiagnostics] = useState([])
   const [scannerData, setScannerData] = useState([])
   const [dtcDatabase, setDtcDatabase] = useState([])
   const [symptoms, setSymptoms] = useState([])
   const [solutions, setSolutions] = useState([])
-  const [currentUser, setCurrentUser] = useState(null)
-  const [authMode, setAuthMode] = useState("login") // login, register
-  const [authForm, setAuthForm] = useState({})
+  const [currentUser, setCurrentUser] = useState<PrismaUser | null>(null)
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
   const [uploadedFiles, setUploadedFiles] = useState([])
@@ -393,67 +396,6 @@ export default function Component() {
     }
   }
 
-  // Función gigante para manejar autenticación (HORRIBLE)
-  const handleAuth = (e) => {
-    e.preventDefault()
-    setLoading(true)
-
-    if (authMode === "login") {
-      axios
-      .post("/api/auth/login", {
-        email: authForm.email,
-        password: authForm.password,
-      })
-      .then((res) => {
-        // res.data.user esperado
-        setCurrentUser(res.data.user)
-        setAuthForm({})
-        setErrors({})
-        if (res.data.token) {
-        localStorage.setItem("token", res.data.token)
-        }
-      })
-      .catch((err) => {
-        setErrors({ auth: err.response?.data?.error || err.message || "Credenciales inválidas o usuario inactivo" })
-      })
-    } else {
-      // Registro usando API con axios
-      const newErrors = {}
-      if (!authForm.name || authForm.name.length < 2) newErrors.name = "Nombre requerido"
-      if (!authForm.email || !authForm.email.includes("@")) newErrors.email = "Email inválido"
-      if (!authForm.password || authForm.password.length < 6) newErrors.password = "Contraseña mín 6 caracteres"
-      if (!authForm.role) newErrors.role = "Rol requerido"
-
-      if (Object.keys(newErrors).length === 0) {
-        axios
-          .post("/api/auth/register", {
-             email: authForm.email, 
-             password: authForm.password, 
-             name: authForm.name, 
-             role : authForm.role
-          })
-          .then((res) => {
-            // res.data.user esperado
-            setUsers([...users, res.data.user])
-            setCurrentUser(res.data.user)
-            setAuthForm({})
-            setErrors({})
-            if (res.data.token) {
-              localStorage.setItem("token", res.data.token)
-            }
-          })
-          .catch((err) => {
-        setErrors({ auth: err.response?.data?.error || err.message || "Error al registrar usuario" })
-          })
-      } else {
-        setErrors(newErrors)
-      }
-      
-    }
-
-    setTimeout(() => setLoading(false), 500)
-  }
-
   // Función para subir archivos del escáner y guardarlos en la base de datos
   const handleFileUpload = (e) => {
     const files = Array.from(e.target.files)
@@ -716,103 +658,13 @@ export default function Component() {
   // Si no hay usuario logueado, mostrar login (horrible)
   if (!currentUser) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-muted/50">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Car className="h-6 w-6" />
-              Sistema de Diagnóstico Automotriz
-            </CardTitle>
-            <CardDescription>
-              {authMode === "login" ? "Inicia sesión para continuar" : "Registra una nueva cuenta"}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleAuth} className="space-y-4">
-              {authMode === "register" && (
-                <div>
-                  <Label htmlFor="name">Nombre Completo</Label>
-                  <Input
-                    id="name"
-                    value={authForm.name || ""}
-                    onChange={(e) => setAuthForm({ ...authForm, name: e.target.value })}
-                    className={errors.name ? "border-red-500" : ""}
-                  />
-                  {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
-                </div>
-              )}
-
-              <div>
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={authForm.email || ""}
-                  onChange={(e) => setAuthForm({ ...authForm, email: e.target.value })}
-                  className={errors.email ? "border-red-500" : ""}
-                />
-                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
-              </div>
-
-              <div>
-                <Label htmlFor="password">Contraseña</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={authForm.password || ""}
-                  onChange={(e) => setAuthForm({ ...authForm, password: e.target.value })}
-                  className={errors.password ? "border-red-500" : ""}
-                />
-                {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
-              </div>
-
-              {authMode === "register" && (
-                <div>
-                  <Label htmlFor="role">Rol</Label>
-                  <Select
-                    value={authForm.role || ""}
-                    onValueChange={(value) => setAuthForm({ ...authForm, role: value })}
-                  >
-                    <SelectTrigger className={errors.role ? "border-red-500" : ""}>
-                      <SelectValue placeholder="Seleccionar rol" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="cliente">Cliente</SelectItem>
-                      <SelectItem value="tecnico">Técnico</SelectItem>
-                      <SelectItem value="admin">Administrador</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role}</p>}
-                </div>
-              )}
-
-              {errors.auth && (
-                <Alert>
-                  <AlertTriangle className="h-4 w-4" />
-                  <AlertDescription>{errors.auth}</AlertDescription>
-                </Alert>
-              )}
-
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? "Procesando..." : authMode === "login" ? "Iniciar Sesión" : "Registrarse"}
-              </Button>
-
-              <Button
-                type="button"
-                variant="link"
-                className="w-full"
-                onClick={() => {
-                  setAuthMode(authMode === "login" ? "register" : "login")
-                  setAuthForm({})
-                  setErrors({})
-                }}
-              >
-                {authMode === "login" ? "¿No tienes cuenta? Regístrate" : "¿Ya tienes cuenta? Inicia sesión"}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
+      <LoadingContext.Provider value={{loading, setLoading}}>
+        <UserAuthContext.Provider value={{currentUser, setCurrentUser, users, setUsers}}>
+          <AuthLayout>
+            <AuthForm/>
+          </AuthLayout>
+        </UserAuthContext.Provider>
+      </LoadingContext.Provider>
     )
   }
 
