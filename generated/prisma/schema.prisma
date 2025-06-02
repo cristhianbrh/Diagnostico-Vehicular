@@ -75,21 +75,23 @@ model Symptom {
 }
 
 model Diagnostic {
-  id            Int                 @id @default(autoincrement())
-  vehicleId     Int
-  fecha         DateTime
-  desc          String
-  tecnico       String
-  estado        String
-  detalles      String
-  scannerFileId Int?
-  cost          Int
-  duration      Float
-  solutionText  String?
-  vehicle       Vehicle             @relation(fields: [vehicleId], references: [id])
-  scannerFile   ScannerFile?        @relation(fields: [scannerFileId], references: [id])
-  dtcs          DiagnosticDtc[]
-  symptoms      DiagnosticSymptom[]
+  id               Int                 @id @default(autoincrement())
+  vehicleId        Int
+  fecha            DateTime
+  desc             String
+  tecnico          String
+  estado           String
+  detalles         String
+  scannerFileId    Int?
+  cost             Int
+  duration         Float
+  solutionText     String?
+  noteTecnicSym    String?
+  aditionalSymptom String?
+  vehicle          Vehicle             @relation(fields: [vehicleId], references: [id])
+  scannerFile      ScannerFile?        @relation(fields: [scannerFileId], references: [id])
+  dtcs             DiagnosticDtc[]
+  symptoms         DiagnosticSymptom[]
 }
 
 model DiagnosticDtc {
@@ -102,12 +104,10 @@ model DiagnosticDtc {
 }
 
 model DiagnosticSymptom {
-  diagnosticId     Int
-  symptomId        Int
-  noteTecnic       String?
-  AditionalSymptom String?
-  diagnostic       Diagnostic @relation(fields: [diagnosticId], references: [id])
-  symptom          Symptom    @relation(fields: [symptomId], references: [id])
+  diagnosticId Int
+  symptomId    Int
+  diagnostic   Diagnostic @relation(fields: [diagnosticId], references: [id])
+  symptom      Symptom    @relation(fields: [symptomId], references: [id])
 
   @@id([diagnosticId, symptomId])
 }

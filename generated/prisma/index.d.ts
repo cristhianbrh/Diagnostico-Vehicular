@@ -7922,6 +7922,8 @@ export namespace Prisma {
     cost: number | null
     duration: number | null
     solutionText: string | null
+    noteTecnicSym: string | null
+    aditionalSymptom: string | null
   }
 
   export type DiagnosticMaxAggregateOutputType = {
@@ -7936,6 +7938,8 @@ export namespace Prisma {
     cost: number | null
     duration: number | null
     solutionText: string | null
+    noteTecnicSym: string | null
+    aditionalSymptom: string | null
   }
 
   export type DiagnosticCountAggregateOutputType = {
@@ -7950,6 +7954,8 @@ export namespace Prisma {
     cost: number
     duration: number
     solutionText: number
+    noteTecnicSym: number
+    aditionalSymptom: number
     _all: number
   }
 
@@ -7982,6 +7988,8 @@ export namespace Prisma {
     cost?: true
     duration?: true
     solutionText?: true
+    noteTecnicSym?: true
+    aditionalSymptom?: true
   }
 
   export type DiagnosticMaxAggregateInputType = {
@@ -7996,6 +8004,8 @@ export namespace Prisma {
     cost?: true
     duration?: true
     solutionText?: true
+    noteTecnicSym?: true
+    aditionalSymptom?: true
   }
 
   export type DiagnosticCountAggregateInputType = {
@@ -8010,6 +8020,8 @@ export namespace Prisma {
     cost?: true
     duration?: true
     solutionText?: true
+    noteTecnicSym?: true
+    aditionalSymptom?: true
     _all?: true
   }
 
@@ -8111,6 +8123,8 @@ export namespace Prisma {
     cost: number
     duration: number
     solutionText: string | null
+    noteTecnicSym: string | null
+    aditionalSymptom: string | null
     _count: DiagnosticCountAggregateOutputType | null
     _avg: DiagnosticAvgAggregateOutputType | null
     _sum: DiagnosticSumAggregateOutputType | null
@@ -8144,6 +8158,8 @@ export namespace Prisma {
     cost?: boolean
     duration?: boolean
     solutionText?: boolean
+    noteTecnicSym?: boolean
+    aditionalSymptom?: boolean
     vehicle?: boolean | VehicleDefaultArgs<ExtArgs>
     scannerFile?: boolean | Diagnostic$scannerFileArgs<ExtArgs>
     dtcs?: boolean | Diagnostic$dtcsArgs<ExtArgs>
@@ -8165,9 +8181,11 @@ export namespace Prisma {
     cost?: boolean
     duration?: boolean
     solutionText?: boolean
+    noteTecnicSym?: boolean
+    aditionalSymptom?: boolean
   }
 
-  export type DiagnosticOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "vehicleId" | "fecha" | "desc" | "tecnico" | "estado" | "detalles" | "scannerFileId" | "cost" | "duration" | "solutionText", ExtArgs["result"]["diagnostic"]>
+  export type DiagnosticOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "vehicleId" | "fecha" | "desc" | "tecnico" | "estado" | "detalles" | "scannerFileId" | "cost" | "duration" | "solutionText" | "noteTecnicSym" | "aditionalSymptom", ExtArgs["result"]["diagnostic"]>
   export type DiagnosticInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     vehicle?: boolean | VehicleDefaultArgs<ExtArgs>
     scannerFile?: boolean | Diagnostic$scannerFileArgs<ExtArgs>
@@ -8196,6 +8214,8 @@ export namespace Prisma {
       cost: number
       duration: number
       solutionText: string | null
+      noteTecnicSym: string | null
+      aditionalSymptom: string | null
     }, ExtArgs["result"]["diagnostic"]>
     composites: {}
   }
@@ -8580,6 +8600,8 @@ export namespace Prisma {
     readonly cost: FieldRef<"Diagnostic", 'Int'>
     readonly duration: FieldRef<"Diagnostic", 'Float'>
     readonly solutionText: FieldRef<"Diagnostic", 'String'>
+    readonly noteTecnicSym: FieldRef<"Diagnostic", 'String'>
+    readonly aditionalSymptom: FieldRef<"Diagnostic", 'String'>
   }
     
 
@@ -9967,22 +9989,16 @@ export namespace Prisma {
   export type DiagnosticSymptomMinAggregateOutputType = {
     diagnosticId: number | null
     symptomId: number | null
-    noteTecnic: string | null
-    AditionalSymptom: string | null
   }
 
   export type DiagnosticSymptomMaxAggregateOutputType = {
     diagnosticId: number | null
     symptomId: number | null
-    noteTecnic: string | null
-    AditionalSymptom: string | null
   }
 
   export type DiagnosticSymptomCountAggregateOutputType = {
     diagnosticId: number
     symptomId: number
-    noteTecnic: number
-    AditionalSymptom: number
     _all: number
   }
 
@@ -10000,22 +10016,16 @@ export namespace Prisma {
   export type DiagnosticSymptomMinAggregateInputType = {
     diagnosticId?: true
     symptomId?: true
-    noteTecnic?: true
-    AditionalSymptom?: true
   }
 
   export type DiagnosticSymptomMaxAggregateInputType = {
     diagnosticId?: true
     symptomId?: true
-    noteTecnic?: true
-    AditionalSymptom?: true
   }
 
   export type DiagnosticSymptomCountAggregateInputType = {
     diagnosticId?: true
     symptomId?: true
-    noteTecnic?: true
-    AditionalSymptom?: true
     _all?: true
   }
 
@@ -10108,8 +10118,6 @@ export namespace Prisma {
   export type DiagnosticSymptomGroupByOutputType = {
     diagnosticId: number
     symptomId: number
-    noteTecnic: string | null
-    AditionalSymptom: string | null
     _count: DiagnosticSymptomCountAggregateOutputType | null
     _avg: DiagnosticSymptomAvgAggregateOutputType | null
     _sum: DiagnosticSymptomSumAggregateOutputType | null
@@ -10134,8 +10142,6 @@ export namespace Prisma {
   export type DiagnosticSymptomSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     diagnosticId?: boolean
     symptomId?: boolean
-    noteTecnic?: boolean
-    AditionalSymptom?: boolean
     diagnostic?: boolean | DiagnosticDefaultArgs<ExtArgs>
     symptom?: boolean | SymptomDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["diagnosticSymptom"]>
@@ -10145,11 +10151,9 @@ export namespace Prisma {
   export type DiagnosticSymptomSelectScalar = {
     diagnosticId?: boolean
     symptomId?: boolean
-    noteTecnic?: boolean
-    AditionalSymptom?: boolean
   }
 
-  export type DiagnosticSymptomOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"diagnosticId" | "symptomId" | "noteTecnic" | "AditionalSymptom", ExtArgs["result"]["diagnosticSymptom"]>
+  export type DiagnosticSymptomOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"diagnosticId" | "symptomId", ExtArgs["result"]["diagnosticSymptom"]>
   export type DiagnosticSymptomInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     diagnostic?: boolean | DiagnosticDefaultArgs<ExtArgs>
     symptom?: boolean | SymptomDefaultArgs<ExtArgs>
@@ -10164,8 +10168,6 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       diagnosticId: number
       symptomId: number
-      noteTecnic: string | null
-      AditionalSymptom: string | null
     }, ExtArgs["result"]["diagnosticSymptom"]>
     composites: {}
   }
@@ -10539,8 +10541,6 @@ export namespace Prisma {
   interface DiagnosticSymptomFieldRefs {
     readonly diagnosticId: FieldRef<"DiagnosticSymptom", 'Int'>
     readonly symptomId: FieldRef<"DiagnosticSymptom", 'Int'>
-    readonly noteTecnic: FieldRef<"DiagnosticSymptom", 'String'>
-    readonly AditionalSymptom: FieldRef<"DiagnosticSymptom", 'String'>
   }
     
 
@@ -12930,7 +12930,9 @@ export namespace Prisma {
     scannerFileId: 'scannerFileId',
     cost: 'cost',
     duration: 'duration',
-    solutionText: 'solutionText'
+    solutionText: 'solutionText',
+    noteTecnicSym: 'noteTecnicSym',
+    aditionalSymptom: 'aditionalSymptom'
   };
 
   export type DiagnosticScalarFieldEnum = (typeof DiagnosticScalarFieldEnum)[keyof typeof DiagnosticScalarFieldEnum]
@@ -12946,9 +12948,7 @@ export namespace Prisma {
 
   export const DiagnosticSymptomScalarFieldEnum: {
     diagnosticId: 'diagnosticId',
-    symptomId: 'symptomId',
-    noteTecnic: 'noteTecnic',
-    AditionalSymptom: 'AditionalSymptom'
+    symptomId: 'symptomId'
   };
 
   export type DiagnosticSymptomScalarFieldEnum = (typeof DiagnosticSymptomScalarFieldEnum)[keyof typeof DiagnosticSymptomScalarFieldEnum]
@@ -13061,7 +13061,9 @@ export namespace Prisma {
     tecnico: 'tecnico',
     estado: 'estado',
     detalles: 'detalles',
-    solutionText: 'solutionText'
+    solutionText: 'solutionText',
+    noteTecnicSym: 'noteTecnicSym',
+    aditionalSymptom: 'aditionalSymptom'
   };
 
   export type DiagnosticOrderByRelevanceFieldEnum = (typeof DiagnosticOrderByRelevanceFieldEnum)[keyof typeof DiagnosticOrderByRelevanceFieldEnum]
@@ -13072,14 +13074,6 @@ export namespace Prisma {
   };
 
   export type DiagnosticDtcOrderByRelevanceFieldEnum = (typeof DiagnosticDtcOrderByRelevanceFieldEnum)[keyof typeof DiagnosticDtcOrderByRelevanceFieldEnum]
-
-
-  export const DiagnosticSymptomOrderByRelevanceFieldEnum: {
-    noteTecnic: 'noteTecnic',
-    AditionalSymptom: 'AditionalSymptom'
-  };
-
-  export type DiagnosticSymptomOrderByRelevanceFieldEnum = (typeof DiagnosticSymptomOrderByRelevanceFieldEnum)[keyof typeof DiagnosticSymptomOrderByRelevanceFieldEnum]
 
 
   export const JsonNullValueFilter: {
@@ -13558,6 +13552,8 @@ export namespace Prisma {
     cost?: IntFilter<"Diagnostic"> | number
     duration?: FloatFilter<"Diagnostic"> | number
     solutionText?: StringNullableFilter<"Diagnostic"> | string | null
+    noteTecnicSym?: StringNullableFilter<"Diagnostic"> | string | null
+    aditionalSymptom?: StringNullableFilter<"Diagnostic"> | string | null
     vehicle?: XOR<VehicleScalarRelationFilter, VehicleWhereInput>
     scannerFile?: XOR<ScannerFileNullableScalarRelationFilter, ScannerFileWhereInput> | null
     dtcs?: DiagnosticDtcListRelationFilter
@@ -13576,6 +13572,8 @@ export namespace Prisma {
     cost?: SortOrder
     duration?: SortOrder
     solutionText?: SortOrderInput | SortOrder
+    noteTecnicSym?: SortOrderInput | SortOrder
+    aditionalSymptom?: SortOrderInput | SortOrder
     vehicle?: VehicleOrderByWithRelationInput
     scannerFile?: ScannerFileOrderByWithRelationInput
     dtcs?: DiagnosticDtcOrderByRelationAggregateInput
@@ -13598,6 +13596,8 @@ export namespace Prisma {
     cost?: IntFilter<"Diagnostic"> | number
     duration?: FloatFilter<"Diagnostic"> | number
     solutionText?: StringNullableFilter<"Diagnostic"> | string | null
+    noteTecnicSym?: StringNullableFilter<"Diagnostic"> | string | null
+    aditionalSymptom?: StringNullableFilter<"Diagnostic"> | string | null
     vehicle?: XOR<VehicleScalarRelationFilter, VehicleWhereInput>
     scannerFile?: XOR<ScannerFileNullableScalarRelationFilter, ScannerFileWhereInput> | null
     dtcs?: DiagnosticDtcListRelationFilter
@@ -13616,6 +13616,8 @@ export namespace Prisma {
     cost?: SortOrder
     duration?: SortOrder
     solutionText?: SortOrderInput | SortOrder
+    noteTecnicSym?: SortOrderInput | SortOrder
+    aditionalSymptom?: SortOrderInput | SortOrder
     _count?: DiagnosticCountOrderByAggregateInput
     _avg?: DiagnosticAvgOrderByAggregateInput
     _max?: DiagnosticMaxOrderByAggregateInput
@@ -13638,6 +13640,8 @@ export namespace Prisma {
     cost?: IntWithAggregatesFilter<"Diagnostic"> | number
     duration?: FloatWithAggregatesFilter<"Diagnostic"> | number
     solutionText?: StringNullableWithAggregatesFilter<"Diagnostic"> | string | null
+    noteTecnicSym?: StringNullableWithAggregatesFilter<"Diagnostic"> | string | null
+    aditionalSymptom?: StringNullableWithAggregatesFilter<"Diagnostic"> | string | null
   }
 
   export type DiagnosticDtcWhereInput = {
@@ -13693,8 +13697,6 @@ export namespace Prisma {
     NOT?: DiagnosticSymptomWhereInput | DiagnosticSymptomWhereInput[]
     diagnosticId?: IntFilter<"DiagnosticSymptom"> | number
     symptomId?: IntFilter<"DiagnosticSymptom"> | number
-    noteTecnic?: StringNullableFilter<"DiagnosticSymptom"> | string | null
-    AditionalSymptom?: StringNullableFilter<"DiagnosticSymptom"> | string | null
     diagnostic?: XOR<DiagnosticScalarRelationFilter, DiagnosticWhereInput>
     symptom?: XOR<SymptomScalarRelationFilter, SymptomWhereInput>
   }
@@ -13702,11 +13704,8 @@ export namespace Prisma {
   export type DiagnosticSymptomOrderByWithRelationInput = {
     diagnosticId?: SortOrder
     symptomId?: SortOrder
-    noteTecnic?: SortOrderInput | SortOrder
-    AditionalSymptom?: SortOrderInput | SortOrder
     diagnostic?: DiagnosticOrderByWithRelationInput
     symptom?: SymptomOrderByWithRelationInput
-    _relevance?: DiagnosticSymptomOrderByRelevanceInput
   }
 
   export type DiagnosticSymptomWhereUniqueInput = Prisma.AtLeast<{
@@ -13716,8 +13715,6 @@ export namespace Prisma {
     NOT?: DiagnosticSymptomWhereInput | DiagnosticSymptomWhereInput[]
     diagnosticId?: IntFilter<"DiagnosticSymptom"> | number
     symptomId?: IntFilter<"DiagnosticSymptom"> | number
-    noteTecnic?: StringNullableFilter<"DiagnosticSymptom"> | string | null
-    AditionalSymptom?: StringNullableFilter<"DiagnosticSymptom"> | string | null
     diagnostic?: XOR<DiagnosticScalarRelationFilter, DiagnosticWhereInput>
     symptom?: XOR<SymptomScalarRelationFilter, SymptomWhereInput>
   }, "diagnosticId_symptomId">
@@ -13725,8 +13722,6 @@ export namespace Prisma {
   export type DiagnosticSymptomOrderByWithAggregationInput = {
     diagnosticId?: SortOrder
     symptomId?: SortOrder
-    noteTecnic?: SortOrderInput | SortOrder
-    AditionalSymptom?: SortOrderInput | SortOrder
     _count?: DiagnosticSymptomCountOrderByAggregateInput
     _avg?: DiagnosticSymptomAvgOrderByAggregateInput
     _max?: DiagnosticSymptomMaxOrderByAggregateInput
@@ -13740,8 +13735,6 @@ export namespace Prisma {
     NOT?: DiagnosticSymptomScalarWhereWithAggregatesInput | DiagnosticSymptomScalarWhereWithAggregatesInput[]
     diagnosticId?: IntWithAggregatesFilter<"DiagnosticSymptom"> | number
     symptomId?: IntWithAggregatesFilter<"DiagnosticSymptom"> | number
-    noteTecnic?: StringNullableWithAggregatesFilter<"DiagnosticSymptom"> | string | null
-    AditionalSymptom?: StringNullableWithAggregatesFilter<"DiagnosticSymptom"> | string | null
   }
 
   export type ScannerFileWhereInput = {
@@ -14234,6 +14227,8 @@ export namespace Prisma {
     cost: number
     duration: number
     solutionText?: string | null
+    noteTecnicSym?: string | null
+    aditionalSymptom?: string | null
     vehicle: VehicleCreateNestedOneWithoutDiagnosticsInput
     scannerFile?: ScannerFileCreateNestedOneWithoutDiagnosticsInput
     dtcs?: DiagnosticDtcCreateNestedManyWithoutDiagnosticInput
@@ -14252,6 +14247,8 @@ export namespace Prisma {
     cost: number
     duration: number
     solutionText?: string | null
+    noteTecnicSym?: string | null
+    aditionalSymptom?: string | null
     dtcs?: DiagnosticDtcUncheckedCreateNestedManyWithoutDiagnosticInput
     symptoms?: DiagnosticSymptomUncheckedCreateNestedManyWithoutDiagnosticInput
   }
@@ -14265,6 +14262,8 @@ export namespace Prisma {
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
     solutionText?: NullableStringFieldUpdateOperationsInput | string | null
+    noteTecnicSym?: NullableStringFieldUpdateOperationsInput | string | null
+    aditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
     vehicle?: VehicleUpdateOneRequiredWithoutDiagnosticsNestedInput
     scannerFile?: ScannerFileUpdateOneWithoutDiagnosticsNestedInput
     dtcs?: DiagnosticDtcUpdateManyWithoutDiagnosticNestedInput
@@ -14283,6 +14282,8 @@ export namespace Prisma {
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
     solutionText?: NullableStringFieldUpdateOperationsInput | string | null
+    noteTecnicSym?: NullableStringFieldUpdateOperationsInput | string | null
+    aditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
     dtcs?: DiagnosticDtcUncheckedUpdateManyWithoutDiagnosticNestedInput
     symptoms?: DiagnosticSymptomUncheckedUpdateManyWithoutDiagnosticNestedInput
   }
@@ -14299,6 +14300,8 @@ export namespace Prisma {
     cost: number
     duration: number
     solutionText?: string | null
+    noteTecnicSym?: string | null
+    aditionalSymptom?: string | null
   }
 
   export type DiagnosticUpdateManyMutationInput = {
@@ -14310,6 +14313,8 @@ export namespace Prisma {
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
     solutionText?: NullableStringFieldUpdateOperationsInput | string | null
+    noteTecnicSym?: NullableStringFieldUpdateOperationsInput | string | null
+    aditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticUncheckedUpdateManyInput = {
@@ -14324,6 +14329,8 @@ export namespace Prisma {
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
     solutionText?: NullableStringFieldUpdateOperationsInput | string | null
+    noteTecnicSym?: NullableStringFieldUpdateOperationsInput | string | null
+    aditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticDtcCreateInput = {
@@ -14361,8 +14368,6 @@ export namespace Prisma {
   }
 
   export type DiagnosticSymptomCreateInput = {
-    noteTecnic?: string | null
-    AditionalSymptom?: string | null
     diagnostic: DiagnosticCreateNestedOneWithoutSymptomsInput
     symptom: SymptomCreateNestedOneWithoutDiagnosticsInput
   }
@@ -14370,13 +14375,9 @@ export namespace Prisma {
   export type DiagnosticSymptomUncheckedCreateInput = {
     diagnosticId: number
     symptomId: number
-    noteTecnic?: string | null
-    AditionalSymptom?: string | null
   }
 
   export type DiagnosticSymptomUpdateInput = {
-    noteTecnic?: NullableStringFieldUpdateOperationsInput | string | null
-    AditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
     diagnostic?: DiagnosticUpdateOneRequiredWithoutSymptomsNestedInput
     symptom?: SymptomUpdateOneRequiredWithoutDiagnosticsNestedInput
   }
@@ -14384,27 +14385,20 @@ export namespace Prisma {
   export type DiagnosticSymptomUncheckedUpdateInput = {
     diagnosticId?: IntFieldUpdateOperationsInput | number
     symptomId?: IntFieldUpdateOperationsInput | number
-    noteTecnic?: NullableStringFieldUpdateOperationsInput | string | null
-    AditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticSymptomCreateManyInput = {
     diagnosticId: number
     symptomId: number
-    noteTecnic?: string | null
-    AditionalSymptom?: string | null
   }
 
   export type DiagnosticSymptomUpdateManyMutationInput = {
-    noteTecnic?: NullableStringFieldUpdateOperationsInput | string | null
-    AditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
+
   }
 
   export type DiagnosticSymptomUncheckedUpdateManyInput = {
     diagnosticId?: IntFieldUpdateOperationsInput | number
     symptomId?: IntFieldUpdateOperationsInput | number
-    noteTecnic?: NullableStringFieldUpdateOperationsInput | string | null
-    AditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ScannerFileCreateInput = {
@@ -15028,6 +15022,8 @@ export namespace Prisma {
     cost?: SortOrder
     duration?: SortOrder
     solutionText?: SortOrder
+    noteTecnicSym?: SortOrder
+    aditionalSymptom?: SortOrder
   }
 
   export type DiagnosticAvgOrderByAggregateInput = {
@@ -15050,6 +15046,8 @@ export namespace Prisma {
     cost?: SortOrder
     duration?: SortOrder
     solutionText?: SortOrder
+    noteTecnicSym?: SortOrder
+    aditionalSymptom?: SortOrder
   }
 
   export type DiagnosticMinOrderByAggregateInput = {
@@ -15064,6 +15062,8 @@ export namespace Prisma {
     cost?: SortOrder
     duration?: SortOrder
     solutionText?: SortOrder
+    noteTecnicSym?: SortOrder
+    aditionalSymptom?: SortOrder
   }
 
   export type DiagnosticSumOrderByAggregateInput = {
@@ -15168,12 +15168,6 @@ export namespace Prisma {
     isNot?: SymptomWhereInput
   }
 
-  export type DiagnosticSymptomOrderByRelevanceInput = {
-    fields: DiagnosticSymptomOrderByRelevanceFieldEnum | DiagnosticSymptomOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
   export type DiagnosticSymptomDiagnosticIdSymptomIdCompoundUniqueInput = {
     diagnosticId: number
     symptomId: number
@@ -15182,8 +15176,6 @@ export namespace Prisma {
   export type DiagnosticSymptomCountOrderByAggregateInput = {
     diagnosticId?: SortOrder
     symptomId?: SortOrder
-    noteTecnic?: SortOrder
-    AditionalSymptom?: SortOrder
   }
 
   export type DiagnosticSymptomAvgOrderByAggregateInput = {
@@ -15194,15 +15186,11 @@ export namespace Prisma {
   export type DiagnosticSymptomMaxOrderByAggregateInput = {
     diagnosticId?: SortOrder
     symptomId?: SortOrder
-    noteTecnic?: SortOrder
-    AditionalSymptom?: SortOrder
   }
 
   export type DiagnosticSymptomMinOrderByAggregateInput = {
     diagnosticId?: SortOrder
     symptomId?: SortOrder
-    noteTecnic?: SortOrder
-    AditionalSymptom?: SortOrder
   }
 
   export type DiagnosticSymptomSumOrderByAggregateInput = {
@@ -16298,6 +16286,8 @@ export namespace Prisma {
     cost: number
     duration: number
     solutionText?: string | null
+    noteTecnicSym?: string | null
+    aditionalSymptom?: string | null
     scannerFile?: ScannerFileCreateNestedOneWithoutDiagnosticsInput
     dtcs?: DiagnosticDtcCreateNestedManyWithoutDiagnosticInput
     symptoms?: DiagnosticSymptomCreateNestedManyWithoutDiagnosticInput
@@ -16314,6 +16304,8 @@ export namespace Prisma {
     cost: number
     duration: number
     solutionText?: string | null
+    noteTecnicSym?: string | null
+    aditionalSymptom?: string | null
     dtcs?: DiagnosticDtcUncheckedCreateNestedManyWithoutDiagnosticInput
     symptoms?: DiagnosticSymptomUncheckedCreateNestedManyWithoutDiagnosticInput
   }
@@ -16418,6 +16410,8 @@ export namespace Prisma {
     cost?: IntFilter<"Diagnostic"> | number
     duration?: FloatFilter<"Diagnostic"> | number
     solutionText?: StringNullableFilter<"Diagnostic"> | string | null
+    noteTecnicSym?: StringNullableFilter<"Diagnostic"> | string | null
+    aditionalSymptom?: StringNullableFilter<"Diagnostic"> | string | null
   }
 
   export type ScannerFileUpsertWithWhereUniqueWithoutVehicleInput = {
@@ -16684,15 +16678,11 @@ export namespace Prisma {
   }
 
   export type DiagnosticSymptomCreateWithoutSymptomInput = {
-    noteTecnic?: string | null
-    AditionalSymptom?: string | null
     diagnostic: DiagnosticCreateNestedOneWithoutSymptomsInput
   }
 
   export type DiagnosticSymptomUncheckedCreateWithoutSymptomInput = {
     diagnosticId: number
-    noteTecnic?: string | null
-    AditionalSymptom?: string | null
   }
 
   export type DiagnosticSymptomCreateOrConnectWithoutSymptomInput = {
@@ -16727,8 +16717,6 @@ export namespace Prisma {
     NOT?: DiagnosticSymptomScalarWhereInput | DiagnosticSymptomScalarWhereInput[]
     diagnosticId?: IntFilter<"DiagnosticSymptom"> | number
     symptomId?: IntFilter<"DiagnosticSymptom"> | number
-    noteTecnic?: StringNullableFilter<"DiagnosticSymptom"> | string | null
-    AditionalSymptom?: StringNullableFilter<"DiagnosticSymptom"> | string | null
   }
 
   export type VehicleCreateWithoutDiagnosticsInput = {
@@ -16808,15 +16796,11 @@ export namespace Prisma {
   }
 
   export type DiagnosticSymptomCreateWithoutDiagnosticInput = {
-    noteTecnic?: string | null
-    AditionalSymptom?: string | null
     symptom: SymptomCreateNestedOneWithoutDiagnosticsInput
   }
 
   export type DiagnosticSymptomUncheckedCreateWithoutDiagnosticInput = {
     symptomId: number
-    noteTecnic?: string | null
-    AditionalSymptom?: string | null
   }
 
   export type DiagnosticSymptomCreateOrConnectWithoutDiagnosticInput = {
@@ -16940,6 +16924,8 @@ export namespace Prisma {
     cost: number
     duration: number
     solutionText?: string | null
+    noteTecnicSym?: string | null
+    aditionalSymptom?: string | null
     vehicle: VehicleCreateNestedOneWithoutDiagnosticsInput
     scannerFile?: ScannerFileCreateNestedOneWithoutDiagnosticsInput
     symptoms?: DiagnosticSymptomCreateNestedManyWithoutDiagnosticInput
@@ -16957,6 +16943,8 @@ export namespace Prisma {
     cost: number
     duration: number
     solutionText?: string | null
+    noteTecnicSym?: string | null
+    aditionalSymptom?: string | null
     symptoms?: DiagnosticSymptomUncheckedCreateNestedManyWithoutDiagnosticInput
   }
 
@@ -17008,6 +16996,8 @@ export namespace Prisma {
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
     solutionText?: NullableStringFieldUpdateOperationsInput | string | null
+    noteTecnicSym?: NullableStringFieldUpdateOperationsInput | string | null
+    aditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
     vehicle?: VehicleUpdateOneRequiredWithoutDiagnosticsNestedInput
     scannerFile?: ScannerFileUpdateOneWithoutDiagnosticsNestedInput
     symptoms?: DiagnosticSymptomUpdateManyWithoutDiagnosticNestedInput
@@ -17025,6 +17015,8 @@ export namespace Prisma {
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
     solutionText?: NullableStringFieldUpdateOperationsInput | string | null
+    noteTecnicSym?: NullableStringFieldUpdateOperationsInput | string | null
+    aditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
     symptoms?: DiagnosticSymptomUncheckedUpdateManyWithoutDiagnosticNestedInput
   }
 
@@ -17066,6 +17058,8 @@ export namespace Prisma {
     cost: number
     duration: number
     solutionText?: string | null
+    noteTecnicSym?: string | null
+    aditionalSymptom?: string | null
     vehicle: VehicleCreateNestedOneWithoutDiagnosticsInput
     scannerFile?: ScannerFileCreateNestedOneWithoutDiagnosticsInput
     dtcs?: DiagnosticDtcCreateNestedManyWithoutDiagnosticInput
@@ -17083,6 +17077,8 @@ export namespace Prisma {
     cost: number
     duration: number
     solutionText?: string | null
+    noteTecnicSym?: string | null
+    aditionalSymptom?: string | null
     dtcs?: DiagnosticDtcUncheckedCreateNestedManyWithoutDiagnosticInput
   }
 
@@ -17129,6 +17125,8 @@ export namespace Prisma {
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
     solutionText?: NullableStringFieldUpdateOperationsInput | string | null
+    noteTecnicSym?: NullableStringFieldUpdateOperationsInput | string | null
+    aditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
     vehicle?: VehicleUpdateOneRequiredWithoutDiagnosticsNestedInput
     scannerFile?: ScannerFileUpdateOneWithoutDiagnosticsNestedInput
     dtcs?: DiagnosticDtcUpdateManyWithoutDiagnosticNestedInput
@@ -17146,6 +17144,8 @@ export namespace Prisma {
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
     solutionText?: NullableStringFieldUpdateOperationsInput | string | null
+    noteTecnicSym?: NullableStringFieldUpdateOperationsInput | string | null
+    aditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
     dtcs?: DiagnosticDtcUncheckedUpdateManyWithoutDiagnosticNestedInput
   }
 
@@ -17216,6 +17216,8 @@ export namespace Prisma {
     cost: number
     duration: number
     solutionText?: string | null
+    noteTecnicSym?: string | null
+    aditionalSymptom?: string | null
     vehicle: VehicleCreateNestedOneWithoutDiagnosticsInput
     dtcs?: DiagnosticDtcCreateNestedManyWithoutDiagnosticInput
     symptoms?: DiagnosticSymptomCreateNestedManyWithoutDiagnosticInput
@@ -17232,6 +17234,8 @@ export namespace Prisma {
     cost: number
     duration: number
     solutionText?: string | null
+    noteTecnicSym?: string | null
+    aditionalSymptom?: string | null
     dtcs?: DiagnosticDtcUncheckedCreateNestedManyWithoutDiagnosticInput
     symptoms?: DiagnosticSymptomUncheckedCreateNestedManyWithoutDiagnosticInput
   }
@@ -17368,6 +17372,8 @@ export namespace Prisma {
     cost: number
     duration: number
     solutionText?: string | null
+    noteTecnicSym?: string | null
+    aditionalSymptom?: string | null
   }
 
   export type ScannerFileCreateManyVehicleInput = {
@@ -17388,6 +17394,8 @@ export namespace Prisma {
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
     solutionText?: NullableStringFieldUpdateOperationsInput | string | null
+    noteTecnicSym?: NullableStringFieldUpdateOperationsInput | string | null
+    aditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
     scannerFile?: ScannerFileUpdateOneWithoutDiagnosticsNestedInput
     dtcs?: DiagnosticDtcUpdateManyWithoutDiagnosticNestedInput
     symptoms?: DiagnosticSymptomUpdateManyWithoutDiagnosticNestedInput
@@ -17404,6 +17412,8 @@ export namespace Prisma {
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
     solutionText?: NullableStringFieldUpdateOperationsInput | string | null
+    noteTecnicSym?: NullableStringFieldUpdateOperationsInput | string | null
+    aditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
     dtcs?: DiagnosticDtcUncheckedUpdateManyWithoutDiagnosticNestedInput
     symptoms?: DiagnosticSymptomUncheckedUpdateManyWithoutDiagnosticNestedInput
   }
@@ -17419,6 +17429,8 @@ export namespace Prisma {
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
     solutionText?: NullableStringFieldUpdateOperationsInput | string | null
+    noteTecnicSym?: NullableStringFieldUpdateOperationsInput | string | null
+    aditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ScannerFileUpdateWithoutVehicleInput = {
@@ -17505,26 +17517,18 @@ export namespace Prisma {
 
   export type DiagnosticSymptomCreateManySymptomInput = {
     diagnosticId: number
-    noteTecnic?: string | null
-    AditionalSymptom?: string | null
   }
 
   export type DiagnosticSymptomUpdateWithoutSymptomInput = {
-    noteTecnic?: NullableStringFieldUpdateOperationsInput | string | null
-    AditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
     diagnostic?: DiagnosticUpdateOneRequiredWithoutSymptomsNestedInput
   }
 
   export type DiagnosticSymptomUncheckedUpdateWithoutSymptomInput = {
     diagnosticId?: IntFieldUpdateOperationsInput | number
-    noteTecnic?: NullableStringFieldUpdateOperationsInput | string | null
-    AditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticSymptomUncheckedUpdateManyWithoutSymptomInput = {
     diagnosticId?: IntFieldUpdateOperationsInput | number
-    noteTecnic?: NullableStringFieldUpdateOperationsInput | string | null
-    AditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticDtcCreateManyDiagnosticInput = {
@@ -17533,8 +17537,6 @@ export namespace Prisma {
 
   export type DiagnosticSymptomCreateManyDiagnosticInput = {
     symptomId: number
-    noteTecnic?: string | null
-    AditionalSymptom?: string | null
   }
 
   export type DiagnosticDtcUpdateWithoutDiagnosticInput = {
@@ -17550,21 +17552,15 @@ export namespace Prisma {
   }
 
   export type DiagnosticSymptomUpdateWithoutDiagnosticInput = {
-    noteTecnic?: NullableStringFieldUpdateOperationsInput | string | null
-    AditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
     symptom?: SymptomUpdateOneRequiredWithoutDiagnosticsNestedInput
   }
 
   export type DiagnosticSymptomUncheckedUpdateWithoutDiagnosticInput = {
     symptomId?: IntFieldUpdateOperationsInput | number
-    noteTecnic?: NullableStringFieldUpdateOperationsInput | string | null
-    AditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticSymptomUncheckedUpdateManyWithoutDiagnosticInput = {
     symptomId?: IntFieldUpdateOperationsInput | number
-    noteTecnic?: NullableStringFieldUpdateOperationsInput | string | null
-    AditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DiagnosticCreateManyScannerFileInput = {
@@ -17578,6 +17574,8 @@ export namespace Prisma {
     cost: number
     duration: number
     solutionText?: string | null
+    noteTecnicSym?: string | null
+    aditionalSymptom?: string | null
   }
 
   export type DiagnosticUpdateWithoutScannerFileInput = {
@@ -17589,6 +17587,8 @@ export namespace Prisma {
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
     solutionText?: NullableStringFieldUpdateOperationsInput | string | null
+    noteTecnicSym?: NullableStringFieldUpdateOperationsInput | string | null
+    aditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
     vehicle?: VehicleUpdateOneRequiredWithoutDiagnosticsNestedInput
     dtcs?: DiagnosticDtcUpdateManyWithoutDiagnosticNestedInput
     symptoms?: DiagnosticSymptomUpdateManyWithoutDiagnosticNestedInput
@@ -17605,6 +17605,8 @@ export namespace Prisma {
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
     solutionText?: NullableStringFieldUpdateOperationsInput | string | null
+    noteTecnicSym?: NullableStringFieldUpdateOperationsInput | string | null
+    aditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
     dtcs?: DiagnosticDtcUncheckedUpdateManyWithoutDiagnosticNestedInput
     symptoms?: DiagnosticSymptomUncheckedUpdateManyWithoutDiagnosticNestedInput
   }
@@ -17620,6 +17622,8 @@ export namespace Prisma {
     cost?: IntFieldUpdateOperationsInput | number
     duration?: FloatFieldUpdateOperationsInput | number
     solutionText?: NullableStringFieldUpdateOperationsInput | string | null
+    noteTecnicSym?: NullableStringFieldUpdateOperationsInput | string | null
+    aditionalSymptom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 
