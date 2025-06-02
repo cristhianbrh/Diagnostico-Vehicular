@@ -71,10 +71,14 @@ export default function Component() {
   const [manualDtc, setManualDtc] = useState("")
   const [successMsg, setSuccessMsg] = useState("")
   const [vehicleSelectSymtoms, setVehicleSelectSymtoms] = useState<number>(-1)
+  const [diagnosticSelectSolutions, setDiagnosticSelectSolutions] = useState<number>(-1)
   const fileInputRef = useRef(null)
   useEffect(() => {
     console.log("Current view changed:", currentView)
   }, [currentView])
+  useEffect(() => {
+    setDiagnosticSelectSolutions(-1)
+  }, [vehicleSelectSymtoms])
   // Datos hardcodeados gigantes mezclados con lógica (HORRIBLE)
   useEffect(() => {
     // Mock users con estructura inconsistente
@@ -1973,23 +1977,14 @@ export default function Component() {
                         id="diagnosticSelect"
                         className="w-full border rounded px-2 py-2 mt-1"
                         required
-                        value={
-                          diagnostics
-                            .filter(
-                              (dt) =>
-                                (vehicleSelectSymtoms === -1 ||
-                                  dt.vehicleId === vehicleSelectSymtoms) &&
-                                dt.estado !== "resuelto"
-                            )[0]
-                            ?.id?.toString() || ""
-                        }
-                        onChange={() => {}} // avoid react warning
+                        value={diagnosticSelectSolutions.toString()}
+                        onChange={(e) =>setDiagnosticSelectSolutions(Number(e.target.value))} // avoid react warning
                       >
-                        <option value="">Seleccionar diagnóstico</option>
+                        <option value="-1">Seleccionar diagnóstico</option>
                         {diagnostics
                           .filter(
                             (dt) =>
-                              (vehicleSelectSymtoms === -1 ||
+                             (vehicleSelectSymtoms !== -1 &&
                                 dt.vehicleId === vehicleSelectSymtoms) &&
                               dt.estado !== "resuelto"
                           )
@@ -2187,15 +2182,92 @@ export default function Component() {
                   </CardTitle>
                   <CardDescription>Basado en códigos DTC y síntomas detectados</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <div className="px-5">
+                      <Label htmlFor="vehicleSelect">Vehículo</Label>
+                      <Select
+                        value={
+                          vehicleSelectSymtoms !== -1
+                            ? vehicleSelectSymtoms.toString()
+                            : ""
+                        }
+                        onValueChange={(value) =>
+                          setVehicleSelectSymtoms(Number(value))
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Seleccionar vehículo" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="-1">
+                            Todos los vehículos
+                          </SelectItem>
+                          {vehicleData.map((vehicle) => (
+                            <SelectItem
+                              key={vehicle.id}
+                              value={vehicle.id.toString()}
+                            >
+                              {vehicle.marca} {vehicle.modelo} -{" "}
+                              {vehicle.patente}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="px-5 mt-4">
+                      <Label htmlFor="diagnosticSelect">Diagnóstico</Label>
+                      <select
+                        name="diagnosticSelect"
+                        id="diagnosticSelect"
+                        className="w-full border rounded px-2 py-2 mt-1"
+                        required
+                        value={diagnosticSelectSolutions.toString()}
+                        onChange={(e) =>setDiagnosticSelectSolutions(Number(e.target.value))} // avoid react warning
+                      >
+                        <option value="-1">Seleccionar diagnóstico</option>
+                        {diagnostics
+                          .filter(
+                            (dt) =>
+                              (vehicleSelectSymtoms !== -1 &&
+                                dt.vehicleId === vehicleSelectSymtoms) &&
+                              dt.estado !== "resuelto"
+                          )
+                          .map((diag_dg) => (
+                            <option
+                              key={diag_dg.id}
+                              value={diag_dg.id.toString()}
+                            >
+                              {diag_dg.desc} - {new Date(diag_dg.fecha).toLocaleDateString("es-CL", {
+                                        year: "numeric",
+                                        month: "short",
+                                        day: "2-digit",
+                                      })}
+                                      {" "}
+                                      {new Date(diag_dg.fecha).toLocaleTimeString("es-CL", {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                      })}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                <CardContent className="space-y-4 mt-5">
                   <div>
                     <Label>Códigos DTC Detectados</Label>
                     <div className="mt-2 flex gap-2 flex-wrap">
-                      {["P0301", "P0171", "P0420"].map((code) => (
-                        <Badge key={code} variant="outline" className="font-mono">
-                          {code}
-                        </Badge>
-                      ))}
+                        {(() => {
+                          const selectedDiagnostic = diagnostics.findLast(
+                            (d_find) => d_find.id === diagnosticSelectSolutions
+                          );
+                          console.log(selectedDiagnostic);
+                          if (selectedDiagnostic && Array.isArray(selectedDiagnostic.dtcs)) {
+                            return selectedDiagnostic.dtcs.map((diagn_current: string, idx: number) => (
+                              <Badge key={diagn_current.dtcCode + idx} variant="outline" className="font-mono">
+                                {diagn_current.dtcCode}
+                              </Badge>
+                            ));
+                          }
+                          return null;
+                        })()}
                     </div>
                   </div>
 
