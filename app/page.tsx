@@ -504,7 +504,7 @@ export default function Component() {
           }
 
           // Guardar en la base de datos
-          await axios.post("/api/scanner/upload", newScanData)
+          const scannerUpload = await axios.post("/api/scanner/upload", newScanData)
 
           setScannerData((prev) => [...prev, { id: Date.now(), ...newScanData }])
           setUploadedFiles((prev) => [...prev, file.name])
@@ -513,21 +513,24 @@ export default function Component() {
           if (newScanData.vehicleVin) {
             const vehicle = vehicleData.find((v) => v.vin === newScanData.vehicleVin)
             if (vehicle && dtcCodes.length > 0) {
-              const newDiag = {
-                id: Math.max(...diagnostics.map((d) => d.id), 0) + 1,
-                vehicleId: vehicle.id,
-                fecha: new Date().toISOString().split("T")[0],
-                dtc: dtcCodes,
-                desc: `Diagnóstico automático desde ${file.name}`,
-                tecnico: currentUser?.name || "Sistema",
-                estado: "pendiente",
-                detalles: `Datos importados automáticamente desde escáner`,
-                scannerFile: file.name,
-                symptoms: [],
-                cost: 0,
-                duration: 0,
+              try {
+                const res = await axios.post("/api/diagnostic/create", {
+                  vehicleId: vehicle.id,
+                  fecha: new Date().toISOString(),
+                  // dtc: dtcCodes,
+                  desc: `Diagnóstico automático desde ${file.name}`,
+                  tecnico: currentUser?.name || "Sistema",
+                  estado: "pendiente",
+                  detalles: `Datos importados automáticamente desde escáner`,
+                  // symptoms: [],
+                  scannerFileId: scannerUpload.data.id,
+                  cost: 0,
+                  duration: 0,
+                });
+                setDiagnostics((prev) => [...prev, res.data]);
+              } catch (error) {
+                setErrors({ diagnostic: "Error al crear diagnóstico automáticamente" });
               }
-              setDiagnostics((prev) => [...prev, newDiag])
             }
           }
         } catch (error) {
@@ -1719,17 +1722,17 @@ export default function Component() {
             {/* Base de datos DTC */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {dtcDatabase
-                // .filter((dtc) => {
-                //   const matchesSearch =
-                //     !searchTerm ||
-                //     dtc.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                //     dtc.description.toLowerCase().includes(searchTerm.toLowerCase())
-                //   const matchesSeverity =
-                //     !filters.severity || filters.severity === "all" || dtc.severity === filters.severity
-                //   const matchesCategory =
-                //     !filters.category || filters.category === "all" || dtc.category === filters.category
-                //   return matchesSearch && matchesSeverity && matchesCategory
-                // })
+                .filter((dtc) => {
+                  const matchesSearch =
+                    !searchTerm ||
+                    dtc.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    dtc.description.toLowerCase().includes(searchTerm.toLowerCase())
+                  const matchesSeverity =
+                    !filters.severity || filters.severity === "all" || dtc.severity === filters.severity
+                  const matchesCategory =
+                    !filters.category || filters.category === "all" || dtc.category === filters.category
+                  return matchesSearch && matchesSeverity && matchesCategory
+                })
                 .map((dtc) => (
                   <Card key={dtc.code} className="border-l-4 border-l-blue-500">
                     <CardHeader>

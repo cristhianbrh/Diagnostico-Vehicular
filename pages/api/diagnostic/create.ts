@@ -3,7 +3,10 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Método no permitido" });
   }
@@ -11,39 +14,37 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const {
       vehicleId,
       fecha,
-      dtcs: dtc,
+      dtc,
       desc,
       tecnico,
       estado,
       detalles,
       scannerFile,
-      symptoms,
       cost,
       duration,
-      userId
+      scannerFileId,
     } = req.body;
 
-    if (!vehicleId || !fecha || !dtc || !desc || !tecnico || !estado) {
-      return res.status(400).json({ error: "Faltan campos obligatorios" });
-    }
+    // if (!vehicleId || !fecha || !dtc || !desc || !tecnico || !estado) {
+    //   return res.status(400).json({ error: "Faltan campos obligatorios" });
+    // }
 
     const diagnostic = await prisma.diagnostic.create({
       data: {
         vehicleId,
         fecha,
-        dtcs: dtc,
         desc,
         tecnico,
         estado,
         detalles,
-        scannerFile,
-        symptoms,
         cost,
-        duration
+        duration,
+        scannerFileId,
       },
     });
     res.status(201).json({ diagnostic });
   } catch (error) {
+    console.error("Error creating diagnostic:", error);
     res.status(500).json({ error: "Error al crear diagnóstico" });
   }
 }

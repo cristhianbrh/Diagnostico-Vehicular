@@ -22,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         rawData,
       },
     });
-    res.status(201).json(scannerFile);
+    res.status(201).json({ id: scannerFile.id });
   } catch (error) {
     res.status(500).json({ error: "Error al guardar archivo de escáner" });
   }
