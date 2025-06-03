@@ -48,10 +48,13 @@ import AuthForm from "@/components/auth/auth-form"
 import { UserAuthContext } from "@/contexts/user-auth-context"
 import { User as PrismaUser } from "@/generated/prisma"
 import { LoadingContext } from "@/contexts/loading-context"
+import { MainNavBar } from "@/components/navbar/main-nav-bar"
+import { APP_VIEWS, AppViews } from "@/constants/app-views"
+import { AppViewContext } from "@/contexts/app-view-context"
 
 export default function Component() {
   // Estados horriblemente organizados y con nombres confusos
-  const [currentView, setCurrentView] = useState("vehicles") // vehicles, scanner, dtc, symptoms, solutions, users, reports, help
+  const [currentView, setCurrentView] = useState<AppViews>(APP_VIEWS.VEHICLES) // vehicles, scanner, dtc, symptoms, solutions, users, reports, help
   const [vehicleData, setVehicleData] = useState([])
   const [vehicleForm, setVehicleForm] = useState({})
   const [vehicleMode, setVehicleMode] = useState("list") // list, add, edit, view
@@ -668,114 +671,20 @@ export default function Component() {
     )
   }
 
-  // Navegación principal horrible
-  const mainNav = (
-    <div className="border-b bg-background">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center gap-2">
-            <Car className="h-8 w-8" />
-            <h1 className="text-xl font-bold">AutoDiag Pro</h1>
-          </div>
-
-          <nav className="flex items-center gap-4">
-            <Button
-              variant={currentView === "vehicles" ? "default" : "ghost"}
-              onClick={() => setCurrentView("vehicles")}
-              className="flex items-center gap-2"
-            >
-              <Car className="h-4 w-4" />
-              Vehículos
-            </Button>
-            <Button
-              variant={currentView === "scanner" ? "default" : "ghost"}
-              onClick={() => setCurrentView("scanner")}
-              className="flex items-center gap-2"
-            >
-              <Upload className="h-4 w-4" />
-              Escáner
-            </Button>
-            <Button
-              variant={currentView === "dtc" ? "default" : "ghost"}
-              onClick={() => setCurrentView("dtc")}
-              className="flex items-center gap-2"
-            >
-              <AlertTriangle className="h-4 w-4" />
-              Códigos DTC
-            </Button>
-            <Button
-              variant={currentView === "symptoms" ? "default" : "ghost"}
-              onClick={() => setCurrentView("symptoms")}
-              className="flex items-center gap-2"
-            >
-              <Wrench className="h-4 w-4" />
-              Síntomas
-            </Button>
-            <Button
-              variant={currentView === "solutions" ? "default" : "ghost"}
-              onClick={() => setCurrentView("solutions")}
-              className="flex items-center gap-2"
-            >
-              <CheckCircle className="h-4 w-4" />
-              Soluciones
-            </Button>
-            {currentUser?.role === "admin" && (
-              <Button
-                variant={currentView === "users" ? "default" : "ghost"}
-                onClick={() => setCurrentView("users")}
-                className="flex items-center gap-2"
-              >
-                <User className="h-4 w-4" />
-                Usuarios
-              </Button>
-            )}
-            <Button
-              variant={currentView === "reports" ? "default" : "ghost"}
-              onClick={() => setCurrentView("reports")}
-              className="flex items-center gap-2"
-            >
-              <BarChart3 className="h-4 w-4" />
-              Reportes
-            </Button>
-            <Button
-              variant={currentView === "help" ? "default" : "ghost"}
-              onClick={() => setCurrentView("help")}
-              className="flex items-center gap-2"
-            >
-              <HelpCircle className="h-4 w-4" />
-              Ayuda
-            </Button>
-            
-
-            <div className="flex items-center gap-2 ml-4 border-l pl-4">
-              <span className="text-sm text-muted-foreground">
-                {currentUser.name} ({currentUser.role})
-              </span>
-                <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  localStorage.removeItem("token");
-                  setCurrentUser(null);
-                }}
-                >
-                <LogOut className="h-4 w-4" />
-                </Button>
-            </div>
-          </nav>
-        </div>
-      </div>
-    </div>
-  )
-
   // Renderizado condicional gigante y horrible
   return (
     <div className="min-h-screen bg-background">
-      {mainNav}
+      <AppViewContext.Provider value={{ currentView, setCurrentView }}>
+        <LoadingContext.Provider value={{ loading, setLoading }}>
+          <UserAuthContext.Provider value={{ currentUser, setCurrentUser, users, setUsers }}>
+            <MainNavBar/>
+          </UserAuthContext.Provider>
+        </LoadingContext.Provider>
+      </AppViewContext.Provider>
 
       <div className="container mx-auto p-4">
         {/* RF01 - Gestión de Vehículos (código anterior) */}
-        {currentView === "vehicles" && (
+        {currentView === APP_VIEWS.VEHICLES && (
           <div className="space-y-6">
             {vehicleMode === "list" && (
               <>
@@ -1355,7 +1264,7 @@ export default function Component() {
                 </Card>
 
                 {/* Sección para que el mecánico marque un diagnóstico como resuelto */}
-                {currentView === "vehicles" && vehicleMode === "view" && selectedVehicle && (
+                {currentView === APP_VIEWS.VEHICLES && vehicleMode === "view" && selectedVehicle && (
                   <Card className="my-6">
                     <CardHeader>
                       <CardTitle>Resolver Problema del Vehículo</CardTitle>
@@ -1429,7 +1338,7 @@ export default function Component() {
         )}
 
         {/* RF02 - Recepción de datos del escáner */}
-        {currentView === "scanner" && (
+        {currentView === APP_VIEWS.SCANNER && (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold">Datos del Escáner Automotriz</h2>
@@ -1580,7 +1489,7 @@ export default function Component() {
         )}
 
         {/* RF03 - Interpretación avanzada de códigos DTC */}
-        {currentView === "dtc" && (
+        {currentView === APP_VIEWS.DTC && (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold">Interpretación de Códigos DTC</h2>
@@ -1721,7 +1630,7 @@ export default function Component() {
         )}
 
         {/* RF04 - Registro de síntomas adicionales */}
-        {currentView === "symptoms" && (
+        {currentView === APP_VIEWS.SYMPTOMS && (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold">Registro de Síntomas</h2>
@@ -2021,7 +1930,7 @@ export default function Component() {
         )}
 
         {/* RF05 - Recomendaciones de solución */}
-        {currentView === "solutions" && (
+        {currentView === APP_VIEWS.SOLUTIONS && (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold">Recomendaciones de Solución</h2>
@@ -2262,7 +2171,7 @@ export default function Component() {
         )}
 
         {/* RF06 - Gestión de usuarios */}
-        {currentView === "users" && currentUser?.role === "admin" && (
+        {currentView === APP_VIEWS.USERS && currentUser?.role === "admin" && (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold">Gestión de Usuarios</h2>
@@ -2388,7 +2297,7 @@ export default function Component() {
         )}
 
         {/* RF07 - Historial y reportes */}
-        {currentView === "reports" && (
+        {currentView === APP_VIEWS.REPORTS && (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold">Historial y Reportes</h2>
@@ -2706,7 +2615,7 @@ export default function Component() {
         )}
 
         {/* RF08 - Sistema de soporte / ayuda */}
-        {currentView === "help" && (
+        {currentView === APP_VIEWS.HELP && (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold">Sistema de Ayuda</h2>
