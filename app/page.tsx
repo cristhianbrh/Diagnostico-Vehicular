@@ -46,21 +46,23 @@ import {
 import AuthLayout from "@/components/auth/auth-layout"
 import AuthForm from "@/components/auth/auth-form"
 import { UserAuthContext } from "@/contexts/user-auth-context"
-import { User as PrismaUser } from "@/generated/prisma"
+import { Diagnostic, User as PrismaUser, Vehicle } from "@/generated/prisma"
 import { LoadingContext } from "@/contexts/loading-context"
 import { MainNavBar } from "@/components/navbar/main-nav-bar"
 import { APP_VIEWS, AppViews } from "@/constants/app-views"
 import { AppViewContext } from "@/contexts/app-view-context"
+import { VEHICLE_MODES, VehicleModes } from "@/constants/vehicle-mode"
+import { UserContext } from "@/contexts/user-context"
 
 export default function Component() {
   // Estados horriblemente organizados y con nombres confusos
   const [currentView, setCurrentView] = useState<AppViews>(APP_VIEWS.VEHICLES) // vehicles, scanner, dtc, symptoms, solutions, users, reports, help
-  const [vehicleData, setVehicleData] = useState([])
+  const [vehicleData, setVehicleData] = useState<Vehicle[]>([])
   const [vehicleForm, setVehicleForm] = useState({})
-  const [vehicleMode, setVehicleMode] = useState("list") // list, add, edit, view
-  const [selectedVehicle, setSelectedVehicle] = useState(null)
+  const [vehicleMode, setVehicleMode] = useState<VehicleModes>(VEHICLE_MODES.LIST)
+  const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null)
   const [users, setUsers] = useState<PrismaUser[]>([])
-  const [diagnostics, setDiagnostics] = useState([])
+  const [diagnostics, setDiagnostics] = useState<Diagnostic[]>([])
   const [scannerData, setScannerData] = useState([])
   const [dtcDatabase, setDtcDatabase] = useState([])
   const [symptoms, setSymptoms] = useState([])
@@ -661,13 +663,15 @@ export default function Component() {
   // Si no hay usuario logueado, mostrar login (horrible)
   if (!currentUser) {
     return (
-      <LoadingContext.Provider value={{loading, setLoading}}>
-        <UserAuthContext.Provider value={{currentUser, setCurrentUser, users, setUsers}}>
-          <AuthLayout>
-            <AuthForm/>
-          </AuthLayout>
-        </UserAuthContext.Provider>
-      </LoadingContext.Provider>
+      <UserContext.Provider value={{ users, setUsers } }>
+        <LoadingContext.Provider value={{loading, setLoading}}>
+          <UserAuthContext.Provider value={{currentUser, setCurrentUser}}>
+            <AuthLayout>
+              <AuthForm/>
+            </AuthLayout>
+          </UserAuthContext.Provider>
+        </LoadingContext.Provider>
+      </UserContext.Provider>
     )
   }
 
@@ -676,23 +680,28 @@ export default function Component() {
     <div className="min-h-screen bg-background">
       <AppViewContext.Provider value={{ currentView, setCurrentView }}>
         <LoadingContext.Provider value={{ loading, setLoading }}>
-          <UserAuthContext.Provider value={{ currentUser, setCurrentUser, users, setUsers }}>
-            <MainNavBar/>
-          </UserAuthContext.Provider>
+          <UserContext.Provider value={{ users, setUsers }}>
+            <UserAuthContext.Provider value={{ currentUser, setCurrentUser }}>
+              <MainNavBar/>
+            </UserAuthContext.Provider>
+          </UserContext.Provider>
         </LoadingContext.Provider>
       </AppViewContext.Provider>
 
       <div className="container mx-auto p-4">
         {/* RF01 - Gestión de Vehículos (código anterior) */}
+        {
+          // TODO implement VehicleContext
+        }
         {currentView === APP_VIEWS.VEHICLES && (
           <div className="space-y-6">
-            {vehicleMode === "list" && (
+            {vehicleMode === VEHICLE_MODES.LIST && (
               <>
                 <div className="flex justify-between items-center">
                   <h2 className="text-2xl font-bold">Gestión de Vehículos</h2>
                   <Button
                     onClick={() => {
-                      setVehicleMode("add")
+                      setVehicleMode(VEHICLE_MODES.ADD)
                       setVehicleForm({})
                       setErrors({})
                     }}
@@ -745,7 +754,7 @@ export default function Component() {
                                       variant="outline"
                                       onClick={() => {
                                         setSelectedVehicle(vehicle)
-                                        setVehicleMode("view")
+                                        setVehicleMode(VEHICLE_MODES.VIEW)
                                       }}
                                     >
                                       <Eye className="h-4 w-4" />
@@ -756,7 +765,7 @@ export default function Component() {
                                       onClick={() => {
                                         setSelectedVehicle(vehicle)
                                         setVehicleForm(vehicle)
-                                        setVehicleMode("edit")
+                                        setVehicleMode(VEHICLE_MODES.EDIT)
                                         setErrors({})
                                       }}
                                     >
@@ -772,7 +781,7 @@ export default function Component() {
                                         });
                                           setVehicleData(vehicleData.filter((v) => v.id !== vehicle.id));
                                         if (selectedVehicle && selectedVehicle.id === vehicle.id) {
-                                          setVehicleMode("list");
+                                          setVehicleMode(VEHICLE_MODES.LIST);
                                           setSelectedVehicle(null);
                                         }
                                         } catch (error) {
@@ -796,13 +805,13 @@ export default function Component() {
             )}
 
             {/* Formulario de vehículo (código duplicado horrible) */}
-            {(vehicleMode === "add" || vehicleMode === "edit") && (
+            {(vehicleMode === VEHICLE_MODES.ADD || vehicleMode === VEHICLE_MODES.EDIT) && (
               <div className="max-w-2xl">
                 <div className="flex items-center gap-2 mb-6">
                   <Button
                     variant="outline"
                     onClick={() => {
-                      setVehicleMode("list")
+                      setVehicleMode(VEHICLE_MODES.LIST)
                       setVehicleForm({})
                       setErrors({})
                     }}
@@ -810,7 +819,7 @@ export default function Component() {
                     ← Volver
                   </Button>
                   <h2 className="text-2xl font-bold">
-                    {vehicleMode === "add" ? "Agregar Nuevo Vehículo" : "Editar Vehículo"}
+                    {vehicleMode === VEHICLE_MODES.ADD ? "Agregar Nuevo Vehículo" : "Editar Vehículo"}
                   </h2>
                 </div>
 
@@ -844,7 +853,7 @@ export default function Component() {
                         setErrors(newErrors)
 
                         if (Object.keys(newErrors).length === 0) {
-                          if (vehicleMode === "add") {
+                          if (vehicleMode === VEHICLE_MODES.ADD) {
                             try {
                               const res = await axios.post("/api/vehicle/create", vehicleForm)
                               setVehicleData([...vehicleData, res.data])
@@ -884,7 +893,7 @@ export default function Component() {
                           }
                           
                           setVehicleForm({})
-                          setVehicleMode("list")
+                          setVehicleMode(VEHICLE_MODES.LIST)
                           setSelectedVehicle(null)
                         }
 
@@ -1010,13 +1019,13 @@ export default function Component() {
 
                       <div className="flex gap-2 pt-4">
                         <Button type="submit" disabled={loading}>
-                          {loading ? "Guardando..." : vehicleMode === "add" ? "Agregar" : "Guardar"}
+                          {loading ? "Guardando..." : vehicleMode === VEHICLE_MODES.ADD ? "Agregar" : "Guardar"}
                         </Button>
                         <Button
                           type="button"
                           variant="outline"
                           onClick={() => {
-                            setVehicleMode("list")
+                            setVehicleMode(VEHICLE_MODES.LIST)
                             setVehicleForm({})
                             setErrors({})
                           }}
@@ -1031,10 +1040,10 @@ export default function Component() {
             )}
 
             {/* Vista individual del vehículo (código horrible duplicado) */}
-            {vehicleMode === "view" && selectedVehicle && (
+            {vehicleMode === VEHICLE_MODES.VIEW && selectedVehicle && (
               <div className="space-y-6">
                 <div className="flex items-center gap-2 mb-6">
-                  <Button variant="outline" onClick={() => setVehicleMode("list")}>
+                  <Button variant="outline" onClick={() => setVehicleMode(VEHICLE_MODES.LIST)}>
                     ← Volver
                   </Button>
                   <h2 className="text-2xl font-bold">Detalles del Vehículo</h2>
@@ -1264,7 +1273,7 @@ export default function Component() {
                 </Card>
 
                 {/* Sección para que el mecánico marque un diagnóstico como resuelto */}
-                {currentView === APP_VIEWS.VEHICLES && vehicleMode === "view" && selectedVehicle && (
+                {currentView === APP_VIEWS.VEHICLES && vehicleMode === VEHICLE_MODES.VIEW && selectedVehicle && (
                   <Card className="my-6">
                     <CardHeader>
                       <CardTitle>Resolver Problema del Vehículo</CardTitle>

@@ -4,9 +4,11 @@ import axios from "axios";
 import { AuthErrors, AuthFormData } from "@/types/auth";
 import { UserAuthContext } from "@/contexts/user-auth-context";
 import { LoadingContext } from "@/contexts/loading-context";
+import { UserContext } from "@/contexts/user-context";
 
 export function useAuthForm() {
-  const { setCurrentUser, users, setUsers } = useContext(UserAuthContext);
+  const { setCurrentUser } = useContext(UserAuthContext);
+  const { users, setUsers } = useContext(UserContext)
   const {loading, setLoading} = useContext(LoadingContext);
 
   const [authForm, setAuthForm] = useState<AuthFormData>({})
