@@ -53,6 +53,9 @@ import { APP_VIEWS, AppViews } from "@/constants/app-views"
 import { AppViewContext } from "@/contexts/app-view-context"
 import { VEHICLE_MODES, VehicleModes } from "@/constants/vehicle-mode"
 import { UserContext } from "@/contexts/user-context"
+import { VehicleContext } from "@/contexts/vehicle-context"
+import { DiagnosticTypeContext } from "@/contexts/diagnostic-context"
+import VehicleTable from "@/components/screens/vehicle-list/vehicle-table"
 
 export default function Component() {
   // Estados horriblemente organizados y con nombres confusos
@@ -697,111 +700,126 @@ export default function Component() {
           <div className="space-y-6">
             {vehicleMode === VEHICLE_MODES.LIST && (
               <>
-                <div className="flex justify-between items-center">
-                  <h2 className="text-2xl font-bold">Gestión de Vehículos</h2>
-                  <Button
-                    onClick={() => {
-                      setVehicleMode(VEHICLE_MODES.ADD)
-                      setVehicleForm({})
-                      setErrors({})
-                    }}
-                    className="flex items-center gap-2"
-                  >
-                    <Plus className="h-4 w-4" />
-                    Agregar Vehículo
-                  </Button>
-                </div>
+                <UserContext.Provider value={{ users, setUsers}}>
+                  <DiagnosticTypeContext.Provider value={{ diagnostics, setDiagnostics}}>
+                    <VehicleContext.Provider value={{
+                      vehicleMode, setVehicleMode,
+                      vehicleForm, setVehicleForm,
+                      vehicleData, setVehicleData,
+                      selectedVehicle, setSelectedVehicle
+                    }}>
+                      <VehicleTable/>
 
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Vehículos Registrados</CardTitle>
-                    <CardDescription>Lista de todos los vehículos en el sistema</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="overflow-x-auto">
-                      <table className="w-full border-collapse">
-                        <thead>
-                          <tr className="border-b">
-                            <th className="text-left p-2">Estado</th>
-                            <th className="text-left p-2">Marca</th>
-                            <th className="text-left p-2">Modelo</th>
-                            <th className="text-left p-2">year</th>
-                            <th className="text-left p-2">Patente</th>
-                            <th className="text-left p-2">Propietario</th>
-                            <th className="text-left p-2">Último Diagnóstico</th>
-                            <th className="text-left p-2">Acciones</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {vehicleData && vehicleData.map((vehicle) => {
-                            const status = getVehicleStatus(vehicle)
-                            const StatusIcon = status.icon
-                            return (
-                              <tr key={vehicle.id} className="border-b hover:bg-muted/50">
-                                <td className="p-2">
-                                  <StatusIcon className={`h-5 w-5 text-${status.color}-500`} />
-                                </td>
-                                <td className="p-2 font-medium">{vehicle.marca}</td>
-                                <td className="p-2">{vehicle.modelo}</td>
-                                <td className="p-2">{vehicle.year}</td>
-                                <td className="p-2 font-mono">{vehicle.patente}</td>
-                                <td className="p-2">{getUserName(vehicle.userId)}</td>
-                                <td className="p-2">{vehicle.lastDiag || "Sin diagnósticos"}</td>
-                                <td className="p-2">
-                                  <div className="flex gap-1">
-                                    <Button
-                                      size="sm"
-                                      variant="outline"
-                                      onClick={() => {
-                                        setSelectedVehicle(vehicle)
-                                        setVehicleMode(VEHICLE_MODES.VIEW)
-                                      }}
-                                    >
-                                      <Eye className="h-4 w-4" />
-                                    </Button>
-                                    <Button
-                                      size="sm"
-                                      variant="outline"
-                                      onClick={() => {
-                                        setSelectedVehicle(vehicle)
-                                        setVehicleForm(vehicle)
-                                        setVehicleMode(VEHICLE_MODES.EDIT)
-                                        setErrors({})
-                                      }}
-                                    >
-                                      <Edit className="h-4 w-4" />
-                                    </Button>
-                                    <Button
-                                      size="sm"
-                                      variant="destructive"
-                                      onClick={async () => {
-                                      try {
-                                        await axios.delete(`/api/vehicle/removeById`, {
-                                          params: { id: vehicle.id }
-                                        });
-                                          setVehicleData(vehicleData.filter((v) => v.id !== vehicle.id));
-                                        if (selectedVehicle && selectedVehicle.id === vehicle.id) {
-                                          setVehicleMode(VEHICLE_MODES.LIST);
-                                          setSelectedVehicle(null);
-                                        }
-                                        } catch (error) {
-                                          setErrors({ vehicle: "Error al eliminar vehículo" });
-                                        }
-                                      }}
-                                    >
-                                      <Trash2 className="h-4 w-4" />
-                                    </Button>
-                                  </div>
-                                </td>
-                              </tr>
-                            )
-                          })}
-                        </tbody>
-                      </table>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </VehicleContext.Provider>
+                  </DiagnosticTypeContext.Provider>
+                </UserContext.Provider>
               </>
+              // <>
+              //   <div className="flex justify-between items-center">
+              //     <h2 className="text-2xl font-bold">Gestión de Vehículos</h2>
+              //     <Button
+              //       onClick={() => {
+              //         setVehicleMode(VEHICLE_MODES.ADD)
+              //         setVehicleForm({})
+              //         setErrors({})
+              //       }}
+              //       className="flex items-center gap-2"
+              //     >
+              //       <Plus className="h-4 w-4" />
+              //       Agregar Vehículo
+              //     </Button>
+              //   </div>
+
+              //   <Card>
+              //     <CardHeader>
+              //       <CardTitle>Vehículos Registrados</CardTitle>
+              //       <CardDescription>Lista de todos los vehículos en el sistema</CardDescription>
+              //     </CardHeader>
+              //     <CardContent>
+              //       <div className="overflow-x-auto">
+              //         <table className="w-full border-collapse">
+              //           <thead>
+              //             <tr className="border-b">
+              //               <th className="text-left p-2">Estado</th>
+              //               <th className="text-left p-2">Marca</th>
+              //               <th className="text-left p-2">Modelo</th>
+              //               <th className="text-left p-2">year</th>
+              //               <th className="text-left p-2">Patente</th>
+              //               <th className="text-left p-2">Propietario</th>
+              //               <th className="text-left p-2">Último Diagnóstico</th>
+              //               <th className="text-left p-2">Acciones</th>
+              //             </tr>
+              //           </thead>
+              //           <tbody>
+              //             {vehicleData && vehicleData.map((vehicle) => {
+              //               const status = getVehicleStatus(vehicle)
+              //               const StatusIcon = status.icon
+              //               return (
+              //                 <tr key={vehicle.id} className="border-b hover:bg-muted/50">
+              //                   <td className="p-2">
+              //                     <StatusIcon className={`h-5 w-5 text-${status.color}-500`} />
+              //                   </td>
+              //                   <td className="p-2 font-medium">{vehicle.marca}</td>
+              //                   <td className="p-2">{vehicle.modelo}</td>
+              //                   <td className="p-2">{vehicle.year}</td>
+              //                   <td className="p-2 font-mono">{vehicle.patente}</td>
+              //                   <td className="p-2">{getUserName(vehicle.userId)}</td>
+              //                   <td className="p-2">{vehicle.lastDiag || "Sin diagnósticos"}</td>
+              //                   <td className="p-2">
+              //                     <div className="flex gap-1">
+              //                       <Button
+              //                         size="sm"
+              //                         variant="outline"
+              //                         onClick={() => {
+              //                           setSelectedVehicle(vehicle)
+              //                           setVehicleMode(VEHICLE_MODES.VIEW)
+              //                         }}
+              //                       >
+              //                         <Eye className="h-4 w-4" />
+              //                       </Button>
+              //                       <Button
+              //                         size="sm"
+              //                         variant="outline"
+              //                         onClick={() => {
+              //                           setSelectedVehicle(vehicle)
+              //                           setVehicleForm(vehicle)
+              //                           setVehicleMode(VEHICLE_MODES.EDIT)
+              //                           setErrors({})
+              //                         }}
+              //                       >
+              //                         <Edit className="h-4 w-4" />
+              //                       </Button>
+              //                       <Button
+              //                         size="sm"
+              //                         variant="destructive"
+              //                         onClick={async () => {
+              //                         try {
+              //                           await axios.delete(`/api/vehicle/removeById`, {
+              //                             params: { id: vehicle.id }
+              //                           });
+              //                             setVehicleData(vehicleData.filter((v) => v.id !== vehicle.id));
+              //                           if (selectedVehicle && selectedVehicle.id === vehicle.id) {
+              //                             setVehicleMode(VEHICLE_MODES.LIST);
+              //                             setSelectedVehicle(null);
+              //                           }
+              //                           } catch (error) {
+              //                             setErrors({ vehicle: "Error al eliminar vehículo" });
+              //                           }
+              //                         }}
+              //                       >
+              //                         <Trash2 className="h-4 w-4" />
+              //                       </Button>
+              //                     </div>
+              //                   </td>
+              //                 </tr>
+              //               )
+              //             })}
+              //           </tbody>
+              //         </table>
+              //       </div>
+              //     </CardContent>
+              //   </Card>
+              // </>
             )}
 
             {/* Formulario de vehículo (código duplicado horrible) */}
