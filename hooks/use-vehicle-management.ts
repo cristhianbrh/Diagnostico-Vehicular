@@ -59,7 +59,7 @@ export function useVehicleManagement() {
         console.log(vehicle);
         const diags = diagnostics
             .filter((d) => d.vehicleId === vehicle.id)
-            .sort((a, b) => b.fecha.getTime() - a.fecha.getTime())
+            .sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime())
 
         console.log("diags");
         console.log(diags);
