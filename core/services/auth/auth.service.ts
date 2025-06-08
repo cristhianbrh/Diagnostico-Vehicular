@@ -1,9 +1,10 @@
 import { appUrl } from "@/constants/url-app";
 import { LoginResponse, UserRegister } from "@/types/auth";
-import axios from "axios"
+import { IAuthService } from "./auth.service.interface";
+import axios from "axios";
 
-export class AuthService {
-    public static async login(email: string, password: string) : Promise<LoginResponse> {
+class AuthService implements IAuthService {
+    public async login(email: string, password: string): Promise<LoginResponse> {
         try {
             const response = await axios.post<LoginResponse>(`${appUrl}/api/auth/login`, {
                 email: email,
@@ -17,7 +18,7 @@ export class AuthService {
         }
     }
 
-    public static async register(userRegister : UserRegister) : Promise<LoginResponse> {
+    public async register(userRegister : UserRegister) : Promise<LoginResponse> {
         try {
             const response = await axios.post(`${appUrl}/api/auth/register`, { 
                 email:  userRegister.email,
@@ -33,7 +34,9 @@ export class AuthService {
         }
     }
 
-    public static async logout() {
+    public async logout() {
         localStorage.removeItem("token");
     }
 }
+
+export { AuthService };

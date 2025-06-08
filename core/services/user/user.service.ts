@@ -1,18 +1,17 @@
-import { appUrl } from "@/constants/url-app";
-import { PrismaClient } from "@/generated/prisma";
-import { LoginResponse } from "@/types/auth";
+import { injectable } from 'tsyringe';
 import { UserSummary, UserSummaryEdit } from "@/types/user";
-import axios from "axios";
+import { IUserService } from "./user.service.interface";
+import axios from 'axios';
+import { LoginResponse } from '@/types/auth';
+import { appUrl } from '@/constants/url-app';
+import { PrismaClient } from '@/generated/prisma';
 
 const prisma = new PrismaClient();
 
-type ListParams = {
-    limit?: number;
-    offset?: number;
-}
+@injectable()
+export class UserService implements IUserService {
 
-export class UserService {
-    public static async getCurrentUser() : Promise<UserSummary | null> {
+    public async getCurrentUser(): Promise<UserSummary | null> {
         try {
             const token = localStorage.getItem("token")
             if(!token) return null;
@@ -30,7 +29,7 @@ export class UserService {
         }
     }
 
-    public static async getUserName(userId: number) : Promise<string> {
+    public async getUserName(userId: number): Promise<string> {
         try {
             const { name } = await prisma.user.findUniqueOrThrow({ where: { id: userId } }); 
             return name;
@@ -39,7 +38,7 @@ export class UserService {
         }
     }
 
-    public static async getUsers(listParams?: ListParams) : Promise<UserSummary[]> {
+    public async getUsers(listParams?: { limit?: number; offset?: number; }): Promise<UserSummary[]> {
         const { limit = 10, offset = 0 } = listParams || {};
         try {
             const response = await axios.get<UserSummary[]>(`${appUrl}/api/users/getUsers?limit=${limit}&offset=${offset}`);
@@ -49,8 +48,7 @@ export class UserService {
         }
     }
 
-    // TODO: Need testing
-    public static async updateUser(userId: number, userData: UserSummaryEdit) : Promise<UserSummary | { error?: string }> {
+    public async updateUser(userId: number, userData: UserSummaryEdit): Promise<UserSummary | { error?: string }> {
         try {
             const { data: response } = await axios.put<LoginResponse>(`${appUrl}/api/users/updateUser`, {
                 id: userId,
