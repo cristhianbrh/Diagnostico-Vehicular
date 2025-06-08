@@ -1,4 +1,4 @@
-import { PrismaClient } from "@/generated/prisma";
+import { PrismaClient, User } from "@/generated/prisma";
 
 const prisma = new PrismaClient();
 // npx prisma db seed
@@ -150,10 +150,32 @@ const mockSymptoms = [
   },
 ];
 
+const mockUsers = <User[]>[
+  {
+    name: "Juan",
+    role: "admin",
+    email: "juan@gmail.com",
+    password: "$2b$10$3Znm93OCjo78BZmv3H7by.WmJZMrdmiVBqu/fiUpinLeMvu0YAn4u",
+    active: true,
+  },
+  {
+    name: "Pepe",
+    role: "tecnico",
+    email: "pepe@gmail.com",
+    password: "$2b$10$WsRbjFx3SEGLgvCXgUSAle8mNclHXnuIqpQgc1CCDWq7RaF9irlJq",
+    active: true
+  },
+]
+
 async function main() {
-    for (const symptom of mockSymptoms) {
-      await prisma.symptom.create({ data: symptom });
-    }
+
+  for (const user of mockUsers) {
+    await prisma.user.create({ data: user });
+  }
+
+  for (const symptom of mockSymptoms) {
+    await prisma.symptom.create({ data: symptom });
+  }
 
   for (const dtc of mockDtcDatabase) {
     await prisma.dtc.create({
