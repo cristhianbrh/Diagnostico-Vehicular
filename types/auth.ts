@@ -4,14 +4,14 @@ export type AuthFormData = {
   name?: string;
   email?: string;
   password?: string;
-  role?: string;
+  role?: "admin" | "cliente" | "tecnico";
 }
 
 export type AuthErrors = {
   name?: string;
   email?: string;
   password?: string;
-  role?: string;
+  role?: "admin" | "cliente" | "tecnico";
   auth?: string;
 }
 
