@@ -1,5 +1,5 @@
 import { AuthService } from "@/core/services/auth-service";
-import { Prisma, PrismaClient } from "@/generated/prisma";
+import { PrismaClient } from "@/generated/prisma";
 
 const prisma = new PrismaClient();
 describe("Login user", () => {
