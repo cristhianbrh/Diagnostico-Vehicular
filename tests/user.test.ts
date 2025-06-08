@@ -20,3 +20,25 @@ describe("Get users", () => {
         expect(user).toBe("Juan");
     });
 });
+
+describe("Update user", () => {
+    it("should update an user", async () => {
+
+        //* First user in the seed
+        const updatedUser : any = await service.updateUser(1, {
+            name: "Juan Pablo",
+            role: "cliente"
+        });
+
+        expect(updatedUser.error).toBeUndefined(); 
+
+        expect(updatedUser.name).toBe("Juan Pablo");
+    });
+
+    afterAll(async () => {
+        await service.updateUser(1, {
+            name: "Juan",
+            role: "admin"
+        });
+    });
+});
