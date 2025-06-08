@@ -1,17 +1,19 @@
 import { UserSummary } from "./user";
 
+export type UserRole = "admin" | "cliente" | "tecnico";
+
 export type AuthFormData = {
   name?: string;
   email?: string;
   password?: string;
-  role?: "admin" | "cliente" | "tecnico";
+  role?: UserRole;
 }
 
 export type AuthErrors = {
   name?: string;
   email?: string;
   password?: string;
-  role?: "admin" | "cliente" | "tecnico";
+  role?: string;
   auth?: string;
 }
 
@@ -19,7 +21,7 @@ export type UserRegister = {
   email: string;
   password: string;
   name: string;
-  role: "admin" | "cliente" | "tecnico";
+  role: UserRole;
 }
 
 export type LoginResponse = {

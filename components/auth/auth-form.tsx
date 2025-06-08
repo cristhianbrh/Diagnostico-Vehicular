@@ -6,6 +6,7 @@ import AuthErrorAlert from "./auth-error-alert"
 import FormInput from "@/components/ui/form-input"
 import { AUTH_MODES } from "@/constants/auth-mode"
 import { useAuthForm } from "@/hooks/use-auth-form"
+import { parseUserRole } from "@/lib/utils"
 
 export default function AuthForm() {
 
@@ -63,7 +64,7 @@ export default function AuthForm() {
           {authMode === AUTH_MODES.REGISTER && (
             <AuthRoleSelect
               value={authForm.role || ""}
-              onChange={(e) => setAuthForm({...authForm, role: e})}
+              onChange={(e) => setAuthForm({...authForm, role: parseUserRole(e)})}
               error={errors.role}
             />
           )}
