@@ -1,4 +1,5 @@
 import { PrismaClient } from "@/generated/prisma";
+import { UserSummaryEdit } from "@/types/user";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();
@@ -8,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(405).json({ error: "Método no permitido" });
     }
     try {
-        const { id, ...data } = req.body;
+        const { id, ...data } : { id: number } & UserSummaryEdit = req.body;
         if (!id) {
             return res.status(400).json({ error: "ID de usuario requerido" });
         }

@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
     const authHeader = req.headers.authorization
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        return res.status(401).json({ message: 'No autorizado' })
+        return res.status(401).json({ error: 'No autorizado' })
     }
 
     const token = authHeader.split(' ')[1]
@@ -17,6 +17,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         }
         return res.status(200).json({ user: decoded })
     } catch (error) {
-        return res.status(401).json({ message: 'Token inválido o expirado' })
+        return res.status(401).json({ error: 'Token inválido o expirado' })
     }
 }

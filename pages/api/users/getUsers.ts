@@ -8,6 +8,9 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
+
+    const { limit, offset } = req.query;
+
     try {
       const users = await prisma.user.findMany({
         select: {
@@ -17,6 +20,8 @@ export default async function handler(
           role: true,
           active: true
         },
+        take: limit ? Number(limit) : 10,
+        skip: offset ? Number(offset) : 0,
       });
       res.status(200).json(users);
     } catch (error) {
