@@ -1,32 +1,11 @@
+import { User } from "@/generated/prisma";
+import { CustomResponse } from "./custom-response";
 import { UserSummary } from "./user";
 
 export type UserRole = "admin" | "cliente" | "tecnico";
+export type UserRegister = Pick<User, "email" | "password" | "name" | "role">;
 
-export type AuthFormData = {
-  name?: string;
-  email?: string;
-  password?: string;
-  role?: UserRole;
-}
+export type AuthFormData = Partial<UserRegister>;
+export type AuthErrors = AuthFormData & { auth: string};
 
-export type AuthErrors = {
-  name?: string;
-  email?: string;
-  password?: string;
-  role?: string;
-  auth?: string;
-}
-
-export type UserRegister = {
-  email: string;
-  password: string;
-  name: string;
-  role: UserRole;
-}
-
-export type LoginResponse = {
-  error?: string;
-  message?: string;
-  user?: UserSummary;
-  token?: string;
-}
+export type LoginResponse = CustomResponse<UserSummary>;

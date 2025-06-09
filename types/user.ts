@@ -1,16 +1,7 @@
-import { UserRole } from "./auth";
+import { User } from "@/generated/prisma";
 
-export type UserSummary = {
-  id: number;
-  email: string;
-  name: string;
-  role: UserRole;
-  active?: boolean;
-}
+export type UserSummary = Pick<User, "id" | "email" | "name" | "role"> & Partial<Pick<User, "active">>;
 
-export type UserSummaryEdit = {
-  email?: string;
-  name?: string;
-  role?: UserRole;
-  active?: boolean;
-}
+export type UserSummaryEdit = Partial<
+  Pick<User, "email" | "name" | "role" | "active">
+>;
