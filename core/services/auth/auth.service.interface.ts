@@ -1,7 +1,8 @@
-import { LoginResponse, UserRegister } from "@/types/auth";
+import { UserRegister } from "@/types/auth";
+import { UserResponse } from "@/types/user";
 
 export interface IAuthService {
-    login(email: string, password: string): Promise<LoginResponse>;
-    register(userRegister: UserRegister): Promise<LoginResponse>;
+    login(email: string, password: string): Promise<UserResponse>;
+    register(userRegister: UserRegister): Promise<UserResponse>;
     logout(): void;
 }

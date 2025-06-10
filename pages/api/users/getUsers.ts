@@ -1,11 +1,13 @@
 import { PrismaClient } from "@/generated/prisma";
+import { ApiResponse } from "@/types/custom-response";
+import { UserSummary } from "@/types/user";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<ApiResponse<UserSummary[]>>
 ) {
   if (req.method === "GET") {
 
@@ -23,7 +25,7 @@ export default async function handler(
         take: limit ? Number(limit) : 10,
         skip: offset ? Number(offset) : 0,
       });
-      res.status(200).json(users);
+      res.status(200).json({data: users});
     } catch (error) {
       res.status(500).json({ error: "Error fetching users" });
     }

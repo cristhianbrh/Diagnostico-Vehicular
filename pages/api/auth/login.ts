@@ -2,12 +2,13 @@ import bcrypt from "bcrypt";
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt from "jsonwebtoken";
 import { PrismaClient } from "@/generated/prisma";
+import { UserResponse } from "@/types/user";
 
 const prisma = new PrismaClient();
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<UserResponse>
 ) {
   if (req.method !== "POST") return res.status(405).end();
 
@@ -30,8 +31,8 @@ export default async function handler(
     );
     res.status(200).json({
       message: "Login exitoso",
-      user: { id: user.id, email: user.email, name: user.name, role: user.role },
-      token,
+      data: { id: user.id, email: user.email, name: user.name, role: user.role },
+      token: token
     });
   } catch (error) {
     res.status(500).json({ error: "Error en el servidor" });

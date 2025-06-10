@@ -2,12 +2,13 @@ import { PrismaClient } from "@/generated/prisma";
 import bcrypt from "bcrypt";
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt from "jsonwebtoken";
+import { UserResponse } from "@/types/user";
 
 const prisma = new PrismaClient();
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<UserResponse>
 ) {
   if (req.method !== "POST") return res.status(405).end();
 
@@ -32,15 +33,15 @@ export default async function handler(
     );
     res.status(201).json({
       message: "Login exitoso",
-      user: {
+      data: {
         id: user.id,
         email: user.email,
         name: user.name,
-        role: user.role,
+        role: user.role
       },
       token,
     });
   } catch (error) {
-    res.status(400).json({ error: "User already exists or error" });
+    res.status(400).json({ error: "Usuario ya existente o hubo un error inesperado" });
   }
 }

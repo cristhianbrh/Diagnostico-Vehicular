@@ -5,18 +5,18 @@ const service = container.resolve<IUserService>("IUserService");
 
 describe("Get users", () => {
     it("should get users", async () => {
-        let users = await service.getUsers();
-        expect(users.length).toBeGreaterThan(0);
+        let response = await service.getUsers();
+        expect(response.data?.length).toBeGreaterThan(0);
         
-        users = await service.getUsers({limit: 1});
-        expect(users.length).toBe(1);
+        response = await service.getUsers({limit: 1});
+        expect(response.data?.length).toBe(1);
 
-        users = await service.getUsers({offset: 1});
-        expect(users.length).toBe(1);
+        response = await service.getUsers({offset: 1});
+        expect(response.data?.length).toBe(1);
     });
 
     it("should get user name by id", async () => {
-        const user = await service.getUserName(1);
+        const {data:user} = await service.getUserName(1);
         expect(user).toBe("Juan");
     });
 });
@@ -25,14 +25,14 @@ describe("Update user", () => {
     it("should update an user", async () => {
 
         //* First user in the seed
-        const updatedUser : any = await service.updateUser(1, {
+        const {data: updatedUser, error} = await service.updateUser(1, {
             name: "Juan Pablo",
             role: "cliente"
         });
 
-        expect(updatedUser.error).toBeUndefined(); 
+        expect(error).toBeUndefined(); 
 
-        expect(updatedUser.name).toBe("Juan Pablo");
+        expect(updatedUser?.name).toBe("Juan Pablo");
     });
 
     afterAll(async () => {

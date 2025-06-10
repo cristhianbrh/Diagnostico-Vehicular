@@ -1,70 +1,65 @@
 import { injectable } from 'tsyringe';
-import { UserSummary, UserSummaryEdit } from "@/types/user";
+import { UserResponse, UserSummary, UserSummaryEdit } from "@/types/user";
 import { IUserService } from "./user.service.interface";
 import axios from 'axios';
-import { LoginResponse } from '@/types/auth';
 import { appUrl } from '@/constants/url-app';
 import { PrismaClient } from '@/generated/prisma';
+import { parseError } from '@/lib/utils';
+import { ApiResponse } from '@/types/custom-response';
 
 const prisma = new PrismaClient();
 
 @injectable()
 export class UserService implements IUserService {
 
-    public async getCurrentUser(): Promise<UserSummary | null> {
+    public async getCurrentUser(): Promise<UserResponse> {
         try {
             const token = localStorage.getItem("token")
-            if(!token) return null;
-            const response = await axios.get<LoginResponse>(`${appUrl}/api/auth/me`, { headers: { Authorization: `Bearer ${token}` } });
-            const userSummary = response.data.user!;
-            return {
-                id: userSummary.id,
-                name: userSummary.name,
-                email: userSummary.email,
-                role: userSummary.role,
-            }
+            if(!token) return { error: "No se ha iniciado sesión" };
+
+            const { data: { data: user, error} } = await axios.get<UserResponse>(
+                `${appUrl}/api/auth/me`,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            if(user) return { data: user };
+            return { error };
         } catch (error: any) {
             localStorage.removeItem("token");
-            return null;
+            return { error: parseError(error) };
         }
     }
 
-    public async getUserName(userId: number): Promise<string> {
+    public async getUserName(userId: number): Promise<ApiResponse<string>> {
         try {
-            const { name } = await prisma.user.findUniqueOrThrow({ where: { id: userId } }); 
-            return name;
+            const { name: data } = await prisma.user.findUniqueOrThrow({ where: { id: userId } }); 
+            return { data };
         } catch (error: any) {
-            return "Usuario no encontrado";
+            return {error: parseError(error)};
         }
     }
 
-    public async getUsers(listParams?: { limit?: number; offset?: number; }): Promise<UserSummary[]> {
+    public async getUsers(listParams?: { limit?: number; offset?: number; }): Promise<ApiResponse<UserSummary[]>> {
         const { limit = 10, offset = 0 } = listParams || {};
         try {
-            const response = await axios.get<UserSummary[]>(`${appUrl}/api/users/getUsers?limit=${limit}&offset=${offset}`);
-            return response.data;
+            const { data: response } = await axios.get<ApiResponse<UserSummary[]>>(`${appUrl}/api/users/getUsers?limit=${limit}&offset=${offset}`);
+            return response;
         } catch (error: any) {
-            return [];
+            return { error: parseError(error) };
         }
     }
 
-    public async updateUser(userId: number, userData: UserSummaryEdit): Promise<UserSummary | { error?: string }> {
+    public async updateUser(userId: number, userData: UserSummaryEdit): Promise<UserResponse> {
         try {
-            const { data: response } = await axios.put<LoginResponse>(`${appUrl}/api/users/updateUser`, {
+            const { data: { data: user, error } } = await axios.put<UserResponse>(`${appUrl}/api/users/updateUser`, {
                 id: userId,
                 ...userData
             });
 
-            if(response.user === undefined) return { error: response.error! };
-
-            return {
-                id: response.user.id,
-                name: response.user.name,
-                email: response.user.email,
-                role: response.user.role,
-            };
+            if(user) return { data: user };
+            return { error };
         } catch (error: any) {
-            return { error: error.response?.data?.error || error.message || "Error al actualizar usuario" };
+            return { error: parseError(error) };
         }
     }
 }

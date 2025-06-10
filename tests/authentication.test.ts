@@ -14,7 +14,7 @@ describe("Login user", () => {
         
         expect(badPasswordResponse.error).toBe("Credenciales inválidas");
         expect(userNotFoundResponse.error).toBe("Usuario no encontrado o inactivo");
-        expect(goodResponse.user).toBeDefined();
+        expect(goodResponse.data).toBeDefined();
     });
 });
 
@@ -28,7 +28,7 @@ describe("Register user", () => {
             role: "cliente",
         });
 
-        expect(response.user).toBeDefined();
+        expect(response.data).toBeDefined();
     });
 
     it("should not register a user with the same email", async () => {
@@ -39,7 +39,7 @@ describe("Register user", () => {
             role: "cliente",
         });
 
-        expect(response.error).toBe("User already exists or error");
+        expect(response.error).toBe("Usuario ya existente o hubo un error inesperado");
     });
 
     afterAll(async () => {
