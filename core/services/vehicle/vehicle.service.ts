@@ -1,6 +1,6 @@
-import { ApiResponse } from "@/types/custom-response";
+import { ApiResponse } from "@/types/custom-response.type";
 import { IVehicleService } from "./vehicle.service.interface";
-import { VehicleCreate, VehicleUpdate } from "@/types/vehicle";
+import { VehicleCreate, VehicleUpdate } from "@/types/vehicle.type";
 import axios from "axios";
 import { parseError } from "@/lib/utils";
 import { Vehicle } from "@/generated/prisma";

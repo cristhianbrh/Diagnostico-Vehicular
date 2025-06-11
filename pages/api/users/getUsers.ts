@@ -1,6 +1,6 @@
 import { PrismaClient } from "@/generated/prisma";
-import { ApiResponse } from "@/types/custom-response";
-import { UserSummary } from "@/types/user";
+import { ApiResponse } from "@/types/custom-response.type";
+import { UserSummary } from "@/types/user.type";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();

@@ -1,7 +1,7 @@
-import { UserRegister } from "@/types/auth";
+import { UserRegister } from "@/types/auth.type";
 import { IAuthService } from "./auth.service.interface";
 import axios from "axios";
-import { UserResponse } from "@/types/user";
+import { UserResponse } from "@/types/user.type";
 import { parseError } from "@/lib/utils";
 
 class AuthService implements IAuthService {

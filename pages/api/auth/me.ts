@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import jwt from 'jsonwebtoken'
-import { UserResponse } from '@/types/user'
+import { UserResponse } from '@/types/user.type'
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<UserResponse>) {
     const authHeader = req.headers.authorization

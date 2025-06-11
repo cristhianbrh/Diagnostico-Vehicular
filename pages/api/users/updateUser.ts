@@ -1,5 +1,5 @@
 import { PrismaClient } from "@/generated/prisma";
-import { UserSummaryEdit } from "@/types/user";
+import { UserSummaryEdit } from "@/types/user.type";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();

@@ -1,5 +1,5 @@
-import { ApiResponse } from "@/types/custom-response";
-import { UserResponse, UserSummary, UserSummaryEdit } from "@/types/user";
+import { ApiResponse } from "@/types/custom-response.type";
+import { UserResponse, UserSummary, UserSummaryEdit } from "@/types/user.type";
 
 export interface IUserService {
     getCurrentUser(): Promise<UserResponse>;

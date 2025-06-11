@@ -1,7 +1,7 @@
 import { useContext, useState } from "react"
 import { AUTH_MODES, AuthMode } from "@/constants/auth-mode"
 import axios from "axios";
-import { AuthErrors, AuthFormData } from "@/types/auth";
+import { AuthErrors, AuthFormData } from "@/types/auth.type";
 import { UserAuthContext } from "@/contexts/user-auth-context";
 import { LoadingContext } from "@/contexts/loading-context";
 import { UserContext } from "@/contexts/user-context";

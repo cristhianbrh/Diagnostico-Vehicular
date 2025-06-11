@@ -1,4 +1,4 @@
-import { ApiResponse } from "@/types/custom-response";
+import { ApiResponse } from "@/types/custom-response.type";
 import { IDtcService } from "./dtc.service.interface";
 import { Dtc } from "@/generated/prisma";
 import axios from "axios";

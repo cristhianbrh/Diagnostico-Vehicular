@@ -1,5 +1,5 @@
 import { User } from "@/generated/prisma";
-import { ApiResponse } from "./custom-response";
+import { ApiResponse } from "./custom-response.type";
 
 export type UserSummary = Pick<User, "id" | "email" | "name" | "role"> & Partial<Pick<User, "active">>;
 

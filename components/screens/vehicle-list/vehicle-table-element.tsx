@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Vehicle } from "@/generated/prisma";
 import { useUser } from "@/hooks/use-user";
 import { useVehicleManagement } from "@/hooks/use-vehicle-management";
-import { AppStatus } from "@/types/app-status";
+import { AppStatus } from "@/types/app-status.type";
 import { Edit, Eye, LucideProps, Trash2 } from "lucide-react";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 

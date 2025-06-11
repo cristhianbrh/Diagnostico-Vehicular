@@ -1,10 +1,10 @@
 import { injectable } from 'tsyringe';
-import { UserResponse, UserSummary, UserSummaryEdit } from "@/types/user";
+import { UserResponse, UserSummary, UserSummaryEdit } from "@/types/user.type";
 import { IUserService } from "./user.service.interface";
 import axios from 'axios';
 import { PrismaClient } from '@/generated/prisma';
 import { parseError } from '@/lib/utils';
-import { ApiResponse } from '@/types/custom-response';
+import { ApiResponse } from '@/types/custom-response.type';
 
 const prisma = new PrismaClient();
 

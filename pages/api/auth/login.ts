@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt from "jsonwebtoken";
 import { PrismaClient } from "@/generated/prisma";
-import { UserResponse } from "@/types/user";
+import { UserResponse } from "@/types/user.type";
 
 const prisma = new PrismaClient();
 

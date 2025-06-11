@@ -1,6 +1,6 @@
 import { Vehicle } from "@/generated/prisma";
-import { ApiResponse } from "@/types/custom-response";
-import { VehicleCreate, VehicleUpdate } from "@/types/vehicle";
+import { ApiResponse } from "@/types/custom-response.type";
+import { VehicleCreate, VehicleUpdate } from "@/types/vehicle.type";
 
 export interface IVehicleService {
     createVehicle(vehicle: VehicleCreate): Promise<ApiResponse<Vehicle>>;

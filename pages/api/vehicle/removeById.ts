@@ -1,5 +1,5 @@
 import { PrismaClient, Vehicle } from "@/generated/prisma";
-import { ApiResponse } from "@/types/custom-response";
+import { ApiResponse } from "@/types/custom-response.type";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();

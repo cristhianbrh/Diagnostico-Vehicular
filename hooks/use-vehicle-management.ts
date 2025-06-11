@@ -2,7 +2,7 @@ import { VEHICLE_MODES } from "@/constants/vehicle-mode";
 import { DiagnosticTypeContext } from "@/contexts/diagnostic-context";
 import { VehicleContext } from "@/contexts/vehicle-context";
 import { Vehicle } from "@/generated/prisma";
-import { AppStatus } from "@/types/app-status";
+import { AppStatus } from "@/types/app-status.type";
 import axios from "axios";
 import { AlertTriangle, CheckCircle, Clock } from "lucide-react";
 import { useContext, useState } from "react";

@@ -1,28 +1,30 @@
 import { PrismaClient } from "@/generated/prisma";
+import { ApiResponse } from "@/types/custom-response.type";
+import { ScannerFileCreate } from "@/types/scanner.type";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiResponse<number>>) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Método no permitido" });
   }
 
-  const { fileName, uploadDate, vehicleVin, scannerType, dtcCodes, status, rawData } = req.body;
+  const { fileName, uploadDate, vehicleVin, scannerType, status, rawData } : ScannerFileCreate = req.body;
 
   console.log("Received data:", req.body)
   try {
     const scannerFile = await prisma.scannerFile.create({
       data: {
         fileName,
-        uploadDate: new Date(uploadDate),
+        uploadDate,
         vehicleVin,
         scannerType,
         status,
         rawData,
       },
     });
-    res.status(201).json({ id: scannerFile.id });
+    res.status(201).json({ data: scannerFile.id });
   } catch (error) {
     res.status(500).json({ error: "Error al guardar archivo de escáner" });
   }
