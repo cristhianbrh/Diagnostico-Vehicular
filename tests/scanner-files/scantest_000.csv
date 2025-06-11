@@ -1,0 +1,4 @@
+vin,make,model,year,protocol,scanner_manufacturer,scanner_model,scanner_software_version,scan_time,mil_status,dtc_count,dtc_code,dtc_status,misfire_monitor,fuel_system_monitor,catalyst_monitor,evap_monitor,oxygen_sensor_monitor
+WS123456789456878,Mercedes,SLK,2003,ISO 15765-4 (CAN),Autel,MaxiCOM MK808,v2.20.145,2025-06-11T14:35:00Z,true,3,P0128,Confirmed,Completed,Completed,Not Completed,Completed,Completed
+WS123456789456878,Mercedes,SLK,2003,ISO 15765-4 (CAN),Autel,MaxiCOM MK808,v2.20.145,2025-06-11T14:35:00Z,true,3,P0171,Confirmed,Completed,Completed,Not Completed,Completed,Completed
+WS123456789456878,Mercedes,SLK,2003,ISO 15765-4 (CAN),Autel,MaxiCOM MK808,v2.20.145,2025-06-11T14:35:00Z,true,3,P0420,Confirmed,Completed,Completed,Not Completed,Completed,Completed

@@ -1,0 +1,42 @@
+{
+  "vehicle": {
+    "vin": "WS123456789456878",
+    "make": "Mercedes",
+    "model": "SLK",
+    "year": 2003,
+    "protocol": "ISO 15765-4 (CAN)"
+  },
+  "scanner": {
+    "manufacturer": "Autel",
+    "model": "MaxiCOM MK808",
+    "software_version": "v2.20.145",
+    "scan_time": "2025-06-11T14:35:00Z"
+  },
+  "dtc_report": {
+    "mil_status": true,
+    "dtc_count": 3,
+    "confirmed_dtcs": [
+      {
+        "code": "P0128",
+        "status": "Confirmed"
+      },
+      {
+        "code": "P0171",
+        "status": "Confirmed"
+      },
+      {
+        "code": "P0420",
+        "status": "Confirmed"
+      }
+    ],
+    "pending_dtcs": [],
+    "permanent_dtcs": []
+  },
+  "system_checks": {
+    "misfire_monitor": "Completed",
+    "fuel_system_monitor": "Completed",
+    "catalyst_monitor": "Not Completed",
+    "evap_monitor": "Completed",
+    "oxygen_sensor_monitor": "Completed"
+  }
+}
