@@ -5,11 +5,13 @@ import { IUserService } from './services/user/user.service.interface';
 import { IAuthService } from './services/auth/auth.service.interface';
 import { IVehicleService } from './services/vehicle/vehicle.service.interface';
 import { IDtcService } from './services/dtc/dtc.service.interface';
+import { IScannerService } from './services/scanner/scanner.service.interface';
 
 import { UserService } from './services/user/user.service';
 import { AuthService } from './services/auth/auth.service';
 import { VehicleService } from './services/vehicle/vehicle.service';
 import { DtcService } from './services/dtc/dtc.service';
+import { ScannerService } from './services/scanner/scanner.service';
 
 container.register<IUserService>('IUserService', {
   useClass: UserService,
@@ -25,6 +27,10 @@ container.register<IVehicleService>('IVehicleService', {
 
 container.register<IDtcService>('IDtcService', {
   useClass: DtcService,
+});
+
+container.register<IScannerService>('IScannerService', {
+  useClass: ScannerService,
 });
 
 export { container };

@@ -1,4 +1,5 @@
-import { PrismaClient, User, Vehicle } from "@/generated/prisma";
+import { PrismaClient, ScannerFile, User, Vehicle } from "@/generated/prisma";
+import { InputJsonValue } from "@/generated/prisma/runtime/library";
 
 const prisma = new PrismaClient();
 // npx prisma db seed
@@ -196,6 +197,27 @@ const mockVehicles: Vehicle[] = [
   },
 ]
 
+const mockScannerFiles: ScannerFile[] = [
+  {
+    id: 1,
+    fileName: "scan_001.json",
+    uploadDate: new Date(),
+    vehicleVin: "WS123456789456878",
+    scannerType: "OBD2 Pro",
+    status: "processed",
+    rawData: { rpm: 800, coolantTemp: 85, fuelTrim: -5.2, o2Sensor: 0.45 },
+  },
+  {
+    id: 2,
+    fileName: "scan_002.csv",
+    uploadDate: new Date(),
+    vehicleVin: "WS123456789654321",
+    scannerType: "AutoScan X1",
+    status: "processed",
+    rawData: { rpm: 750, coolantTemp: 90, fuelTrim: 2.1, o2Sensor: 0.52 },
+  },
+]
+
 async function main() {
 
   for (const user of mockUsers) {
@@ -225,6 +247,19 @@ async function main() {
         },
       },
     });
+  }
+
+  for (const scannerFile of mockScannerFiles) {
+    await prisma.scannerFile.create({ data: {
+      id: scannerFile.id,
+      fileName: scannerFile.fileName,
+      uploadDate: scannerFile.uploadDate,
+      vehicleVin: scannerFile.vehicleVin,
+      scannerType: scannerFile.scannerType,
+      status: scannerFile.status,
+      rawData: scannerFile.rawData as InputJsonValue,
+      
+    }});
   }
 
   console.log("✔ Todo insertado correctamente");
