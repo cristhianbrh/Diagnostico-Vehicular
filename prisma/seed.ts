@@ -1,4 +1,4 @@
-import { PrismaClient, User } from "@/generated/prisma";
+import { PrismaClient, User, Vehicle } from "@/generated/prisma";
 
 const prisma = new PrismaClient();
 // npx prisma db seed
@@ -167,10 +167,43 @@ const mockUsers = <User[]>[
   },
 ]
 
+const mockVehicles: Vehicle[] = [
+  {
+    id: 1,
+    marca: "Mercedes",
+    modelo: "SLK",
+    year: 2021,
+    motor: "gasolina",
+    vin: "WS123456789456878",
+    patente: "123456789",
+    km: 100,
+    userId: 1,
+    lastDiag: new Date(),
+    fechaAdq: new Date(),
+  },
+  {
+    id: 2,
+    marca: "BMW",
+    modelo: "X6",
+    year: 2021,
+    motor: "gasolina",
+    vin: "WS123456789654321",
+    patente: "123456789",
+    km: 100,
+    userId: 1,
+    lastDiag: new Date(),
+    fechaAdq: new Date(),
+  },
+]
+
 async function main() {
 
   for (const user of mockUsers) {
     await prisma.user.create({ data: user });
+  }
+
+  for (const vehicle of mockVehicles) {
+    await prisma.vehicle.create({ data: vehicle });
   }
 
   for (const symptom of mockSymptoms) {
