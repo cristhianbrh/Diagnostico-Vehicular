@@ -1,6 +1,6 @@
 import { ApiResponse } from "@/types/custom-response";
 import { IVehicleService } from "./vehicle.service.interface";
-import { VehicleCreate } from "@/types/vehicle";
+import { VehicleCreate, VehicleUpdate } from "@/types/vehicle";
 import axios from "axios";
 import { parseError } from "@/lib/utils";
 import { appUrl } from "@/constants/url-app";
@@ -20,12 +20,15 @@ export class VehicleService implements IVehicleService {
         }
     }
 
-    public async updateById(vehicle: VehicleCreate): Promise<ApiResponse<VehicleCreate>> {
+    public async updateById(vehicle: VehicleUpdate): Promise<ApiResponse<VehicleCreate>> {
         try {
             const { data: response } = await axios.put<ApiResponse<VehicleCreate>>(`${appUrl}/api/vehicle/updateById`, vehicle);
             return response;
         }
         catch (error: any) {
+            if(axios.isAxiosError(error)) {
+                return error.response?.data;
+            }
             return { error: parseError(error) };
         }
     }

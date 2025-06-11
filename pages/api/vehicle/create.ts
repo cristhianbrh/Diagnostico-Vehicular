@@ -1,4 +1,4 @@
-import { PrismaClient } from "@/generated/prisma";
+import { PrismaClient, Vehicle } from "@/generated/prisma";
 import { ApiResponse } from "@/types/custom-response";
 import { VehicleCreate } from "@/types/vehicle";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ApiResponse<VehicleCreate>>
+  res: NextApiResponse<ApiResponse<Vehicle>>
 ) {
   if (req.method !== "POST") {
     res.status(405).json({ error: "Method not allowed" });

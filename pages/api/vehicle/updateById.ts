@@ -1,6 +1,6 @@
 import { PrismaClient } from "@/generated/prisma";
 import { ApiResponse } from "@/types/custom-response";
-import { VehicleCreate } from "@/types/vehicle";
+import { VehicleCreate, VehicleUpdate } from "@/types/vehicle";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();
@@ -14,18 +14,18 @@ export default async function handler(
     return;
   }
 
-  const { id, marca, modelo, year, motor, vin, patente, km, userId, lastDiag } : VehicleCreate = req.body;
+  const { id, marca, modelo, year, motor, vin, patente, km, userId, lastDiag } : VehicleUpdate = req.body;
 
   const errors: Record<string, string> = {};
   if (!id) errors.id = "ID requerido";
-  if (!marca || marca.length < 2) errors.marca = "Marca requerida";
-  if (!modelo) errors.modelo = "Modelo requerido";
-  if (!year || year < 1900 || year > new Date().getFullYear() + 1) errors.year = "Año inválido";
-  if (!motor) errors.motor = "Tipo de motor requerido";
-  if (!vin || vin.length !== 17) errors.vin = "VIN debe tener 17 caracteres";
-  if (!patente) errors.patente = "Patente requerida";
-  if (km === undefined || km < 0) errors.km = "Kilometraje inválido";
-  if (!userId) errors.userId = "Usuario requerido";
+  if (marca && marca.length < 2) errors.marca = "Marca requerida";
+  // if (!modelo) errors.modelo = "Modelo requerido";
+  if (year && (year < 1900 || year > new Date().getFullYear() + 1)) errors.year = "Año inválido";
+  // if (!motor) errors.motor = "Tipo de motor requerido";
+  if (vin && vin.length !== 17) errors.vin = "VIN debe tener 17 caracteres";
+  // if (!patente) errors.patente = "Patente requerida";
+  if (km && (km === undefined || km < 0)) errors.km = "Kilometraje inválido";
+  // if (!userId) errors.userId = "Usuario requerido";
 
   if (Object.keys(errors).length > 0) {
     res.status(400).json({ error: "Datos inválidos", fields: errors });
