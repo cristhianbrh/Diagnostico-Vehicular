@@ -15,6 +15,7 @@ describe("Login user", () => {
         expect(badPasswordResponse.error).toBe("Credenciales inválidas");
         expect(userNotFoundResponse.error).toBe("Usuario no encontrado o inactivo");
         expect(goodResponse.data).toBeDefined();
+        expect(goodResponse.token).toBeDefined();
     });
 });
 
