@@ -2,7 +2,6 @@ import { injectable } from 'tsyringe';
 import { UserResponse, UserSummary, UserSummaryEdit } from "@/types/user";
 import { IUserService } from "./user.service.interface";
 import axios from 'axios';
-import { appUrl } from '@/constants/url-app';
 import { PrismaClient } from '@/generated/prisma';
 import { parseError } from '@/lib/utils';
 import { ApiResponse } from '@/types/custom-response';
@@ -18,7 +17,7 @@ export class UserService implements IUserService {
             if(!token) return { error: "No se ha iniciado sesión" };
 
             const { data: { data: user, error} } = await axios.get<UserResponse>(
-                `${appUrl}/api/auth/me`,
+                `${process.env.API_URL}/api/auth/me`,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
@@ -42,7 +41,7 @@ export class UserService implements IUserService {
     public async getUsers(listParams?: { limit?: number; offset?: number; }): Promise<ApiResponse<UserSummary[]>> {
         const { limit = 10, offset = 0 } = listParams || {};
         try {
-            const { data: response } = await axios.get<ApiResponse<UserSummary[]>>(`${appUrl}/api/users/getUsers?limit=${limit}&offset=${offset}`);
+            const { data: response } = await axios.get<ApiResponse<UserSummary[]>>(`${process.env.API_URL}/api/users/getUsers?limit=${limit}&offset=${offset}`);
             return response;
         } catch (error: any) {
             return { error: parseError(error) };
@@ -51,7 +50,7 @@ export class UserService implements IUserService {
 
     public async updateUser(userId: number, userData: UserSummaryEdit): Promise<UserResponse> {
         try {
-            const { data: { data: user, error } } = await axios.put<UserResponse>(`${appUrl}/api/users/updateUser`, {
+            const { data: { data: user, error } } = await axios.put<UserResponse>(`${process.env.API_URL}/api/users/updateUser`, {
                 id: userId,
                 ...userData
             });

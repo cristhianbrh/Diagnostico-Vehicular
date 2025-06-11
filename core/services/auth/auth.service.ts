@@ -1,4 +1,3 @@
-import { appUrl } from "@/constants/url-app";
 import { UserRegister } from "@/types/auth";
 import { IAuthService } from "./auth.service.interface";
 import axios from "axios";
@@ -8,7 +7,7 @@ import { parseError } from "@/lib/utils";
 class AuthService implements IAuthService {
     public async login(email: string, password: string): Promise<UserResponse> {
         try {
-            const { data: response } = await axios.post<UserResponse>(`${appUrl}/api/auth/login`, { 
+            const { data: response } = await axios.post<UserResponse>(`${process.env.API_URL}/api/auth/login`, { 
                 email: email,
                 password: password,
             })
@@ -21,7 +20,7 @@ class AuthService implements IAuthService {
 
     public async register(userRegister : UserRegister) : Promise<UserResponse> {
         try {
-            const { data: response} = await axios.post(`${appUrl}/api/auth/register`, { 
+            const { data: response} = await axios.post(`${process.env.API_URL}/api/auth/register`, { 
                 email:  userRegister.email,
                 password: userRegister.password,
                 name: userRegister.name,

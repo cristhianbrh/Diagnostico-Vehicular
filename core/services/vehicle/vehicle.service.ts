@@ -3,14 +3,13 @@ import { IVehicleService } from "./vehicle.service.interface";
 import { VehicleCreate, VehicleUpdate } from "@/types/vehicle";
 import axios from "axios";
 import { parseError } from "@/lib/utils";
-import { appUrl } from "@/constants/url-app";
 import { Vehicle } from "@/generated/prisma";
 
 export class VehicleService implements IVehicleService {
 
     public async createVehicle(vehicle: VehicleCreate): Promise<ApiResponse<Vehicle>> {
         try {
-            const { data: response } = await axios.post<ApiResponse<Vehicle>>(`${appUrl}/api/vehicle/create`, vehicle);
+            const { data: response } = await axios.post<ApiResponse<Vehicle>>(`${process.env.API_URL}/api/vehicle/create`, vehicle);
             return response;
         }
         catch (error: any) {
@@ -23,7 +22,7 @@ export class VehicleService implements IVehicleService {
 
     public async updateById(vehicle: VehicleUpdate): Promise<ApiResponse<Vehicle>> {
         try {
-            const { data: response } = await axios.put<ApiResponse<Vehicle>>(`${appUrl}/api/vehicle/updateById`, vehicle);
+            const { data: response } = await axios.put<ApiResponse<Vehicle>>(`${process.env.API_URL}/api/vehicle/updateById`, vehicle);
             return response;
         }
         catch (error: any) {
@@ -36,7 +35,7 @@ export class VehicleService implements IVehicleService {
 
     public async removeById(id: number): Promise<ApiResponse<Vehicle>> {
         try {
-            const { data: response } = await axios.delete<ApiResponse<Vehicle>>(`${appUrl}/api/vehicle/removeById?id=${id}`);
+            const { data: response } = await axios.delete<ApiResponse<Vehicle>>(`${process.env.API_URL}/api/vehicle/removeById?id=${id}`);
             return response;
         }
         catch (error: any) {
