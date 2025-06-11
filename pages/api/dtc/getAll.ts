@@ -1,11 +1,12 @@
-import { PrismaClient } from "@/generated/prisma";
+import { Dtc, PrismaClient } from "@/generated/prisma";
+import { ApiResponse } from "@/types/custom-response";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<ApiResponse<Dtc[]>>
 ) {
   if (req.method !== "GET") {
     return res.status(405).json({ error: "Método no permitido" });
@@ -14,7 +15,7 @@ export default async function handler(
     const dtcs = await prisma.dtc.findMany({
       include: { causes: true, solutions: true },
     });
-    res.status(200).json({ dtcs });
+    res.status(200).json({ data: dtcs });
   } catch (error) {
     res.status(500).json({ error: "Error al obtener DTCs" });
   }
