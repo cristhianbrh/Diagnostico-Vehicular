@@ -11,17 +11,14 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { User as PrismaUser } from "@/generated/prisma";
-import { Dispatch, SetStateAction } from "react";
-import { AppViews } from "@/constants/app-views";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { IAccessToken } from "@/utils/cookies";
 
 export function NavigationButtons({
   currentUser,
 }: {
-  currentView: AppViews;
-  setCurrentView: Dispatch<SetStateAction<AppViews>>;
-  currentUser: PrismaUser | null;
+  currentUser: IAccessToken | null;
 }) {
   const pathname = usePathname();
   const pathSplit = pathname?.split("/").slice(0, 3).join("/");
@@ -75,13 +72,11 @@ export function NavigationButtons({
   return (
     <>
       {navItems.map(({ link, label, icon }, index) => (
-        <Link
-          href={link}
-          key={"navigatior_header_" + index}
-          // variant={currentView === key ? "default" : "ghost"}
-          // onClick={() => setCurrentView(key)}
-        >
-          <Button className="flex items-center gap-2" variant={link === pathSplit?"default":"ghost"}>
+        <Link href={link} key={"navigatior_header_" + index}>
+          <Button
+            className="flex items-center gap-2"
+            variant={link === pathSplit ? "default" : "ghost"}
+          >
             {icon}
             {label}
           </Button>
