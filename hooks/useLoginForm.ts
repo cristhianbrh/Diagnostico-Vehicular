@@ -26,7 +26,7 @@ export function useLoginForm() {
         if (res.data.token) {
           localStorage.setItem("token", res.data.token);
         }
-        router.push("/home");
+        router.push("/vehicles");
       })
       .catch((err) => {
         setErrors({
