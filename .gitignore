@@ -28,3 +28,7 @@ next-env.d.ts
 
 # generated lib files, linux only
 /generated/prisma/libquery_engine-debian-openssl-3.0.x.so.node
+
+# sonarqube stuffs
+/.scannerwork/
+sonar-project.properties
