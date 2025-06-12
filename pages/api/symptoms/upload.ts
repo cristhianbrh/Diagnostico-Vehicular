@@ -1,11 +1,13 @@
-import { PrismaClient } from "@/generated/prisma";
+import { Diagnostic, PrismaClient } from "@/generated/prisma";
+import { ApiResponse } from "@/types/custom-response.type";
+import { DiagnosticSymptomUpdate } from "@/types/diagnostic.type";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<ApiResponse<Diagnostic>>
 ) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Método no permitido" });
@@ -13,27 +15,26 @@ export default async function handler(
   try {
     const {
       diagnosticId,
-      symptoms,
+      symptomsIds,
       aditionalSymptom,
       noteTecnic
-    } = req.body;
-
-    const data = await prisma.diagnostic.update({
-      where: { id: diagnosticId },
-      data: {
-        aditionalSymptom: aditionalSymptom,
-        noteTecnicSym: noteTecnic
-      },
-    });
+    }: DiagnosticSymptomUpdate = req.body;
 
     // Asociar symptoms al diagnóstico
-    if (Array.isArray(symptoms) && symptoms.length > 0) {
+    let validIds: number[] = [];
+    
+    if (Array.isArray(symptomsIds) && symptomsIds.length > 0) {
       const validSymtoms = await prisma.symptom.findMany({
-        where: { id: { in: symptoms } },
+        where: { id: { in: symptomsIds } },
         select: { id: true },
       });
-      const validIds = validSymtoms.map((d) => d.id);
-      // Crear las relaciones en DiagnosticDtc
+
+      validIds = validSymtoms.map((d) => d.id);
+  
+      await prisma.diagnosticSymptom.deleteMany({
+        where: { diagnosticId: diagnosticId },
+      });
+
       await Promise.all(
         validIds.map((id) =>
           prisma.diagnosticSymptom.create({
@@ -45,6 +46,14 @@ export default async function handler(
         )
       );
     }
+
+    const data = await prisma.diagnostic.update({
+      where: { id: diagnosticId },
+      data: {
+        aditionalSymptom: aditionalSymptom,
+        noteTecnicSym: noteTecnic
+      },
+    });
 
     res.status(201).json({ data });
   } catch (error) {
