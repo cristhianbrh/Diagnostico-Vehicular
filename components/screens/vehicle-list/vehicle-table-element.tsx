@@ -34,14 +34,12 @@ export default function VehicleTableElement({
       </td>
       <td className="p-2">
         <div className="flex gap-1">
-          {/* <Button
-                size="sm"
-                variant="outline"
-                onClick={() => viewVehicleSelect(vehicle)}
-            >
-                <Eye className="h-4 w-4" />
-            </Button> */}
-          <Link href={"/vehicles/modify/" + vehicle.id}>
+          <Link href={"/vehicles/view/" + vehicle.id}>
+            <Button size="sm" variant="outline">
+              <Eye className="h-4 w-4" />
+            </Button>
+          </Link>
+          <Link href={"/vehicles/" + vehicle.id + "/modify/"}>
             <Button size="sm" variant="outline">
               <Edit className="h-4 w-4" />
             </Button>
