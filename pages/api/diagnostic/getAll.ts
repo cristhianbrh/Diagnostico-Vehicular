@@ -1,9 +1,10 @@
-import { PrismaClient } from "@/generated/prisma";
+import { Diagnostic, PrismaClient } from "@/generated/prisma";
+import { ApiResponse } from "@/types/custom-response.type";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiResponse<Diagnostic[]>>) {
   if (req.method !== "GET") {
     return res.status(405).json({ error: "Método no permitido" });
   }
@@ -17,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
       orderBy: { fecha: "desc" },
     });
-    res.status(200).json({ diagnostics });
+    res.status(200).json({ data: diagnostics });
   } catch (error) {
     res.status(500).json({ error: "Error al obtener diagnósticos" });
   }

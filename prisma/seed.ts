@@ -1,4 +1,4 @@
-import { PrismaClient, ScannerFile, User, Vehicle } from "@/generated/prisma";
+import { Diagnostic, DiagnosticDtc, DiagnosticSymptom, PrismaClient, ScannerFile, User, Vehicle } from "@/generated/prisma";
 import { InputJsonValue } from "@/generated/prisma/runtime/library";
 
 const prisma = new PrismaClient();
@@ -218,6 +218,68 @@ const mockScannerFiles: ScannerFile[] = [
   },
 ]
 
+const mockDiagnostics: Diagnostic[] = [
+  {
+    id: 1,
+    vehicleId: 1,
+    fecha: new Date(),
+    desc: "Test diagnostic 1",
+    tecnico: "Test tecnico 01",
+    estado: "resuelto",
+    detalles: "Test detalles",
+    cost: 50,
+    duration: 6,
+    scannerFileId: 1,
+    aditionalSymptom: "Test aditional symptom",
+    noteTecnicSym: "Test note tecnic sym",
+    solutionText: "Test solution text"
+  },
+  {
+    id: 2,
+    vehicleId: 1,
+    fecha: new Date(),
+    desc: "Test diagnostic 2",
+    tecnico: "Test tecnico 02",
+    estado: "resuelto",
+    detalles: "Test detalles",
+    cost: 100,
+    duration: 10,
+    scannerFileId: 1,
+    aditionalSymptom: "Test aditional symptom",
+    noteTecnicSym: "Test note tecnic sym",
+    solutionText: "Test solution text"
+  },
+]
+
+const mockDiagnosticDtc: DiagnosticDtc[] = [
+  {
+    diagnosticId: 1,
+    dtcCode: "P0128",
+  },
+  {
+    diagnosticId: 1,
+    dtcCode: "P0171",
+  },
+  {
+    diagnosticId: 2,
+    dtcCode: "P0420",
+  },
+]
+
+const mockDiagnosticSymptoms: DiagnosticSymptom[] = [
+  {
+    diagnosticId: 1,
+    symptomId: 1,
+  },
+  {
+    diagnosticId: 1,
+    symptomId: 2,
+  },
+  {
+    diagnosticId: 2,
+    symptomId: 3,
+  },
+]
 async function main() {
 
   for (const user of mockUsers) {
@@ -260,6 +322,18 @@ async function main() {
       rawData: scannerFile.rawData as InputJsonValue,
       
     }});
+  }
+
+  for (const diagnostic of mockDiagnostics) {
+    await prisma.diagnostic.create({ data: diagnostic });
+  }
+
+  for (const diagnosticDtc of mockDiagnosticDtc) {
+    await prisma.diagnosticDtc.create({ data: diagnosticDtc });
+  }
+
+  for (const diagnosticSymptom of mockDiagnosticSymptoms) {
+    await prisma.diagnosticSymptom.create({ data: diagnosticSymptom });
   }
 
   console.log("✔ Todo insertado correctamente");

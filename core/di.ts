@@ -7,6 +7,7 @@ import { IVehicleService } from './services/vehicle/vehicle.service.interface';
 import { IDtcService } from './services/dtc/dtc.service.interface';
 import { IScannerService } from './services/scanner/scanner.service.interface';
 import { ISymptomService } from './services/symptom/symptom.service.interface';
+import { IDiagnosticService } from './services/diagnostic/diagnostic.service.interface';
 
 import { UserService } from './services/user/user.service';
 import { AuthService } from './services/auth/auth.service';
@@ -14,6 +15,7 @@ import { VehicleService } from './services/vehicle/vehicle.service';
 import { DtcService } from './services/dtc/dtc.service';
 import { ScannerService } from './services/scanner/scanner.service';
 import { SymptomService } from './services/symptom/symptom.service';
+import { DiagnosticService } from './services/diagnostic/diagnostic.service';
 
 container.register<IUserService>('IUserService', {
   useClass: UserService,
@@ -37,6 +39,10 @@ container.register<IScannerService>('IScannerService', {
 
 container.register<ISymptomService>('ISymptomService', {
   useClass: SymptomService,
+});
+
+container.register<IDiagnosticService>('IDiagnosticService', {
+  useClass: DiagnosticService,
 });
 
 export { container };

@@ -1,11 +1,13 @@
-import { PrismaClient } from "@/generated/prisma";
+import { Diagnostic, PrismaClient } from "@/generated/prisma";
+import { ApiResponse } from "@/types/custom-response.type";
+import { DiagnoticCreate } from "@/types/diagnostic.type";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<ApiResponse<Diagnostic>>
 ) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Método no permitido" });
@@ -14,20 +16,15 @@ export default async function handler(
     const {
       vehicleId,
       fecha,
-      dtc,
+      dtcCodes,
       desc,
       tecnico,
       estado,
       detalles,
-      scannerFile,
       cost,
       duration,
       scannerFileId,
-    } = req.body;
-
-    // if (!vehicleId || !fecha || !dtc || !desc || !tecnico || !estado) {
-    //   return res.status(400).json({ error: "Faltan campos obligatorios" });
-    // }
+    }: DiagnoticCreate = req.body;
 
     const diagnostic = await prisma.diagnostic.create({
       data: {
@@ -50,13 +47,17 @@ export default async function handler(
     });
 
     // Asociar DTCs al diagnóstico
-    if (Array.isArray(dtc) && dtc.length > 0) {
-      const dtcCodes = dtc.map((code) => code.toUpperCase());
+    if (Array.isArray(dtcCodes) && dtcCodes.length > 0) {
+
+      const dtcCodesUpperCase = dtcCodes.map((code) => code.toUpperCase());
+
       const validDtcs = await prisma.dtc.findMany({
-        where: { code: { in: dtcCodes } },
+        where: { code: { in: dtcCodesUpperCase } },
         select: { code: true },
       });
+
       const validCodes = validDtcs.map((d) => d.code);
+
       // Crear las relaciones en DiagnosticDtc
       await Promise.all(
         validCodes.map((code) =>
@@ -70,9 +71,8 @@ export default async function handler(
       );
     }
 
-    res.status(201).json({ diagnostic });
+    res.status(201).json({ data: diagnostic });
   } catch (error) {
-    console.error("Error creating diagnostic:", error);
     res.status(500).json({ error: "Error al crear diagnóstico" });
   }
 }
