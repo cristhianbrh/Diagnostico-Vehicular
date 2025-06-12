@@ -9,7 +9,7 @@ export class DiagnosticService implements IDiagnosticService {
 
     public async create(data: DiagnoticCreate): Promise<ApiResponse<Diagnostic>> {
         try {
-            const { data: response } = await axios.post<ApiResponse<Diagnostic>>(`${process.env.API_URL}/api/diagnostic/create`, data);
+            const { data: response } = await axios.post<ApiResponse<Diagnostic>>(`${process.env.API_URL || ""}/api/diagnostic/create`, data);
             return response;
         } catch (error: any) {
             return { error: parseError(error) };
@@ -18,7 +18,7 @@ export class DiagnosticService implements IDiagnosticService {
 
     public async getAll(): Promise<ApiResponse<Diagnostic[]>> {
         try {
-            const { data: response } = await axios.get<ApiResponse<Diagnostic[]>>(`${process.env.API_URL}/api/diagnostic/getAll`);
+            const { data: response } = await axios.get<ApiResponse<Diagnostic[]>>(`${process.env.API_URL || ""}/api/diagnostic/getAll`);
             return response;
         } catch (error: any) {
             return { error: parseError(error) };
@@ -27,7 +27,7 @@ export class DiagnosticService implements IDiagnosticService {
 
     public async solutionDiagnostic(diagnosticSolution: DiagnosticSolutionUpdate ): Promise<ApiResponse<Diagnostic>> {
         try {
-            const { data: response } = await axios.put<ApiResponse<Diagnostic>>(`${process.env.API_URL}/api/diagnostic/solutionDiagnostic`, diagnosticSolution);
+            const { data: response } = await axios.put<ApiResponse<Diagnostic>>(`${process.env.API_URL || ""}/api/diagnostic/solutionDiagnostic`, diagnosticSolution);
             return response;
         } catch (error: any) {
             return { error: parseError(error) };
@@ -37,7 +37,7 @@ export class DiagnosticService implements IDiagnosticService {
     public async updateById(diagnosticUpdate: DiagnosticUpdate): Promise<ApiResponse<Diagnostic>> {
         try {
             const { data: response } = await axios.put<ApiResponse<Diagnostic>>(
-                `${process.env.API_URL}/api/diagnostic/updateById`, diagnosticUpdate
+                `${process.env.API_URL || ""}/api/diagnostic/updateById`, diagnosticUpdate
             );
             return response;
         } catch (error: any) {

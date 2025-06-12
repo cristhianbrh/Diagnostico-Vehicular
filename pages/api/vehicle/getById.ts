@@ -21,7 +21,21 @@ export default async function handler(
       where: { id },
       include: {
         user: { select: { id: true, name: true, email: true } },
-        diagnostics: true,
+        diagnostics: {
+          orderBy: { fecha: "desc" },
+          include: {
+            dtcs: {
+              include: {
+                dtc: true,
+              },
+            },
+            symptoms: {
+              include: {
+                symptom: true,
+              },
+            },
+          },
+        },
         scannerFiles: true,
       },
     });

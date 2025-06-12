@@ -34,7 +34,7 @@ export default function VehicleTableElement({
       </td>
       <td className="p-2">
         <div className="flex gap-1">
-          <Link href={"/vehicles/view/" + vehicle.id}>
+          <Link href={"/vehicles/" + vehicle.id + "/view/"}>
             <Button size="sm" variant="outline">
               <Eye className="h-4 w-4" />
             </Button>

@@ -1,12 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { NavigationButtons } from "./navigation-buttons";
 import { UserSection } from "./user-section";
 import MainNavBarLayout from "./main-nav-bar-layout";
 import { getAccessTokenData, IAccessToken } from "@/utils/cookies";
 
-export function MainNavBar() {
+export function MainNavBar({
+  setLoading,
+}: {
+  setLoading: Dispatch<SetStateAction<boolean>>;
+}) {
   const [user, setUser] = useState<IAccessToken | undefined>();
 
   const getUserData = async () => {
@@ -16,6 +20,10 @@ export function MainNavBar() {
   useEffect(() => {
     getUserData();
   }, []);
+
+  useEffect(() => {
+    if (user) setLoading(false);
+  }, [user]);
 
   if (!user) return <p>Upps</p>;
 

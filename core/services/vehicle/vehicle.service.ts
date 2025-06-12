@@ -2,6 +2,7 @@ import { ApiResponse } from "@/types/custom-response.type";
 import { IVehicleService } from "./vehicle.service.interface";
 import {
   VehicleCreate,
+  VehicleDiagnosticDtcSummary,
   VehicleSummary,
   VehicleUpdate,
 } from "@/types/vehicle.type";
@@ -41,6 +42,16 @@ export class VehicleService implements IVehicleService {
   public async getById(id: number): Promise<ApiResponse<VehicleSummary>> {
     try {
       const { data: response } = await axios.get<ApiResponse<VehicleSummary>>(
+        `${process.env.API_URL || ""}/api/vehicle/getById?id=${id}`
+      );
+      return response;
+    } catch (error: any) {
+      return { error: parseError(error) };
+    }
+  }
+  public async getTotalById(id: number): Promise<ApiResponse<VehicleDiagnosticDtcSummary>> {
+    try {
+      const { data: response } = await axios.get<ApiResponse<VehicleDiagnosticDtcSummary>>(
         `${process.env.API_URL || ""}/api/vehicle/getById?id=${id}`
       );
       return response;

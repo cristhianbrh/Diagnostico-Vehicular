@@ -1,15 +1,37 @@
-import { Diagnostic, ScannerFile, Vehicle } from "@/generated/prisma";
+import {
+  Diagnostic,
+  DiagnosticDtc,
+  Dtc,
+  ScannerFile,
+  Vehicle,
+  Symptom,
+  DiagnosticSymptom,
+} from "@/generated/prisma";
 
 export type VehicleCreate = Pick<
-    Vehicle, "marca" | "modelo" | "year" | "motor" | "vin" | "patente" | "km" | "userId"
-> & Partial<Pick<Vehicle, "id" | "lastDiag">>
+  Vehicle,
+  "marca" | "modelo" | "year" | "motor" | "vin" | "patente" | "km" | "userId"
+> &
+  Partial<Pick<Vehicle, "id" | "lastDiag">>;
 
 export type VehicleUpdate = Partial<VehicleCreate>;
 
 export type VehicleSummary = Vehicle & {
-    user: { id: number, name: string, email: string }
+  user: { id: number; name: string; email: string };
 } & {
-    diagnostics: Diagnostic[]
+  diagnostics: Diagnostic[];
 } & {
-    scannerFiles: ScannerFile[]
+  scannerFiles: ScannerFile[];
+};
+
+export type VehicleDiagnosticDtcSummary = Vehicle & {
+  user: { id: number; name: string; email: string };
+} & {
+  diagnostics: (Diagnostic & {
+    symptoms: { symptom: Symptom & DiagnosticSymptom }[];
+  } & {
+    dtcs: (Dtc & DiagnosticDtc)[];
+  })[];
+} & {
+  scannerFiles: ScannerFile[];
 };
