@@ -22,7 +22,7 @@ export class VehicleService implements IVehicleService {
 
     public async getAll(): Promise<ApiResponse<VehicleSummary[]>> {
         try {
-            const { data: response } = await axios.get<ApiResponse<VehicleSummary[]>>(`${process.env.API_URL}/api/vehicle/getAll`);
+            const { data: response } = await axios.get<ApiResponse<VehicleSummary[]>>(`/api/vehicle/getAll`);
             return response;
         }
         catch (error: any) {

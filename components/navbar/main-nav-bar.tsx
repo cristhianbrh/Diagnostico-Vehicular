@@ -7,7 +7,6 @@ import MainNavBarLayout from "./main-nav-bar-layout";
 import { getAccessTokenData, IAccessToken } from "@/utils/cookies";
 
 export function MainNavBar() {
-  const token = localStorage.getItem("token");
   const [user, setUser] = useState<IAccessToken | undefined>();
 
   const getUserData = async () => {
