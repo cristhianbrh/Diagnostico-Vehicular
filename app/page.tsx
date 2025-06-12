@@ -11,7 +11,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import axios from 'axios'
 
 import {
   Calendar,
@@ -56,18 +55,28 @@ import { UserContext } from "@/contexts/user-context"
 import { VehicleContext } from "@/contexts/vehicle-context"
 import { DiagnosticTypeContext } from "@/contexts/diagnostic-context"
 import VehicleTable from "@/components/screens/vehicle-list/vehicle-table"
+import { container } from "tsyringe"
+import { IAuthService } from "@/core/services/auth/auth.service.interface"
+import { IUserService } from "@/core/services/user/user.service.interface"
+import { IVehicleService } from "@/core/services/vehicle/vehicle.service.interface"
+import { IDiagnosticService } from "@/core/services/diagnostic/diagnostic.service.interface"
+import { ISymptomService } from "@/core/services/symptom/symptom.service.interface"
+import { IDtcService } from "@/core/services/dtc/dtc.service.interface"
+import { IScannerService } from "@/core/services/scanner/scanner.service.interface"
+import { UserSummary } from "@/types/user.type"
+import { VehicleSummary } from "@/types/vehicle.type"
 
 export default function Component() {
   // Estados horriblemente organizados y con nombres confusos
   const [currentView, setCurrentView] = useState<AppViews>(APP_VIEWS.VEHICLES) // vehicles, scanner, dtc, symptoms, solutions, users, reports, help
-  const [vehicleData, setVehicleData] = useState<Vehicle[]>([])
+  const [vehicleData, setVehicleData] = useState<VehicleSummary[]>([])
   const [vehicleForm, setVehicleForm] = useState({})
   const [vehicleMode, setVehicleMode] = useState<VehicleModes>(VEHICLE_MODES.LIST)
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null)
-  const [users, setUsers] = useState<PrismaUser[]>([])
+  const [users, setUsers] = useState<UserSummary[]>([])
   const [diagnostics, setDiagnostics] = useState<Diagnostic[]>([])
   const [scannerData, setScannerData] = useState([])
-  const [dtcDatabase, setDtcDatabase] = useState([])
+  const [dtcDatabase, setDtcDatabase] = useState<Dtc[]>([])
   const [symptoms, setSymptoms] = useState([])
   const [solutions, setSolutions] = useState([])
   const [currentUser, setCurrentUser] = useState<PrismaUser | null>(null)
@@ -84,6 +93,15 @@ export default function Component() {
   const [vehicleSelectSymtoms, setVehicleSelectSymtoms] = useState<number>(-1)
   const [diagnosticSelectSolutions, setDiagnosticSelectSolutions] = useState<number>(-1)
   const fileInputRef = useRef(null)
+
+  const authService = container.resolve<IAuthService>("IAuthService");
+  const userService = container.resolve<IUserService>("IUserService");
+  const vehicleService = container.resolve<IVehicleService>("IVehicleService");
+  const diagnosticService = container.resolve<IDiagnosticService>("IDiagnosticService");
+  const symptomService = container.resolve<ISymptomService>("ISymptomService");
+  const dtcService = container.resolve<IDtcService>("IDtcService");
+  const scannerService = container.resolve<IScannerService>("IScannerService");
+
   useEffect(() => {
     console.log("Current view changed:", currentView)
   }, [currentView])
@@ -94,8 +112,8 @@ export default function Component() {
 
   const getAllDiagnostics = async () => {
       try {
-      const res = await axios.get("/api/diagnostic/getAll");
-      setDiagnostics(res.data.diagnostics || []);
+      const {data: diagnostics} = await diagnosticService.getAll();
+      setDiagnostics(diagnostics || []);
       } catch (error) {
       setErrors({ dtc: "Error al obtener base de datos de diagnostico" });
       }
@@ -194,36 +212,25 @@ export default function Component() {
       // },
     // ]
     const getAllUsers = async () => {
+      const {data: users, error} = await userService.getUsers();
       try {
-        const res = await axios.get("/api/users/getUsers");
-        console.log(res)
-        setUsers(res.data);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          setErrors({ vehicle: error.response?.data?.error || error.message || "Error al obtener los usuarios" });
-        } else if (error instanceof Error) {
-          setErrors({ vehicle: error.message });
-        } else {
-          setErrors({ vehicle: "Error al obtener usuarios" });
-        }
+        setUsers(users!);
+      } catch (catchError) {
+        setErrors({ user: error });
       }
     }
     getAllUsers();
 
     const getAllVehicle = async () => {
+      const { data: vehicles, error } = await vehicleService.getAll();
       try {
-        const res = await axios.get("/api/vehicle/getAll");
-        setVehicleData(res.data.vehicles);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          setErrors({ vehicle: error.response?.data?.error || error.message || "Error al obtener vehículos" });
-        } else if (error instanceof Error) {
-          setErrors({ vehicle: error.message });
-        } else {
-          setErrors({ vehicle: "Error al obtener vehículos" });
-        }
+        // const res = await axios.get("/api/vehicle/getAll");
+        setVehicleData(vehicles!);
+      } catch (catchError) {
+        setErrors({ vehicle: error });
       }
     }
+
     getAllVehicle();
 
     // Base de datos DTC hardcodeada (estructura horrible)
@@ -232,13 +239,12 @@ export default function Component() {
     getAllDiagnostics();
     
     const getAllDtc = async () => {
+      const { data : dtcs, error } = await dtcService.getAll();
       try {
-        const res = await axios.get("/api/dtc/getAll");
-        console.log("res.data.dtcs")
-        console.log(res.data.dtcs)
-        setDtcDatabase(res.data.dtcs || []);
-      } catch (error) {
-        setErrors({ dtc: "Error al obtener base de datos DTC" });
+        console.log(dtcs)
+        setDtcDatabase(dtcs || []);
+      } catch (catchError) {
+        setErrors({ dtc: error });
       }
     };
     getAllDtc();
