@@ -1,15 +1,6 @@
 "use client";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import VehicleTableElement from "./vehicle-table-element";
-import VehicleAddButton from "./vehicle-add-button";
 import { useVehicleManagementTable } from "@/hooks/useVehicleManagement";
-import { AlertTriangle } from "lucide-react";
 
 export default function VehicleTable() {
   const { vehicles, getVehicleStatus } = useVehicleManagementTable();
