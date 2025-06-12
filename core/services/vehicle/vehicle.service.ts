@@ -1,6 +1,6 @@
 import { ApiResponse } from "@/types/custom-response.type";
 import { IVehicleService } from "./vehicle.service.interface";
-import { VehicleCreate, VehicleUpdate } from "@/types/vehicle.type";
+import { VehicleCreate, VehicleSummary, VehicleUpdate } from "@/types/vehicle.type";
 import axios from "axios";
 import { parseError } from "@/lib/utils";
 import { Vehicle } from "@/generated/prisma";
@@ -16,6 +16,16 @@ export class VehicleService implements IVehicleService {
             if(axios.isAxiosError(error)) {
                 return error.response?.data;
             }
+            return { error: parseError(error) };
+        }
+    }
+
+    public async getAll(): Promise<ApiResponse<VehicleSummary[]>> {
+        try {
+            const { data: response } = await axios.get<ApiResponse<VehicleSummary[]>>(`${process.env.API_URL}/api/vehicle/getAll`);
+            return response;
+        }
+        catch (error: any) {
             return { error: parseError(error) };
         }
     }

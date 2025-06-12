@@ -1,11 +1,13 @@
-import { PrismaClient } from "@/generated/prisma";
+import { PrismaClient, Vehicle } from "@/generated/prisma";
+import { ApiResponse } from "@/types/custom-response.type";
+import { VehicleSummary } from "@/types/vehicle.type";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<ApiResponse<VehicleSummary[]>>
 ) {
   if (req.method !== "GET") return res.status(405).end();
 
@@ -17,7 +19,7 @@ export default async function handler(
         scannerFiles: true,
       },
     });
-    res.status(200).json({ vehicles });
+    res.status(200).json({ data: vehicles });
   } catch (error) {
     res.status(500).json({ error: "Error al obtener vehículos" });
   }

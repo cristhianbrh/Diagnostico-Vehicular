@@ -122,3 +122,16 @@ describe("Remove vehicle", () => {
         idToRemove && await service.removeById(idToRemove)
     );
 });
+
+describe("Get vehicles", () => {
+    it("should get vehicles, happy path", async () => {
+        const response = await service.getAll();
+
+        expect(response.data).toBeDefined();
+        expect(response.data!.length).toBeGreaterThan(0);
+        expect(response.data?.at(0)?.marca).toBe("Mercedes");
+        expect(response.data?.at(0)?.user.name).toBe("Juan");
+        expect(response.data?.at(0)?.diagnostics.at(0)?.desc).toBe("Test diagnostic 1"); 
+        expect(response.data?.at(0)?.scannerFiles.at(0)?.fileName).toBe("scan_001.json"); 
+    });
+});
