@@ -5,15 +5,34 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiResponse<number>>) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<ApiResponse<number>>
+) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Método no permitido" });
   }
 
-  const { fileName, uploadDate, vehicleVin, scannerType, status, rawData } : ScannerFileCreate = req.body;
+  const {
+    fileName,
+    uploadDate,
+    vehicleVin,
+    scannerType,
+    status,
+    rawData,
+  }: ScannerFileCreate = req.body;
 
-  console.log("Received data:", req.body)
+  console.log("Received data:", req.body);
   try {
+    console.log({
+      fileName,
+      uploadDate,
+      vehicleVin,
+      scannerType,
+      status,
+      rawData,
+    });
+
     const scannerFile = await prisma.scannerFile.create({
       data: {
         fileName,

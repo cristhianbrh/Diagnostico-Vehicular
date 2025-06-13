@@ -30,7 +30,7 @@ export function NavigationButtons({
       icon: <Car className="h-4 w-4" />,
     },
     {
-      link: "/vehicless",
+      link: "/scanner",
       label: "Escáner",
       icon: <Upload className="h-4 w-4" />,
     },
