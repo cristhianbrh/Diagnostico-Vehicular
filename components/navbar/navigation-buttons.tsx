@@ -50,7 +50,7 @@ export function NavigationButtons({
       icon: <CheckCircle className="h-4 w-4" />,
     },
     {
-      link: "/vehicless",
+      link: "/reports",
       label: "Reportes",
       icon: <BarChart3 className="h-4 w-4" />,
     },
