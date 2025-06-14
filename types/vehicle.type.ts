@@ -27,11 +27,13 @@ export type VehicleSummary = Vehicle & {
 export type VehicleDiagnosticDtcSummary = Vehicle & {
   user: { id: number; name: string; email: string };
 } & {
-  diagnostics: (Diagnostic & {
-    symptoms: { symptom: Symptom & DiagnosticSymptom }[];
-  } & {
-    dtcs: (Dtc & DiagnosticDtc)[];
-  })[];
+  diagnostics: VehicleDiagnosticDtcSummary_diagnostic[];
 } & {
   scannerFiles: ScannerFile[];
+};
+
+export type VehicleDiagnosticDtcSummary_diagnostic = Diagnostic & {
+  symptoms: { symptom: Symptom & DiagnosticSymptom }[];
+} & {
+  dtcs: (Dtc & DiagnosticDtc)[];
 };
