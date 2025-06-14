@@ -35,7 +35,7 @@ export function NavigationButtons({
       icon: <Upload className="h-4 w-4" />,
     },
     {
-      link: "/vehicless",
+      link: "/codes",
       label: "Códigos DTC",
       icon: <AlertTriangle className="h-4 w-4" />,
     },
