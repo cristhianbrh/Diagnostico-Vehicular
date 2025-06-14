@@ -20,7 +20,7 @@ import { useCodesView } from "@/hooks/useCodesView";
 import { Label } from "@radix-ui/react-label";
 import { CheckCircle, Filter, Search } from "lucide-react";
 
-export default function ScannerPage() {
+export default function CodesPage() {
   const { loading, searchTerm, setSearchTerm, filters, setFilters, dtcs } =
     useCodesView();
 

@@ -45,7 +45,7 @@ export function NavigationButtons({
       icon: <Wrench className="h-4 w-4" />,
     },
     {
-      link: "/vehicless",
+      link: "/solutions",
       label: "Soluciones",
       icon: <CheckCircle className="h-4 w-4" />,
     },
