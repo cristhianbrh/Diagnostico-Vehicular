@@ -1,9 +1,10 @@
 "use client";
+import { getVehicleStatus } from "@/utils/vehicles";
 import VehicleTableElement from "./vehicle-table-element";
 import { useVehicleManagementTable } from "@/hooks/useVehicleManagement";
 
 export default function VehicleTable() {
-  const { vehicles, getVehicleStatus } = useVehicleManagementTable();
+  const { vehicles } = useVehicleManagementTable();
 
   return (
     <div className="overflow-x-auto">
