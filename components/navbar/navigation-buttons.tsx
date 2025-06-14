@@ -40,7 +40,7 @@ export function NavigationButtons({
       icon: <AlertTriangle className="h-4 w-4" />,
     },
     {
-      link: "/vehicless",
+      link: "/symptoms",
       label: "Síntomas",
       icon: <Wrench className="h-4 w-4" />,
     },
