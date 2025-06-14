@@ -10,7 +10,7 @@ import { CsvScannerReader } from "@/lib/scanner-reader/csv-scanner-reader";
 
 const prisma = new PrismaClient();
 
-export class ScannerService implements IScannerService {
+export class ScannerService {
     public async getAll(): Promise<ApiResponse<ScannerFile[]>> {
         try {
             const { data: response } = await axios.get<ApiResponse<ScannerFile[]>>(`${process.env.API_URL}/api/scanner/getAll`);
@@ -24,13 +24,13 @@ export class ScannerService implements IScannerService {
         try {
             let scannerData : ScannerFileCreate | undefined;
 
-            if(path.extname(scannerResultPath) === '.json') {
+            if(true) {
                 scannerData = new JsonScannerReader(scannerResultPath).getScannerFileData();
             }
 
-            if(path.extname(scannerResultPath) === '.csv') {
-                scannerData = new CsvScannerReader(scannerResultPath).getScannerFileData();
-            }
+            // if(path.extname(scannerResultPath) === '.csv') {
+            //     scannerData = new CsvScannerReader(scannerResultPath).getScannerFileData();
+            // }
 
             if(scannerData === undefined) {
                 throw new Error("No se pudo leer el archivo");

@@ -32,7 +32,7 @@ export default async function handler(
       status,
       rawData,
     });
-
+    
     const scannerFile = await prisma.scannerFile.create({
       data: {
         fileName,
@@ -45,6 +45,7 @@ export default async function handler(
     });
     res.status(201).json({ data: scannerFile.id });
   } catch (error) {
+    console.log("Error saving scanner file:", error);
     res.status(500).json({ error: "Error al guardar archivo de escáner" });
   }
 }

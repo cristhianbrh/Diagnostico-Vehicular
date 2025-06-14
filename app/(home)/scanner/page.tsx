@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useScannerView } from "@/hooks/useScannerView";
+import { format } from "@formkit/tempo";
 import { Label } from "@radix-ui/react-label";
 import { AlertTriangle, Edit, FileText, Plus, Upload } from "lucide-react";
 
@@ -161,7 +162,7 @@ export default function ScannerPage() {
                           {scan.fileName}
                         </div>
                       </td>
-                      <td className="p-2">{scan.uploadDate}</td>
+                      <td className="p-2">{format(scan.uploadDate)}</td>
                       <td className="p-2">{scan.scannerType}</td>
                       <td className="p-2 font-mono text-sm">
                         {scan.vehicleVin || "No especificado"}
