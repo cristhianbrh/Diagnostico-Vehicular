@@ -19,7 +19,7 @@ export function useVehicleManagementTable() {
 
   useEffect(() => {
     getAllVehicle();
-  }, [getAllVehicle]);
+  }, []);
 
   return {
     vehicles,
