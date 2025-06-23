@@ -16,38 +16,99 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useSolutionsView } from "@/hooks/useSolutionsView";
 import { VehicleSummary } from "@/types/vehicle.type";
 import { Label } from "@radix-ui/react-label";
 import { CheckCircle, Download, Eye, Printer } from "lucide-react";
 import { useState } from "react";
 
+interface IReportData {
+  vehicle: VehicleSummary | undefined;
+  diagnostics: {
+    id: number;
+    desc: string;
+    vehicleId: number;
+    fecha: Date;
+    tecnico: string;
+    estado: string;
+    detalles: string;
+    scannerFileId: number | null;
+    cost: number;
+    duration: number;
+    solutionText: string | null;
+    noteTecnicSym: string | null;
+    aditionalSymptom: string | null;
+  }[];
+  totalCost: number;
+  totalTime: number;
+  dtcFrequency: { [key: string]: number };
+  recommendations: {
+    code: string;
+    frequency: string;
+    severity: string;
+    solutions: { text: string }[];
+  }[];
+}
+
 export default function ReportsPage() {
-//   const [reportData, setReportData] = useState<{
-//     // vehicle: VehicleSummary | undefined;
-//     diagnostics: {
-//       id: number;
-//       desc: string;
-//       vehicleId: number;
-//       fecha: Date;
-//       tecnico: string;
-//       estado: string;
-//       detalles: string;
-//       scannerFileId: number | null;
-//       cost: number;
-//       duration: number;
-//       solutionText: string | null;
-//       noteTecnicSym: string | null;
-//       aditionalSymptom: string | null;
-//     }[];
-//     totalCost: number;
-//     totalTime: number;
-//     dtcFrequency: {};
-//     recommendations: never[];
-//   }>;
+  const [reportData, setReportData] = useState<IReportData | undefined>(
+    undefined
+  );
+  const [loading, setLoading] = useState(false);
+
+  const { vehiclesData, diagnostics } = useSolutionsView();
+
+  // Función horrible para generar reporte
+  const generateReport = (vehicleId: number) => {
+    setLoading(true);
+    const vehicle = vehiclesData.find((v) => v.id === vehicleId);
+    const vehicleDiags = diagnostics.filter((d) => d.vehicleId === vehicleId);
+
+    const reportData: IReportData = {
+      vehicle: vehicle,
+      diagnostics: vehicleDiags,
+      totalCost: vehicleDiags.reduce((sum, d) => sum + (d.cost || 0), 0),
+      totalTime: vehicleDiags.reduce((sum, d) => sum + (d.duration || 0), 0),
+      dtcFrequency: {},
+      recommendations: [],
+    };
+
+    // Análisis de frecuencia DTC (lógica horrible)
+    vehicleDiags.forEach((diag) => {
+      if (diag.dtcs) {
+        diag.dtcs.forEach((code) => {
+          reportData.recommendations.push({
+            code: code.dtcCode,
+            frequency: code.dtc.severity,
+            severity: code.dtc.severity,
+            solutions: code.dtc.solutions,
+          });
+          return (reportData.dtcFrequency[code.dtcCode] =
+            (reportData.dtcFrequency[code.dtcCode] || 0) + 1);
+        });
+      }
+    });
+
+    // // Recomendaciones basadas en DTC (lógica hardcodeada horrible)
+    // Object.keys(reportData.dtcFrequency).forEach((code) => {
+    //   const dtcInfo = dtcDatabase.find((d) => d.code === code);
+    //   if (dtcInfo) {
+    //     reportData.recommendations.push({
+    //       code: code,
+    //       frequency: reportData.dtcFrequency[code],
+    //       severity: dtcInfo.severity,
+    //       solutions: dtcInfo.solutions,
+    //     });
+    //   }
+    // });
+
+    setReportData(reportData);
+    setTimeout(() => setLoading(false), 1000);
+  };
 
   return (
     <div className="space-y-6">
-      {/* <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Historial y Reportes</h2>
         <div className="flex gap-2">
           <Button
@@ -161,10 +222,10 @@ export default function ReportsPage() {
             Imprimir
           </Button>
         </div>
-      </div> */}
+      </div>
 
       {/* Filtros de reporte */}
-      {/* <Card>
+      <Card>
         <CardHeader>
           <CardTitle>Filtros de Reporte</CardTitle>
         </CardHeader>
@@ -178,7 +239,7 @@ export default function ReportsPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Todos</SelectItem>
-                  {vehicleData.map((vehicle) => (
+                  {vehiclesData.map((vehicle) => (
                     <SelectItem key={vehicle.id} value={vehicle.id.toString()}>
                       {vehicle.marca} {vehicle.modelo} - {vehicle.patente}
                     </SelectItem>
@@ -218,17 +279,17 @@ export default function ReportsPage() {
             <Button variant="outline">Limpiar</Button>
             <Button
               variant="outline"
-              onClick={() => generateReport(vehicleData[0]?.id)}
+              onClick={() => generateReport(vehiclesData[0]?.id)}
               disabled={loading}
             >
               {loading ? "Generando..." : "Generar Reporte"}
             </Button>
           </div>
         </CardContent>
-      </Card> */}
+      </Card>
 
       {/* Tabla de diagnósticos */}
-      {/* <Card>
+      <Card>
         <CardHeader>
           <CardTitle>Historial de Diagnósticos</CardTitle>
           <CardDescription>
@@ -254,14 +315,21 @@ export default function ReportsPage() {
               </thead>
               <tbody>
                 {diagnostics
-                  .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
+                  .sort(
+                    (a, b) =>
+                      new Date(b.fecha).getTime() - new Date(a.fecha).getTime()
+                  )
                   .map((diag) => {
-                    const vehicle = vehicleData.find(
+                    const vehicle = vehiclesData.find(
                       (v) => v.id === diag.vehicleId
                     );
                     return (
                       <tr key={diag.id} className="border-b hover:bg-muted/50">
-                        <td className="p-2">{diag.fecha}</td>
+                        <td className="p-2">
+                          {typeof diag.fecha === "string"
+                            ? diag.fecha
+                            : diag.fecha.toLocaleDateString()}
+                        </td>
                         <td className="p-2">
                           {vehicle
                             ? `${vehicle.marca} ${vehicle.modelo} - ${vehicle.patente}`
@@ -269,13 +337,13 @@ export default function ReportsPage() {
                         </td>
                         <td className="p-2">
                           <div className="flex gap-1 flex-wrap">
-                            {diag.dtc?.map((code) => (
+                            {diag.dtcs?.map((code) => (
                               <Badge
-                                key={code}
+                                key={"Dtccode_" + code.dtcCode + "_" + diag.id}
                                 variant="outline"
                                 className="font-mono text-xs"
                               >
-                                {code}
+                                {code.dtcCode}
                               </Badge>
                             ))}
                           </div>
@@ -317,10 +385,10 @@ export default function ReportsPage() {
             </table>
           </div>
         </CardContent>
-      </Card> */}
+      </Card>
 
       {/* Reporte generado */}
-      {/* {reportData && (
+      {reportData && (
         <Card>
           <CardHeader>
             <CardTitle>Reporte Generado</CardTitle>
@@ -399,7 +467,7 @@ export default function ReportsPage() {
             </div>
           </CardContent>
         </Card>
-      )} */}
+      )}
     </div>
   );
 }
