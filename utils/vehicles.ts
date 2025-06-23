@@ -1,18 +1,18 @@
 import { AppStatus } from "@/types/app-status.type";
 import { IVehicleFormCreate } from "@/types/IVehicleFormCreate";
-import { VehicleSummary } from "@/types/vehicle.type";
+import {
+  VehicleDiagnosticDtcSummary,
+  VehicleSummary,
+} from "@/types/vehicle.type";
 import { AlertTriangle, CheckCircle, Clock } from "lucide-react";
 
 // Utilidad para calcular el estado de un vehículo
-export function getVehicleStatus(vehicle: VehicleSummary): AppStatus {
-  if (!vehicle.diagnostics || vehicle.diagnostics.length === 0) {
+export function getVehicleStatus(state?: string): AppStatus {
+  if (!state) {
     return { status: "sin-diagnosticos", color: "gray", icon: Clock };
   }
-  const diags = [...vehicle.diagnostics].sort(
-    (a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime()
-  );
-  const lastDiag = diags[0];
-  switch (lastDiag.estado) {
+
+  switch (state) {
     case "grave":
       return { status: "grave", color: "red", icon: AlertTriangle };
     case "pendiente":
@@ -43,4 +43,15 @@ export function validateVehicleForm(vehicleForm: IVehicleFormCreate) {
   if (!vehicleForm.km || vehicleForm.km < 0) errors.km = "Kilometraje inválido";
   if (!vehicleForm.userId) errors.userId = "Usuario requerido";
   return errors;
+}
+
+// DRY: Utilidad para calcular estadísticas de diagnósticos
+export function getVehicleStats(
+  diagnostics: VehicleDiagnosticDtcSummary["diagnostics"]
+) {
+  const totalDiags = diagnostics.length;
+  const pendientes = diagnostics.filter((d) => d.estado === "pendiente").length;
+  const resueltos = diagnostics.filter((d) => d.estado === "resuelto").length;
+  const graves = diagnostics.filter((d) => d.estado === "grave").length;
+  return { totalDiags, pendientes, resueltos, graves };
 }

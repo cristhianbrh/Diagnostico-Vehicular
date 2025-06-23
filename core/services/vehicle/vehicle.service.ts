@@ -3,6 +3,7 @@ import { IVehicleService } from "./vehicle.service.interface";
 import {
   VehicleCreate,
   VehicleDiagnosticDtcSummary,
+  VehicleForTableSummary,
   VehicleSummary,
   VehicleUpdate,
 } from "@/types/vehicle.type";
@@ -28,6 +29,16 @@ export class VehicleService implements IVehicleService {
     }
   }
 
+  public async getAllForTable(): Promise<ApiResponse<VehicleForTableSummary[]>> {
+    try {
+      const { data: response } = await axios.get<ApiResponse<VehicleForTableSummary[]>>(
+        `/api/vehicle/get/forTable`
+      );
+      return response;
+    } catch (error: any) {
+      return { error: parseError(error) };
+    }
+  }
   public async getAll(): Promise<ApiResponse<VehicleSummary[]>> {
     try {
       const { data: response } = await axios.get<ApiResponse<VehicleSummary[]>>(
