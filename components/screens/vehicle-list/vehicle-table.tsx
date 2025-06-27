@@ -2,6 +2,7 @@
 import { getVehicleStatus } from "@/utils/vehicles";
 import VehicleTableElement from "./vehicle-table-element";
 import { useVehicleManagementTable } from "@/hooks/useVehicleManagement";
+import { AlertTriangle } from "lucide-react";
 
 export default function VehicleTable() {
   const { vehicles } = useVehicleManagementTable();
@@ -24,7 +25,7 @@ export default function VehicleTable() {
         <tbody>
           {vehicles &&
             vehicles.map((vehicle) => {
-              const status = getVehicleStatus(vehicle);
+              const status = getVehicleStatus(vehicle.status);
 
               return (
                 <VehicleTableElement

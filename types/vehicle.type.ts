@@ -6,6 +6,7 @@ import {
   Vehicle,
   Symptom,
   DiagnosticSymptom,
+  User,
 } from "@/generated/prisma";
 
 export type VehicleCreate = Pick<
@@ -22,6 +23,16 @@ export type VehicleSummary = Vehicle & {
   diagnostics: Diagnostic[];
 } & {
   scannerFiles: ScannerFile[];
+};
+
+export type VehicleForTableSummary = Pick<
+  Vehicle,
+  "marca" | "modelo" | "id" | "year" | "patente" | "lastDiag"
+> & {
+  user: Pick<User, "name">;
+} & {
+  diagnostics: Diagnostic[];
+  status?: string;
 };
 
 export type VehicleDiagnosticDtcSummary = Vehicle & {

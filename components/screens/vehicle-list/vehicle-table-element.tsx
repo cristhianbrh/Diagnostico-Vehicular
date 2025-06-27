@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Vehicle } from "@/generated/prisma";
 import { useUser } from "@/hooks/use-user";
 import { AppStatus } from "@/types/app-status.type";
+import { VehicleForTableSummary } from "@/types/vehicle.type";
 import { Edit, Eye, LucideProps, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
@@ -11,14 +12,12 @@ export default function VehicleTableElement({
   StatusIcon,
   status,
 }: {
-  vehicle: Vehicle;
+  vehicle: VehicleForTableSummary;
   StatusIcon: ForwardRefExoticComponent<
     Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
   >;
   status: AppStatus;
 }) {
-  const { getUserName } = useUser();
-
   return (
     <tr key={vehicle.id} className="border-b hover:bg-muted/50">
       <td className="p-2">
@@ -28,7 +27,7 @@ export default function VehicleTableElement({
       <td className="p-2">{vehicle.modelo}</td>
       <td className="p-2">{vehicle.year}</td>
       <td className="p-2 font-mono">{vehicle.patente}</td>
-      <td className="p-2">{getUserName(vehicle.userId)}</td>
+      <td className="p-2">{vehicle.user.name}</td>
       <td className="p-2">
         {vehicle.lastDiag?.toDateString() || "Sin diagnósticos"}
       </td>
