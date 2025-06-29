@@ -29,7 +29,12 @@ export default function VehicleTableElement({
       <td className="p-2 font-mono">{vehicle.patente}</td>
       <td className="p-2">{vehicle.user.name}</td>
       <td className="p-2">
-        {vehicle.lastDiag?.toDateString() || "Sin diagnósticos"}
+        {/* {vehicle.lastDiag?.toDateString() || "Sin diagnósticos"} */}
+        {vehicle.lastDiag && new Date(vehicle.lastDiag).toLocaleDateString("es-CL", {
+          year: "numeric",
+          month: "short",
+          day: "2-digit",
+        }) || "Sin diagnósticos"}
       </td>
       <td className="p-2">
         <div className="flex gap-1">
