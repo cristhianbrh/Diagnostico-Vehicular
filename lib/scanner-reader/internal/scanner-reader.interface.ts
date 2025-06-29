@@ -1,5 +1,4 @@
 import path from "path";
-import fs from 'fs';
 import { ScannerFileCreate } from "@/types/scanner.type";
 
 export abstract class IScannerReader {
@@ -10,8 +9,8 @@ export abstract class IScannerReader {
   }
 
   protected read(): any {
-    const raw = fs.readFileSync(this.filePath, 'utf-8');
-    return this.parse(raw);
+    // const raw = fs.readFileSync(this.filePath, 'utf-8');
+    // return this.parse(raw);
   }
 
   abstract parse(content: string): any;
