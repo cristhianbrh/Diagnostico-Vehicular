@@ -4,7 +4,10 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiResponse<Diagnostic[]>>) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<ApiResponse<Diagnostic[]>>
+) {
   if (req.method !== "GET") {
     return res.status(405).json({ error: "Método no permitido" });
   }
@@ -13,8 +16,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       include: {
         vehicle: true,
         scannerFile: true,
-        dtcs: true,
-        symptoms: true,
+        dtcs: { include: { dtc: { include: { solutions: true } } } },
+        symptoms: { include: { symptom: true } },
       },
       orderBy: { fecha: "desc" },
     });
