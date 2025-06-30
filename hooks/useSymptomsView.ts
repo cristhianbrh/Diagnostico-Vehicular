@@ -1,8 +1,9 @@
 // import { ScannerService } from "@/core/services/scanner/scanner.service";
-import { SymptomService } from "@/core/services/symptom/symptom.service";
+import { container } from "@/core/di";
+import { ISymptomService } from "@/core/services/symptom/symptom.service.interface";
 import { Symptom } from "@/generated/prisma";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "reflect-metadata";
 
 export function useSymptomsView() {
@@ -12,7 +13,8 @@ export function useSymptomsView() {
   const [errors, setErrors] = useState({
     symptoms: "",
   });
-  const symptomsService = new SymptomService();
+  
+  const symptomsService = useMemo(() => container.resolve<ISymptomService>("ISymptomService"), []); 
 
   const getAllSymptoms = async () => {
     try {

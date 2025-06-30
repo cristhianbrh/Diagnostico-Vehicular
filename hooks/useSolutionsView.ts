@@ -1,5 +1,6 @@
-import { DiagnosticService } from "@/core/services/diagnostic/diagnostic.service";
-import { VehicleService } from "@/core/services/vehicle/vehicle.service";
+import { container } from "@/core/di";
+import { IDiagnosticService } from "@/core/services/diagnostic/diagnostic.service.interface";
+import { IVehicleService } from "@/core/services/vehicle/vehicle.service.interface";
 import {
   Diagnostic,
   DiagnosticDtc,
@@ -8,7 +9,7 @@ import {
   Symptom,
 } from "@/generated/prisma";
 import { VehicleSummary } from "@/types/vehicle.type";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export function useSolutionsView() {
   const [vehicleSelectSymtoms, setVehicleSelectSymtoms] = useState<number>(-1);
@@ -22,8 +23,8 @@ export function useSolutionsView() {
   >([]);
   const [errors, setErrors] = useState<{ dtc?: string }>({});
 
-  const vehicleService = new VehicleService();
-  const diagnosticService = new DiagnosticService();
+  const vehicleService = useMemo(() => container.resolve<IVehicleService>("IVehicleService"), []);
+  const diagnosticService = useMemo(() => container.resolve<IDiagnosticService>("IDiagnosticService"), []);
 
   const getAllVehicles = async () => {
     const { data, error } = await vehicleService.getAll();

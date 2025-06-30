@@ -1,15 +1,16 @@
 import "reflect-metadata";
-import { UserService } from "@/core/services/user/user.service";
 import { IVehicleFormCreate } from "@/types/IVehicleFormCreate";
 import { UserSummary } from "@/types/user.type";
 import axios from "axios";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { validateVehicleForm } from "@/utils/vehicles";
+import { IUserService } from "@/core/services/user/user.service.interface";
+import { container } from "@/core/di";
 
 export function useVehicleCreateForm() {
   // SRP: Cada servicio tiene una única responsabilidad
-  const userService = new UserService();
+  const userService = useMemo(() => container.resolve<IUserService>("IUserService"), []);
   const router = useRouter();
 
   const [loading, setLoading] = useState<boolean>(false);

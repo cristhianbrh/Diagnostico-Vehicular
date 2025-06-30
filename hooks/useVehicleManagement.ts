@@ -1,9 +1,10 @@
-import { VehicleService } from "@/core/services/vehicle/vehicle.service";
+import { container } from "@/core/di";
+import { IVehicleService } from "@/core/services/vehicle/vehicle.service.interface";
 import { VehicleForTableSummary } from "@/types/vehicle.type";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 
 export function useVehicleManagementTable() {
-  const vehicleService = new VehicleService();
+  const vehicleService = useMemo(() => container.resolve<IVehicleService>("IVehicleService"), []);
   const [vehicles, setVehicles] = useState<VehicleForTableSummary[]>([]);
   const [errors, setErrors] = useState<Record<string, unknown>>({});
 

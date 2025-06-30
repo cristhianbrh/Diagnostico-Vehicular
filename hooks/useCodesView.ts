@@ -1,10 +1,12 @@
 // import { ScannerService } from "@/core/services/scanner/scanner.service";
-import { DtcService } from "@/core/services/dtc/dtc.service";
+import { container } from "@/core/di";
+import { IDtcService } from "@/core/services/dtc/dtc.service.interface";
 import { Dtc, DtcCause, DtcSolution } from "@/generated/prisma";
+import { DtcSummary } from "@/types/dtc.type";
 import { getAccessTokenData, IAccessToken } from "@/utils/cookies";
 import axios from "axios";
 import { set } from "date-fns";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "reflect-metadata";
 
 export function useCodesView() {
@@ -12,12 +14,12 @@ export function useCodesView() {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
   const [dtcs, setDtc] = useState<
-    (Dtc & { solutions: DtcSolution[]; causes: DtcCause[] })[]
+    DtcSummary[]
   >([]);
   const [errors, setErrors] = useState({
     dtc: "",
   });
-  const dtcService = new DtcService();
+  const dtcService = useMemo(() => container.resolve<IDtcService>("IDtcService"), []);
 
   const getAllDtc = async () => {
     const { data: dtcs, error } = await dtcService.getAll();

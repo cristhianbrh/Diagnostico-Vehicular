@@ -1,21 +1,20 @@
 import "reflect-metadata";
-import { UserService } from "@/core/services/user/user.service";
-import { VehicleService } from "@/core/services/vehicle/vehicle.service";
-import { User, Vehicle } from "@/generated/prisma";
-import { AppStatus } from "@/types/app-status.type";
 import { IVehicleFormCreate } from "@/types/IVehicleFormCreate";
 import { UserSummary } from "@/types/user.type";
 import axios from "axios";
 import { AlertTriangle, CheckCircle, Clock } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { VehicleSummary } from "@/types/vehicle.type";
+import { IVehicleService } from "@/core/services/vehicle/vehicle.service.interface";
+import { IUserService } from "@/core/services/user/user.service.interface";
+import { container } from "@/core/di";
 
 export function useVehicleModifyForm(idVehicle: number) {
-  const vehicleService = new VehicleService();
   const router = useRouter();
-  const userService = new UserService();
+
+  const vehicleService = useMemo(() => container.resolve<IVehicleService>("IVehicleService"), []);
+  const userService = useMemo(() => container.resolve<IUserService>("IUserService"), []);
 
   const [loading, setLoading] = useState<boolean>(false);
   const [users, setUsers] = useState<UserSummary[]>([]);

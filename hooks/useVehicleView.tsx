@@ -1,15 +1,15 @@
 import "reflect-metadata";
-import { UserService } from "@/core/services/user/user.service";
-import { VehicleService } from "@/core/services/vehicle/vehicle.service";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { VehicleDiagnosticDtcSummary } from "@/types/vehicle.type";
 import { getVehicleStats } from "@/utils/vehicleStats"; // Importación directa y robusta
+import { container } from "@/core/di";
+import { IVehicleService } from "@/core/services/vehicle/vehicle.service.interface";
 
 export function useVehicleView(idVehicle: number) {
   // SRP: Cada servicio tiene una única responsabilidad
-  const vehicleService = new VehicleService();
+  const vehicleService = useMemo(() => container.resolve<IVehicleService>("IVehicleService"), []);
   const router = useRouter();
   const [vehicleCurrent, setVehicleCurrent] = useState<
     VehicleDiagnosticDtcSummary | undefined

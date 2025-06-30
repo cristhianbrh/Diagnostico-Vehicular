@@ -1,11 +1,12 @@
 // import { ScannerService } from "@/core/services/scanner/scanner.service";
-import { DiagnosticService } from "@/core/services/diagnostic/diagnostic.service";
-import { SymptomService } from "@/core/services/symptom/symptom.service";
-import { VehicleService } from "@/core/services/vehicle/vehicle.service";
+import { container } from "@/core/di";
+import { IDiagnosticService } from "@/core/services/diagnostic/diagnostic.service.interface";
+import { ISymptomService } from "@/core/services/symptom/symptom.service.interface";
+import { IVehicleService } from "@/core/services/vehicle/vehicle.service.interface";
 import { Diagnostic, Symptom } from "@/generated/prisma";
 import { VehicleSummary } from "@/types/vehicle.type";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "reflect-metadata";
 
 export function useSymptomsForm(selectedSymptoms: number[]) {
@@ -18,9 +19,10 @@ export function useSymptomsForm(selectedSymptoms: number[]) {
     useState<number>(-1);
   const [diagnostics, setDiagnostics] = useState<Diagnostic[]>([]);
   const [symptoms, setSymptoms] = useState<Symptom[]>([]);
-  const vehicleService = new VehicleService();
-  const diagnosticService = new DiagnosticService();
-  const symptomService = new SymptomService();
+  
+  const vehicleService = useMemo(() => container.resolve<IVehicleService>("IVehicleService"), []);
+  const diagnosticService = useMemo(() => container.resolve<IDiagnosticService>("IDiagnosticService"), []);
+  const symptomService = useMemo(() => container.resolve<ISymptomService>("ISymptomService"), []);
 
   const handleSubmitForm = async (e: React.SyntheticEvent) => {
     e.preventDefault();
