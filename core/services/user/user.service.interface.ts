@@ -6,4 +6,5 @@ export interface IUserService {
     getUserName(userId: number): Promise<ApiResponse<string>>;
     getUsers(listParams?: { limit?: number; offset?: number; }): Promise<ApiResponse<UserSummary[]>>; 
     updateUser(userId: number, userData: UserSummaryEdit): Promise<UserResponse>;
+    getAllUsers(): Promise<ApiResponse<UserSummary[]>>
 }
