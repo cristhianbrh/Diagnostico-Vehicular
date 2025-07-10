@@ -1,15 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { User } from "@/generated/prisma";
+import { IAccessToken } from "@/utils/cookies";
 import { LogOut } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 
-export function UserSection(
-    { currentUser, setCurrentUser } : 
-    {
-        currentUser : User | null,
-        setCurrentUser: Dispatch<SetStateAction<User | null>>
-    }
-) {
+export function UserSection({ currentUser }: { currentUser: IAccessToken }) {
   if (!currentUser) return null;
 
   return (
@@ -22,7 +17,6 @@ export function UserSection(
         size="sm"
         onClick={() => {
           localStorage.removeItem("token");
-          setCurrentUser(null);
         }}
       >
         <LogOut className="h-4 w-4" />
