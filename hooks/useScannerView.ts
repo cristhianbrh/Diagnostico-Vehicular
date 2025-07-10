@@ -110,10 +110,7 @@ export function useScannerView() {
 
           // Guardar en la base de datos
           const scannerUpload = await axios
-            .post("/api/scanner/upload", newScanData)
-            .then((r) => {
-              console.log(r);
-            })
+            .post<{ data: number }>("/api/scanner/upload", newScanData)
             .catch((r) => {
               console.log(r);
             });
@@ -124,23 +121,28 @@ export function useScannerView() {
           ]);
           setUploadedFiles((prev) => [...prev, file.name]);
 
+          console.log("vehiclevin: " + newScanData.vehicleVin);
           // Auto-asociar con vehículo si encuentra VIN
-          if (newScanData.vehicleVin) {
-            const vehicle = vehicleData.find(
-              (v) => v.vin === newScanData.vehicleVin
-            );
-            if (vehicle && dtcCodes.length > 0) {
+          if (newScanData.vehicleVin && scannerUpload) {
+            const respVehicle = await axios
+              .get<{data:{ id: string; diagnostics: any[] }}>(
+                "/api/vehicle/get/getByVin/?vin=" + newScanData.vehicleVin
+              )
+              .catch((r) => null);
+
+            if (respVehicle) {
               try {
+                console.log(respVehicle);
                 const res = await axios.post("/api/diagnostic/create", {
-                  vehicleId: vehicle.id,
+                  vehicleId: respVehicle.data.data.id,
                   fecha: new Date().toISOString(),
-                  dtc: dtcCodes,
+                  dtcCodes: dtcCodes || [],
                   desc: `Diagnóstico automático desde ${file.name}`,
                   tecnico: currentUser?.name || "Sistema",
                   estado: "pendiente",
                   detalles: `Datos importados automáticamente desde escáner`,
                   // symptoms: [],
-                  scannerFileId: scannerUpload.data.id,
+                  scannerFileId: scannerUpload.data.data,
                   cost: 0,
                   duration: 0,
                 });

@@ -43,12 +43,11 @@ export default async function handler(
         scannerFile: true,
         dtcs: true,
         symptoms: true,
-      }
+      },
     });
 
     // Asociar DTCs al diagnóstico
     if (Array.isArray(dtcCodes) && dtcCodes.length > 0) {
-
       const dtcCodesUpperCase = dtcCodes.map((code) => code.toUpperCase());
 
       const validDtcs = await prisma.dtc.findMany({
@@ -73,6 +72,7 @@ export default async function handler(
 
     res.status(201).json({ data: diagnostic });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Error al crear diagnóstico" });
   }
 }

@@ -47,7 +47,7 @@ export class UserService implements IUserService {
     const { limit = 10, offset = 0 } = listParams || {};
     try {
       const { data: response } = await axios.get<ApiResponse<UserSummary[]>>(
-        `${process.env.API_URL}/api/users/getUsers?limit=${limit}&offset=${offset}`
+        `${process.env.API_URL||""}/api/users/getUsers?limit=${limit}&offset=${offset}`
       );
       return response;
     } catch (error: any) {
